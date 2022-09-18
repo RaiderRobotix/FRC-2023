@@ -5,31 +5,37 @@
 package frc.robot.commands.DriveBase;
 
 import frc.robot.subsystems.DriveBase.DriveTrain;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import frc.robot.OperatorInterface;
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
+
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.subsystems.OperatorInterface;
 import frc.robot.subsystems.DriveBase.DriveTrain;
 
 
 /** An example command that uses an example subsystem. */
-public class defaultDriveBaseCommands extends CommandBase {
+public class DefaultDriveBaseCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final DriveTrain driveTrain;
-  private final OperatorInterface oi;
+  DriveTrain driveTrain;
+  OperatorInterface oi;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public defaultDriveBaseCommands(DriveTrain driveTrain, OperatorInterface oi) {
-    this.driveTrain = driveTrain;
-    this.oi = oi;
+  public DefaultDriveBaseCommand(DriveTrain m_driveTrain, OperatorInterface m_oi) {
+    driveTrain = m_driveTrain;
+    oi = m_oi;
     
 
     // Use addRequirements(z) here to declare subsystem dependencies.
     addRequirements(driveTrain);
+    addRequirements(oi);
   }
+
+  
 
   // Called when the command is initially scheduled.
   @Override

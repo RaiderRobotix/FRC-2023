@@ -1,14 +1,17 @@
-package frc.robot;
+package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 
-public class OperatorInterface {
+
+public class OperatorInterface extends SubsystemBase {
     private final Joystick leftStick;
     private final Joystick rightStick;
     
     
-    private OperatorInterface(){
+    public OperatorInterface(){
         this.leftStick = new Joystick(Constants.LeftJoystickPort);
         this.rightStick = new Joystick(Constants.RightJoystickPort);
 

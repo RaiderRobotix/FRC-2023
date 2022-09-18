@@ -7,8 +7,14 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.DriveBase.DefaultDriveBaseCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.DriveBase.DriveTrain;
+import frc.robot.subsystems.OperatorInterface;
+
 import edu.wpi.first.wpilibj2.command.Command;
+
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -22,10 +28,23 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
+  private final DriveTrain m_driveTrain = new DriveTrain();
+
+  private final OperatorInterface m_OperatorInterface = new OperatorInterface();
+
+  private final DefaultDriveBaseCommand m_DefaultDriveBaseCommand = new DefaultDriveBaseCommand(m_driveTrain, m_OperatorInterface);
+
+
+
+
+
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    this.m_driveTrain.setDefaultCommand(m_DefaultDriveBaseCommand);
   }
 
   /**
