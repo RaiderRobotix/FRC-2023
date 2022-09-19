@@ -4,20 +4,31 @@
 
 package frc.robot.subsystems.drivebase;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants;
 
-public class SwerveWheel extends SubsystemBase implements Constants {
+public class SwerveWheel extends SubsystemBase implements drivebaseConstants {
   /** Creates a new SwerveWheel. */
 
-  private TalonSRX driveMotor;
-  private TalonSRX steerMotor;
+  private WPI_TalonFX driveMotor;
+  private WPI_TalonFX steerMotor;
 
-  public SwerveWheel(int driveID, int steerID, int encoderID, String name) {
-    this.driveMotor = new TalonSRX(driveID);
-    this.steerMotor = new TalonSRX(encoderID);
+  private PIDController angleController = new PIDController(angleKp, angleKi, angleKd);
+
+  public SwerveWheel(
+      int driveID,
+      int steerID,
+      int encoderID, String name) {
+    this.driveMotor = new WPI_TalonFX(driveID);
+    this.steerMotor = new WPI_TalonFX(encoderID);
+
+    angleController.enableContinuousInput(0, 360);
 
   }
 
@@ -27,8 +38,15 @@ public class SwerveWheel extends SubsystemBase implements Constants {
 
   public double getSteerAngle() {
     double encoderValue = steerMotor.getSelectedSensorPosition();
+    return (180 * encoderValue / 4096);
+  }
 
-    return steerMotor.getSelectedSensorPosition();
+  public void setDriveSpeed(double speed) {
+    this.driveMotor.set(speed);
+  }
+
+  public void setSteerAngle(double angle) {
+    steerMotor.set(angleController.calculate(getSteerAngle(), angle));
   }
 
   @Override
