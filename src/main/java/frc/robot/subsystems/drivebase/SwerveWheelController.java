@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems.drivebase;
 
-import com.kauailabs.navx.frc.AHRS;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -17,12 +15,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 
 import frc.robot.subsystems.Gyro;
 
-// import com.kauailabs.navx.frc.AHRS;
-
 public class SwerveWheelController extends SubsystemBase implements drivebaseConstants {
-  // AHRS ahrs;
-
-  private static SwerveWheelController instance;
 
   private ChassisSpeeds speeds;
 
@@ -33,8 +26,6 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
 
   private Rotation2d heading;
 
-  Gyro gyro;
-
   /** Creates a new drivebase. */
   public SwerveWheelController() {
     // Location of modules relative to the centre of the robot
@@ -43,7 +34,7 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
     Translation2d backLeftLocation = new Translation2d(backLeftLocationX, backLeftLocationY);
     Translation2d backRightLocation = new Translation2d(backRightLocationX, backRightLocationY);
 
-    this.heading = new Rotation2d(gyro.gyro());
+    this.heading = new Rotation2d(Gyro.gyro().getAngle());
 
     // frontLeftModule = new SwerveWheel(driveID, steerID, encoderID, name);
     // frontRightModule = new SwerveWheel(driveID, steerID, encoderID, name);
@@ -76,7 +67,8 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
   }
 
   public void setSpeed(double x, double y, double delta) {
-    this.speeds.fromFieldRelativeSpeeds(x, y, delta, heading.getDegrees());
+    System.out.println(this.heading);
+    ChassisSpeeds.fromFieldRelativeSpeeds(x, y, delta, this.heading);
   }
 
   // public Rotation2d getHeading(){
@@ -86,14 +78,5 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-  }
-
-  public static SwerveWheelController getInstance() {
-    if (instance == null) {
-      instance = new SwerveWheelController();
-      // instance.setDefaultCommand(new TeleopDrive());
-    }
-
-    return instance;
   }
 }

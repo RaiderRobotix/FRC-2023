@@ -12,10 +12,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Gyro extends SubsystemBase {
   /** Creates a new Gyro. */
 
-  private AHRS ahrs;
+  private static AHRS ahrs;
 
   public Gyro() {
-    this.ahrs = new AHRS(SPI.Port.kMXP);
+    Gyro.ahrs = new AHRS(SPI.Port.kMXP);
   }
 
   public static AHRS gyro() {
