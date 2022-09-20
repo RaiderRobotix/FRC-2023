@@ -4,20 +4,36 @@
 
 package frc.robot.subsystems.drivebase;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.geometry.Rotation2d;
+
+import frc.robot.subsystems.Gyro;
+
+// import com.kauailabs.navx.frc.AHRS;
 
 public class SwerveWheelController extends SubsystemBase implements drivebaseConstants {
+  // AHRS ahrs;
+
   private static SwerveWheelController instance;
+
+  private ChassisSpeeds speeds;
 
   private SwerveWheel frontLeftModule;
   private SwerveWheel frontRightModule;
   private SwerveWheel backLeftModule;
   private SwerveWheel backRightModule;
+
+  private Rotation2d heading;
+
+  Gyro gyro;
 
   /** Creates a new drivebase. */
   public SwerveWheelController() {
@@ -27,10 +43,12 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
     Translation2d backLeftLocation = new Translation2d(backLeftLocationX, backLeftLocationY);
     Translation2d backRightLocation = new Translation2d(backRightLocationX, backRightLocationY);
 
-    frontLeftModule = new SwerveWheel(driveID, steerID, encoderID, name);
-    frontRightModule = new SwerveWheel(driveID, steerID, encoderID, name);
-    backLeftModule = new SwerveWheel(driveID, steerID, encoderID, name);
-    backRightModule = new SwerveWheel(driveID, steerID, encoderID, name);
+    this.heading = new Rotation2d(gyro.gyro());
+
+    // frontLeftModule = new SwerveWheel(driveID, steerID, encoderID, name);
+    // frontRightModule = new SwerveWheel(driveID, steerID, encoderID, name);
+    // backLeftModule = new SwerveWheel(driveID, steerID, encoderID, name);
+    // backRightModule = new SwerveWheel(driveID, steerID, encoderID, name);
 
     // System.out.println(frontLeftLocation.getNorm());
 
@@ -38,7 +56,7 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
     // TODO fill out missing variables
     SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
         frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
-    ChassisSpeeds speeds = new ChassisSpeeds.fromFieldRelativeSpeeds(x, y, delta, currentHeading);
+    this.speeds = new ChassisSpeeds();
 
     SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
 
@@ -56,6 +74,14 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
     var backRightOptimized = SwerveModuleState.optimize(frontLeft,
         new Rotation2d(backRightModule.getSteerAngle()));
   }
+
+  public void setSpeed(double x, double y, double delta) {
+    this.speeds.fromFieldRelativeSpeeds(x, y, delta, heading.getDegrees());
+  }
+
+  // public Rotation2d getHeading(){
+  // return
+  // }
 
   @Override
   public void periodic() {

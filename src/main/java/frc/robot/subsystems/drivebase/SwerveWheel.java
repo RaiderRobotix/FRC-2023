@@ -19,7 +19,8 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants {
   private WPI_TalonFX driveMotor;
   private WPI_TalonFX steerMotor;
 
-  private PIDController angleController = new PIDController(angleKp, angleKi, angleKd);
+  // private PIDController angleController = new PIDController(angleKp, angleKi,
+  // angleKd);
 
   public SwerveWheel(
       int driveID,
@@ -28,7 +29,7 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants {
     this.driveMotor = new WPI_TalonFX(driveID);
     this.steerMotor = new WPI_TalonFX(encoderID);
 
-    angleController.enableContinuousInput(0, 360);
+    // angleController.enableContinuousInput(0, 360);
 
   }
 
@@ -46,7 +47,7 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants {
   }
 
   public void setSteerAngle(double angle) {
-    steerMotor.set(angleController.calculate(getSteerAngle(), angle));
+    // steerMotor.set(angleController.calculate(getSteerAngle(), angle));
   }
 
   @Override
