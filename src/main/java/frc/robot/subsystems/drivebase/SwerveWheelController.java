@@ -34,12 +34,10 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
     Translation2d backLeftLocation = new Translation2d(backLeftLocationX, backLeftLocationY);
     Translation2d backRightLocation = new Translation2d(backRightLocationX, backRightLocationY);
 
-    this.heading = new Rotation2d(Gyro.gyro().getAngle());
-
-    // frontLeftModule = new SwerveWheel(driveID, steerID, encoderID, name);
-    // frontRightModule = new SwerveWheel(driveID, steerID, encoderID, name);
-    // backLeftModule = new SwerveWheel(driveID, steerID, encoderID, name);
-    // backRightModule = new SwerveWheel(driveID, steerID, encoderID, name);
+    frontLeftModule = new SwerveWheel(driveID, steerID, encoderID, name);
+    frontRightModule = new SwerveWheel(driveID, steerID, encoderID, name);
+    backLeftModule = new SwerveWheel(driveID, steerID, encoderID, name);
+    backRightModule = new SwerveWheel(driveID, steerID, encoderID, name);
 
     // System.out.println(frontLeftLocation.getNorm());
 
@@ -67,7 +65,7 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
   }
 
   public void setSpeed(double x, double y, double delta) {
-    System.out.println(this.heading);
+    this.heading = new Rotation2d(Gyro.gyro().getCompassHeading());
     ChassisSpeeds.fromFieldRelativeSpeeds(x, y, delta, this.heading);
   }
 
