@@ -12,8 +12,9 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.drive;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.OperatorInterface;
+import frc.robot.subsystems.drivebase.Drivetrain;
 import frc.robot.subsystems.drivebase.SwerveWheel;
-import frc.robot.subsystems.drivebase.SwerveWheelController;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -26,13 +27,15 @@ import edu.wpi.first.wpilibj2.command.Command;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final SwerveWheelController m_controller = new SwerveWheelController();
+  // Subsystems
   private final Gyro m_gyro = new Gyro();
+  private final Drivetrain m_drivetrain = new Drivetrain();
+  private final OperatorInterface m_operatorInterface = new OperatorInterface();
+  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
+  // Commands
+  private final drive m_Drive = new drive(m_drivetrain, m_operatorInterface);
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  private final drive m_Drive = new drive(m_controller);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -40,6 +43,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    this.m_drivetrain.setDefaultCommand(m_Drive);
   }
 
   /**

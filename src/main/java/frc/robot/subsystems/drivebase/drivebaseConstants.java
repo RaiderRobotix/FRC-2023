@@ -24,7 +24,10 @@ public interface drivebaseConstants {
 
     // Increase ki
 
-    // public final double angleKp = kp;
-    // public final double angleKi = ki;
-    // public final double angleKd = kd;
+    public final double angleKp = 0;
+    public final double angleKi = 0;
+    public final double angleKd = 0;
+    public final double driveKp = 0;
+    public final double driveKi = 0;
+    public final double driveKd = 0;
 }

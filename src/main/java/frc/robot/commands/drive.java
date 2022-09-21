@@ -4,17 +4,21 @@
 
 package frc.robot.commands;
 
+import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.OperatorInterface;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.drivebase.Drivetrain;
 import frc.robot.subsystems.drivebase.SwerveWheel;
-import frc.robot.subsystems.drivebase.SwerveWheelController;
 
 public class drive extends CommandBase {
   /** Creates a new drive. */
-  SwerveWheelController controller;
+  Drivetrain m_drivetrain;
+  OperatorInterface oi;
 
-  public drive(SwerveWheelController m_controller) {
-    controller = m_controller;
-    addRequirements(controller);
+  public drive(Drivetrain drive, OperatorInterface operatorInterface) {
+    m_drivetrain = drive;
+    oi = operatorInterface;
+    addRequirements(m_drivetrain, oi);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -26,7 +30,11 @@ public class drive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    controller.setSpeed(1, 1, 1);
+    // System.out.println(Gyro.gyro().getAngle());
+    // System.out.println(oi.getLeftY());
+    // System.out.println(oi.getLeftX());
+    // System.out.println(oi.getRightX());
+    Drivetrain.drive(oi.getLeftY(), oi.getLeftX(), oi.getRightX());
   }
 
   // Called once the command ends or is interrupted.
