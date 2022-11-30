@@ -10,17 +10,17 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.PIDSubsystem;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.Constants;
 
-public class SwerveWheel extends SubsystemBase implements drivebaseConstants {
+public class SwerveWheel extends SubsystemBase implements drivebaseConstants, Constants {
   /** Creates a new SwerveWheel. */
 
   private WPI_TalonFX driveMotor;
   private WPI_TalonFX steerMotor;
 
-  // private PIDController angleController = new PIDController(angleKp, angleKi,
-  // angleKd);
+  private PIDController angleController = new PIDController(angleKp, angleKi, angleKd);
 
   public SwerveWheel(
       int driveID,
@@ -29,17 +29,30 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants {
     this.driveMotor = new WPI_TalonFX(driveID);
     this.steerMotor = new WPI_TalonFX(encoderID);
 
-    // angleController.enableContinuousInput(0, 360);
+    angleController.enableContinuousInput(0, 360);
 
+  }
+
+  public void setDesiredState(SwerveModuleState state) {
+    state = SwerveModuleState.optimize(state, getSteerAngle());
+    setDriveSpeed(state.speedMetersPerSecond / kPhysicalDriveMaxSpeed);
+    setSteerAngle(state.angle.getDegrees());
+
+  }
+
+  public void setDesiredAngle(SwerveModuleState state) {
+    state = SwerveModuleState.optimize(state, getSteerAngle());
+    setSteerAngle(state.angle.getDegrees());
   }
 
   public double getDriveSpeed() {
-    return driveMotor.getSelectedSensorVelocity();
+    return (kMaxRPM / 600) * (driveMotor.getSelectedSensorVelocity() / kGearRatio);
   }
 
-  public double getSteerAngle() {
+  public Rotation2d getSteerAngle() {
     double encoderValue = steerMotor.getSelectedSensorPosition();
-    return (180 * encoderValue / 4096);
+    encoderValue = 180 * encoderValue / kUnitsPerRevoltion;
+    return new Rotation2d(encoderValue);
   }
 
   public void setDriveSpeed(double speed) {
@@ -47,7 +60,7 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants {
   }
 
   public void setSteerAngle(double angle) {
-    // steerMotor.set(angleController.calculate(getSteerAngle(), angle));
+    steerMotor.set(angleController.calculate(getSteerAngle().getDegrees(), angle));
   }
 
   @Override

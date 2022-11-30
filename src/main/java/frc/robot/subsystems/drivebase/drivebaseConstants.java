@@ -15,6 +15,28 @@ public interface drivebaseConstants {
     public final double backRightLocationX = 1.0;
     public final double backRightLocationY = 1.0;
 
+    public final double kPhysicalDriveMaxSpeed = 5.0;
+
+    public final int frontLeftDriveID = 0;
+    public final int frontLeftSteerID = 0;
+    public final int frontLeftDriveEncoderID = 0;
+    public final int frontLeftSteerEncoderID = 0;
+
+    public final int frontRightDriveID = 0;
+    public final int frontRightSteerID = 0;
+    public final int frontRightDriveEncoderID = 0;
+    public final int frontRightSteerEncoderID = 0;
+
+    public final int backLeftDriveID = 0;
+    public final int backLeftSteerID = 0;
+    public final int backLeftDriveEncoderID = 0;
+    public final int backLeftSteerEncoderID = 0;
+
+    public final int backRightDriveID = 0;
+    public final int backRightSteerID = 0;
+    public final int backRightDriveEncoderID = 0;
+    public final int backRightSteerEncoderID = 0;
+
     // Set kp, ki, and kd to zero.
 
     // Increase kp until the output starts to oscillate around the setpoint.
@@ -24,7 +46,7 @@ public interface drivebaseConstants {
 
     // Increase ki
 
-    // public final double angleKp = kp;
-    // public final double angleKi = ki;
-    // public final double angleKd = kd;
+    public final double angleKp = 0.0;
+    public final double angleKi = 0.0;
+    public final double angleKd = 0.0;
 }
