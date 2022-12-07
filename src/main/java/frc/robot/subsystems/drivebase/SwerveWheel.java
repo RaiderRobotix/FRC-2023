@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems.drivebase;
 
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -28,6 +30,11 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants, Co
       int encoderID, String name) {
     this.driveMotor = new WPI_TalonFX(driveID);
     this.steerMotor = new WPI_TalonFX(encoderID);
+
+    this.driveMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 20, 25, 1.0));
+    this.driveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 10, 15, 0.5));
+    this.steerMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 20, 25, 1.0));
+    this.steerMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 10, 15, 0.5));
 
     angleController.enableContinuousInput(0, 360);
 
