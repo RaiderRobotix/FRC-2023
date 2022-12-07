@@ -18,24 +18,24 @@ public interface drivebaseConstants {
     public final double kPhysicalDriveMaxSpeed = 5.0;
 
     public final int frontLeftDriveID = 0;
-    public final int frontLeftSteerID = 0;
+    public final int frontLeftSteerID = 1;
     public final int frontLeftDriveEncoderID = 0;
-    public final int frontLeftSteerEncoderID = 0;
+    public final int frontLeftSteerEncoderID = 2;
 
-    public final int frontRightDriveID = 0;
-    public final int frontRightSteerID = 0;
+    public final int frontRightDriveID = 2;
+    public final int frontRightSteerID = 3;
     public final int frontRightDriveEncoderID = 0;
     public final int frontRightSteerEncoderID = 0;
 
-    public final int backLeftDriveID = 0;
-    public final int backLeftSteerID = 0;
+    public final int backLeftDriveID = 6;
+    public final int backLeftSteerID = 7;
     public final int backLeftDriveEncoderID = 0;
-    public final int backLeftSteerEncoderID = 0;
+    public final int backLeftSteerEncoderID = 3;
 
-    public final int backRightDriveID = 0;
-    public final int backRightSteerID = 0;
+    public final int backRightDriveID = 5;
+    public final int backRightSteerID = 4;
     public final int backRightDriveEncoderID = 0;
-    public final int backRightSteerEncoderID = 0;
+    public final int backRightSteerEncoderID = 1;
 
     // Set kp, ki, and kd to zero.
 
