@@ -29,7 +29,7 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants, Co
       int steerID,
       int encoderID, String name) {
     this.driveMotor = new WPI_TalonFX(driveID);
-    this.steerMotor = new WPI_TalonFX(encoderID);
+    this.steerMotor = new WPI_TalonFX(steerID);
 
     this.driveMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 20, 25, 1.0));
     this.driveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 10, 15, 0.5));
@@ -41,6 +41,7 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants, Co
   }
 
   public void setDesiredState(SwerveModuleState state) {
+    // System.out.println(state);
     state = SwerveModuleState.optimize(state, getSteerAngle());
     setDriveSpeed(state.speedMetersPerSecond / kPhysicalDriveMaxSpeed);
     setSteerAngle(state.angle.getDegrees());

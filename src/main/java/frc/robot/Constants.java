@@ -24,4 +24,7 @@ public interface Constants {
     public final int kGearRatio = 1;
     public final int kMaxRPM = 6380;
 
+    public final double rightDeadband = 0.1;
+    public final double leftDeadband = 0.1;
+
 }

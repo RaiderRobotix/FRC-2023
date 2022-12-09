@@ -20,11 +20,43 @@ public class OperatorInterface extends SubsystemBase implements Constants {
   }
 
   public double getRawRightJoyStick() {
-    return Math.atan2(controller.getRightY(), controller.getRightX());
+    return Math.atan2(getRightY(), getRightX());
   }
 
   public XboxController getController() {
-    return controller;
+    return this.controller;
+  }
+
+  public double getLeftY() {
+    if (Math.abs(controller.getLeftY()) > leftDeadband) {
+      return controller.getLeftY();
+    } else {
+      return 0;
+    }
+  }
+
+  public double getLeftX() {
+    if (Math.abs(controller.getLeftX()) > leftDeadband) {
+      return controller.getLeftX();
+    } else {
+      return 0;
+    }
+  }
+
+  public double getRightY() {
+    if (Math.abs(controller.getRightY()) > rightDeadband) {
+      return controller.getRightY();
+    } else {
+      return 0;
+    }
+  }
+
+  public double getRightX() {
+    if (Math.abs(controller.getRightX()) > rightDeadband) {
+      return controller.getRightX();
+    } else {
+      return 0;
+    }
   }
 
   // @Override
