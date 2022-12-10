@@ -35,6 +35,13 @@ public class drive extends CommandBase {
         oi.getLeftY(),
         oi.getRawRightJoyStick());
 
+    if(oi.getController().getAButton()){
+      swerveWheelController.setHeading(oi.getRawRightJoyStick());
+    }
+    if(oi.getController().getBButton()){
+      swerveWheelController.resetMotors();
+    }
+
     if (oi.getController().getRightBumper()) {
       swerveWheelController.setHeading(swerveWheelController.getHeading() + 45.0);
     } else if (oi.getController().getLeftBumper()) {

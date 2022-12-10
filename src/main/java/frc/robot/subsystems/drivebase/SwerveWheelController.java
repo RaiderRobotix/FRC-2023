@@ -42,7 +42,7 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
     this.backRightLocation = new Translation2d(backRightLocationX, backRightLocationY);
 
     this.frontLeftModule = new SwerveWheel(frontLeftDriveID, frontLeftSteerID, frontLeftEncoderID, "Front Left");
-    this.frontRightModule = new SwerveWheel(frontLeftDriveID, frontRightSteerID, frontRightEncoderID,
+    this.frontRightModule = new SwerveWheel(frontRightDriveID, frontRightSteerID, frontRightEncoderID,
         "Front Right");
     this.backLeftModule = new SwerveWheel(backLeftDriveID, backLeftSteerID, backLeftEncoderID, "Back Left");
     this.backRightModule = new SwerveWheel(backRightDriveID, backRightSteerID, backRightEncoderID, "Back Right");
@@ -53,18 +53,24 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
         frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
 
     angleController.enableContinuousInput(0, 360);
-
+    resetMotors();
   }
-
+  public void resetMotors(){
+    frontLeftModule.setSteerAngle(90);
+    // frontLeftModule.resetMotors();
+    // frontRightModule.resetMotors();
+    // backLeftModule.resetMotors();
+    // backRightModule.resetMotors();    
+  }
   public void setSpeed(double x, double y, double delta) {
     this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(kPhysicalDriveMaxSpeed * x,
         kPhysicalDriveMaxSpeed * y,
         kPhysicalDriveMaxSpeed * delta, getRotation2d());
 
-    System.out.println(speeds + " " + x + " " + y + " " + Math.toDegrees(delta));
     // System.out.println(this.kinematics);
     SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
     setState(moduleStates);
+    System.out.println(speeds + " " + speeds.vxMetersPerSecond + " " + speeds.vyMetersPerSecond + " " + Math.toDegrees(speeds.omegaRadiansPerSecond) + " Gyro: " + getHeading());
   }
 
   public void setState(SwerveModuleState[] moduleStates) {
@@ -94,12 +100,12 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
   }
 
   public double getHeading() {
-    return Gyro.gyro().getAngle();
+    return Gyro.gyro().getCompassHeading();
   }
 
   public Rotation2d getRotation2d() {
     new Rotation2d();
-    return Rotation2d.fromDegrees(Gyro.gyro().getAngle());
+    return Rotation2d.fromDegrees(Gyro.gyro().getCompassHeading());
   }
 
   @Override

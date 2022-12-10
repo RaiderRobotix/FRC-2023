@@ -9,6 +9,8 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.AbsoluteSensorRange;
+import com.ctre.phoenix.sensors.CANCoder;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.controller.PIDController;
@@ -21,6 +23,7 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants, Co
 
   private WPI_TalonFX driveMotor;
   private WPI_TalonFX steerMotor;
+  private CANCoder encoder;
 
   private PIDController angleController = new PIDController(angleKp, angleKi, angleKd);
 
@@ -30,14 +33,21 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants, Co
       int encoderID, String name) {
     this.driveMotor = new WPI_TalonFX(driveID);
     this.steerMotor = new WPI_TalonFX(steerID);
+    this.encoder = new CANCoder(encoderID);
 
     this.driveMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 20, 25, 1.0));
     this.driveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 10, 15, 0.5));
     this.steerMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 20, 25, 1.0));
     this.steerMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 10, 15, 0.5));
+    // this.encoder.configAbsoluteSensorRange(range);
 
     angleController.enableContinuousInput(0, 360);
 
+  }
+
+  public void resetMotors(){
+    System.out.println(getSteerAngle());
+    setSteerAngle(0);
   }
 
   public void setDesiredState(SwerveModuleState state) {
@@ -58,7 +68,8 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants, Co
   }
 
   public Rotation2d getSteerAngle() {
-    double encoderValue = steerMotor.getSelectedSensorPosition();
+    double encoderValue = encoder.getAbsolutePosition();
+    // System.out.println(encoderValue);
     encoderValue = 180 * encoderValue / kUnitsPerRevoltion;
     return new Rotation2d(encoderValue);
   }
@@ -68,7 +79,9 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants, Co
   }
 
   public void setSteerAngle(double angle) {
-    steerMotor.set(angleController.calculate(getSteerAngle().getDegrees(), angle));
+    System.out.println("Angle:" + encoder.getAbsolutePosition());
+    steerMotor.set(angle);
+    // steerMotor.set(angle);
   }
 
   @Override

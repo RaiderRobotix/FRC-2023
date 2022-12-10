@@ -8,6 +8,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Gyro extends SubsystemBase {
@@ -16,7 +17,7 @@ public class Gyro extends SubsystemBase {
   private static AHRS ahrs;
 
   public Gyro() {
-    Gyro.ahrs = new AHRS(SPI.Port.kMXP);
+    Gyro.ahrs = new AHRS(Port.kUSB);
   }
 
   public static AHRS gyro() {

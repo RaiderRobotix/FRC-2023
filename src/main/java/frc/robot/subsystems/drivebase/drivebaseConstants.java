@@ -19,19 +19,19 @@ public interface drivebaseConstants {
 
     public final int frontLeftDriveID = 0;
     public final int frontLeftSteerID = 1;
-    public final int frontLeftEncoderID = 2;
+    public final int frontLeftEncoderID = 12;
 
     public final int frontRightDriveID = 2;
     public final int frontRightSteerID = 3;
-    public final int frontRightEncoderID = 0;
+    public final int frontRightEncoderID = 10;
 
     public final int backLeftDriveID = 6;
     public final int backLeftSteerID = 7;
-    public final int backLeftEncoderID = 3;
+    public final int backLeftEncoderID = 11;
 
     public final int backRightDriveID = 5;
     public final int backRightSteerID = 4;
-    public final int backRightEncoderID = 1;
+    public final int backRightEncoderID = 13;
 
     // Set kp, ki, and kd to zero.
 
@@ -42,7 +42,7 @@ public interface drivebaseConstants {
 
     // Increase ki
 
-    public final double angleKp = 0.0;
-    public final double angleKi = 0.0;
-    public final double angleKd = 0.0;
+    public final double angleKp = 0.5;
+    public final double angleKi = 0;
+    public final double angleKd = 0;
 }

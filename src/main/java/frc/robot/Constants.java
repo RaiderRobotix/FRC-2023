@@ -17,7 +17,7 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public interface Constants {
-    public final int xboxControllerPort = 0;
+    public final int xboxControllerPort = 4;
 
     // Falcon 500 constants
     public final int kUnitsPerRevoltion = 2048;
