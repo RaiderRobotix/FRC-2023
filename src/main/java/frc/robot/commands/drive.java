@@ -4,8 +4,11 @@
 
 package frc.robot.commands;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.OperatorInterface;
 import frc.robot.subsystems.drivebase.SwerveWheel;
 import frc.robot.subsystems.drivebase.SwerveWheelController;
@@ -31,15 +34,60 @@ public class drive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    swerveWheelController.setSpeed(oi.getLeftX(),
-        oi.getLeftY(),
-        oi.getRawRightJoyStick());
 
-    if(oi.getController().getAButton()){
+    // System.out.println(oi.getLeftY() + " " + oi.getLeftX() + " " +
+    // Math.toDegrees(oi.getRawRightJoyStick()));
+
+    if (oi.getController().getAButton()) {
       swerveWheelController.setHeading(oi.getRawRightJoyStick());
-    }
-    if(oi.getController().getBButton()){
+    } else if (oi.getController().getBButton()) {
       swerveWheelController.resetMotors();
+    }
+
+    if (oi.getController().getYButton()) {
+      Gyro.gyro().calibrate();
+      Gyro.gyro().reset();
+
+    }
+
+    if (oi.getController().getLeftTriggerAxis() > 0.75) {
+      switch (oi.getController().getPOV()) {
+        case 0:
+          swerveWheelController.setSpeed(0, 1, 0);
+          break;
+        case 90:
+          swerveWheelController.setSpeed(-1, 0, 0);
+          break;
+        case 180:
+          swerveWheelController.setSpeed(0, -1, 0);
+          break;
+        case 270:
+          swerveWheelController.setSpeed(1, 0, 0);
+          break;
+        default:
+          break;
+      }
+    } else if (oi.getController().getRightTriggerAxis() > 0.75) {
+      switch (oi.getController().getPOV()) {
+        case 0:
+          swerveWheelController.setAngle(0);
+          break;
+        case 90:
+          swerveWheelController.setAngle(90);
+          break;
+        case 180:
+          swerveWheelController.setAngle(180);
+          break;
+        case 270:
+          swerveWheelController.setAngle(270);
+          break;
+        default:
+          break;
+      }
+    } else {
+      swerveWheelController.setSpeed(oi.getLeftY(),
+          oi.getLeftX(),
+          oi.getRightX());
     }
 
     if (oi.getController().getRightBumper()) {
