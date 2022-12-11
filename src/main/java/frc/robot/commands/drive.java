@@ -95,6 +95,10 @@ public class drive extends CommandBase {
     } else if (oi.getController().getLeftBumper()) {
       swerveWheelController.setHeading(swerveWheelController.getHeading() - 45.0);
     }
+
+    if (oi.getController().getXButton()) {
+      swerveWheelController.setHeading(0);
+    }
   }
 
   // Called once the command ends or is interrupted.
