@@ -55,6 +55,8 @@ public class drive extends CommandBase {
       swerveWheelController.setHeading(oi.getRawRightJoyStick(), drivebaseConstants.kPhysicalDriveMaxSpeed);
     } else if (oi.getController().getXButton()) {
       swerveWheelController.resetMotors();
+    }else if(oi.getController().getBButton()){
+      swerveWheelController.setSteerZero();
     }
 
     if (oi.getController().getYButton()) {

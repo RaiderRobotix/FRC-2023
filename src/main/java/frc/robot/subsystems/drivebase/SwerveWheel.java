@@ -118,6 +118,10 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants, Co
     steerMotor.set(0);
   }
 
+  public void resetAngle(){
+    encoder.setPositionToAbsolute(0);
+  }
+
   public void setDesiredAngle(SwerveModuleState state) {
     state = SwerveModuleState.optimize(state, getSteerAngle());
     setSteerAngle(state.angle.getDegrees());
@@ -143,8 +147,8 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants, Co
   }
 
   public void setDriveSpeed(double speed) {
-    // this.driveMotor.set(driveController.calculate(getDriveSpeed(), speed));
-    this.driveMotor.set(speed);
+    this.driveMotor.set(driveController.calculate(getDriveSpeed(), speed));
+    // this.driveMotor.set(speed);
   }
 
   public void setSteerAngle(double angle) {

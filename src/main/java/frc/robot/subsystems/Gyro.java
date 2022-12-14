@@ -19,7 +19,7 @@ public class Gyro extends SubsystemBase {
   private static AHRS ahrs;
 
   public Gyro() {
-    Gyro.ahrs = new AHRS(Port.kUSB1);
+    Gyro.ahrs = new AHRS(Port.kUSB);
   }
 
   public static AHRS gyro() {

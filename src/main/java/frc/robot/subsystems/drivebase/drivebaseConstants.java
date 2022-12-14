@@ -47,12 +47,12 @@ public interface drivebaseConstants {
     // Increase ki
 
     public final double angleKp = 0.0100;
-    public final double angleKi = 0.0010;
+    public final double angleKi = 0.0015;
     public final double angleKd = 0.0001;
 
-    public final double driveKp = 10;
-    public final double driveKi = 0;
-    public final double driveKd = 0;
+    public final double driveKp = 875;
+    public final double driveKi = 0.06;
+    public final double driveKd = 0.01;
 
     public static final TrapezoidProfile.Constraints kThetaControllerConstraint = new TrapezoidProfile.Constraints(
             kPhysicalDriveMaxSpeed, kPhysicalSteerMaxSpeed);

@@ -119,6 +119,8 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
   }
 
   public void setSpeed(double x, double y, double delta, double maxSpeed) {
+    SmartDashboard.putNumber("DesiredXSpeed", x);
+    SmartDashboard.putNumber("DesiredYSpeed", y);
     if (fieldCentric) {
       this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(x, y, delta, getRotation2d());
     } else {
@@ -173,6 +175,14 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
     } else {
       return 0;
     }
+  }
+
+  public void setSteerZero(){
+    frontLeftModule.resetAngle();
+    frontRightModule.resetAngle();
+    backLeftModule.resetAngle();
+    backRightModule.resetAngle();
+
   }
 
   public double getYSpeed() {
