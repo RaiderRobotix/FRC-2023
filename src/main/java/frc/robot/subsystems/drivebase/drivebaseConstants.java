@@ -1,5 +1,7 @@
 package frc.robot.subsystems.drivebase;
 
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+
 public interface drivebaseConstants {
     // TODO find values
     // Swerve Drive Wheel Locations
@@ -15,7 +17,9 @@ public interface drivebaseConstants {
     public final double backRightLocationX = 1.0;
     public final double backRightLocationY = 1.0;
 
-    public final double kPhysicalDriveMaxSpeed = 5.0;
+    public final double kPhysicalDriveMaxSpeed = 1;
+    public final double kPhysicalSteerMaxSpeed = 5;
+    public final double rotateSpeed = 5;
 
     public final int frontLeftDriveID = 20;
     public final int frontLeftSteerID = 10;
@@ -42,7 +46,14 @@ public interface drivebaseConstants {
 
     // Increase ki
 
-    public final double angleKp = 0.0050;
-    public final double angleKi = 0.0070;
+    public final double angleKp = 0.0100;
+    public final double angleKi = 0.0010;
     public final double angleKd = 0.0001;
+
+    public final double driveKp = 10;
+    public final double driveKi = 0;
+    public final double driveKd = 0;
+
+    public static final TrapezoidProfile.Constraints kThetaControllerConstraint = new TrapezoidProfile.Constraints(
+            kPhysicalDriveMaxSpeed, kPhysicalSteerMaxSpeed);
 }

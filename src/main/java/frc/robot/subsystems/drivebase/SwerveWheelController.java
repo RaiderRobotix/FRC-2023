@@ -4,7 +4,10 @@
 
 package frc.robot.subsystems.drivebase;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -17,24 +20,29 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.Constants;
 import frc.robot.commands.drive;
 import frc.robot.subsystems.Gyro;
 
-public class SwerveWheelController extends SubsystemBase implements drivebaseConstants {
+public class SwerveWheelController extends SubsystemBase implements drivebaseConstants, Constants {
 
   private ChassisSpeeds speeds;
 
-  private SwerveWheel frontLeftModule;
-  private SwerveWheel frontRightModule;
-  private SwerveWheel backLeftModule;
-  private SwerveWheel backRightModule;
+  // private Gyro gyro = new Gyro();
+
+  private static SwerveWheel frontLeftModule;
+  private static SwerveWheel frontRightModule;
+  private static SwerveWheel backLeftModule;
+  private static SwerveWheel backRightModule;
+  private static boolean fieldCentric = true;
+  private static boolean coast = false;
 
   Translation2d frontLeftLocation;
   Translation2d frontRightLocation;
   Translation2d backLeftLocation;
   Translation2d backRightLocation;
 
-  private SwerveDriveKinematics kinematics;
+  public SwerveDriveKinematics kinematics;
 
   private SwerveDriveOdometry odometry;
 
@@ -45,10 +53,10 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
   public SwerveWheelController() {
 
     // Location of modules relative to the centre of the robot
-    this.frontLeftLocation = new Translation2d(frontLeftLocationX, frontLeftLocationY);
-    this.frontRightLocation = new Translation2d(frontRightLocationX, frontRightLocationY);
-    this.backLeftLocation = new Translation2d(backLeftLocationX, backLeftLocationY);
-    this.backRightLocation = new Translation2d(backRightLocationX, backRightLocationY);
+    this.frontLeftLocation = new Translation2d(width / 2, length / 2);
+    this.frontRightLocation = new Translation2d(width / 2, -length / 2);
+    this.backLeftLocation = new Translation2d(-width / 2, length / 2);
+    this.backRightLocation = new Translation2d(-width / 2, -length / 2);
 
     this.frontLeftModule = new SwerveWheel(frontLeftDriveID, frontLeftSteerID, frontLeftEncoderID, "Front Left");
     this.frontRightModule = new SwerveWheel(frontRightDriveID, frontRightSteerID, frontRightEncoderID,
@@ -67,7 +75,7 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
     resetMotors();
   }
 
-  public void resetMotors() {
+  public static void resetMotors() {
     // frontLeftModule.setSteerAngle(90);
     frontLeftModule.resetMotors();
     frontRightModule.resetMotors();
@@ -75,31 +83,76 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
     backRightModule.resetMotors();
   }
 
-  public void setSpeed(double x, double y, double delta) {
-    this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(x, y, delta, getRotation2d());
+  public static void toggleField() {
+    if (fieldCentric) {
+      fieldCentric = false;
+    } else {
+      fieldCentric = true;
+    }
+  }
 
+  public static void stopMotors() {
+    frontLeftModule.stop();
+    frontRightModule.stop();
+    backLeftModule.stop();
+    backRightModule.stop();
+  }
+
+  public Pose2d getPose() {
+    return odometry.getPoseMeters();
+  }
+
+  public void resetOdometry(Pose2d pose) {
+    odometry.resetPosition(pose, getRotation2d());
+  }
+
+  public static void toggleCoast() {
+    if (coast) {
+      coast = false;
+    } else {
+      coast = true;
+    }
+    frontLeftModule.setNeutralMode(coast);
+    frontRightModule.setNeutralMode(coast);
+    backLeftModule.setNeutralMode(coast);
+    backRightModule.setNeutralMode(coast);
+  }
+
+  public void setSpeed(double x, double y, double delta, double maxSpeed) {
+    if (fieldCentric) {
+      this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(x, y, delta, getRotation2d());
+    } else {
+      this.speeds = new ChassisSpeeds(x, y, delta);
+
+    }
     // System.out.println(this.kinematics);
     SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
-    setState(moduleStates);
+    setState(moduleStates, maxSpeed);
     // System.out.println(speeds + " " + speeds.vxMetersPerSecond + " " +
     // speeds.vyMetersPerSecond + " " + Math.toDegrees(speeds.omegaRadiansPerSecond)
     // + " Gyro: " + getHeading());
   }
 
-  public void setState(SwerveModuleState[] moduleStates) {
-    SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, kPhysicalDriveMaxSpeed);
+  public void setState(SwerveModuleState[] moduleStates, double maxSpeed) {
+    SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, maxSpeed);
     frontLeftModule.setDesiredState(moduleStates[0]);
     frontRightModule.setDesiredState(moduleStates[1]);
     backLeftModule.setDesiredState(moduleStates[2]);
     backRightModule.setDesiredState(moduleStates[3]);
   }
 
-  public void setHeading(double angle) {
+  public void setHeading(double angle, double maxSpeed) {
     this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(getXSpeed(), getYSpeed(),
         angleController.calculate(getHeading(), angle),
         getRotation2d());
+
+    // this.speeds = new ChassisSpeeds(
+    // getXSpeed(),
+    // getYSpeed(),
+    // angleController.calculate(getHeading(), angle));
+
     SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
-    SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, kPhysicalDriveMaxSpeed);
+    SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, maxSpeed);
     frontLeftModule.setDesiredAngle(moduleStates[0]);
     frontRightModule.setDesiredAngle(moduleStates[1]);
     backLeftModule.setDesiredAngle(moduleStates[2]);
@@ -107,7 +160,7 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
   }
 
   // Sets the angle of all the wheel to angle
-  public void setAngle(double angle) {
+  public static void setAngle(double angle) {
     frontLeftModule.setSteerAngle(angle);
     frontRightModule.setSteerAngle(angle);
     backLeftModule.setSteerAngle(angle);
@@ -130,26 +183,42 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
     }
   }
 
+  public double getAngularSpeed() {
+    if (this.speeds != null) {
+      return this.speeds.omegaRadiansPerSecond;
+
+    }
+    return 0;
+  }
+
   public double getHeading() {
-    return Gyro.gyro().getCompassHeading();
+    return Gyro.gyro().getYaw();
   }
 
   public Rotation2d getRotation2d() {
     new Rotation2d();
-    if (Gyro.gyro() != null) {
-      return Rotation2d.fromDegrees(Gyro.gyro().getCompassHeading());
+    if (Gyro.gyro() == null) {
+      return Rotation2d.fromDegrees(0);
     } else {
-      return Rotation2d.fromDegrees(90);
+      return Rotation2d.fromDegrees(Gyro.gyro().getYaw());
     }
+    // return Rotation2d.fromDegrees(Gyro.gyro().getCompassHeading());
   }
 
   @Override
   public void periodic() {
-    odometry.update(getRotation2d(), frontLeftModule.getState(), frontRightModule.getState(), backLeftModule.getState(),
+    odometry.update(
+        getRotation2d(),
+        frontLeftModule.getState(),
+        frontRightModule.getState(),
+        backLeftModule.getState(),
         backRightModule.getState());
 
     SmartDashboard.putNumber("X Speed", getXSpeed());
     SmartDashboard.putNumber("Y Speed", getYSpeed());
+    SmartDashboard.putNumber("Angular Speed", getAngularSpeed());
+    SmartDashboard.putBoolean("Field Centric", fieldCentric);
+    SmartDashboard.putBoolean("is Coast Mode", coast);
 
     SmartDashboard.updateValues();
     // This method will be called once per scheduler run

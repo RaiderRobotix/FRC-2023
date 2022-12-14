@@ -7,6 +7,7 @@ package frc.robot.subsystems.drivebase;
 import java.text.DecimalFormat;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -27,6 +28,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.commands.drive;
 
 public class SwerveWheel extends SubsystemBase implements drivebaseConstants, Constants {
   /** Creates a new SwerveWheel. */
@@ -38,6 +40,7 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants, Co
   private String name;
 
   private PIDController angleController = new PIDController(angleKp, angleKi, angleKd);
+  private PIDController driveController = new PIDController(driveKp, driveKi, driveKd);
 
   private DecimalFormat df = new DecimalFormat("###.##");
 
@@ -68,11 +71,24 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants, Co
 
     angleController.enableContinuousInput(0, 360);
 
+    if (encoder.getDeviceID() == 2) {
+      encoder.configMagnetOffset(270);
+    }
   }
 
   public void resetMotors() {
     // System.out.println(getSteerAngle());
     setSteerAngle(0);
+  }
+
+  public void setNeutralMode(boolean coast) {
+    if (coast) {
+      driveMotor.setNeutralMode(NeutralMode.Coast);
+      steerMotor.setNeutralMode(NeutralMode.Coast);
+    } else {
+      driveMotor.setNeutralMode(NeutralMode.Brake);
+      steerMotor.setNeutralMode(NeutralMode.Brake);
+    }
   }
 
   public WPI_CANCoder getEncoder() {
@@ -85,12 +101,21 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants, Co
 
   public void setDesiredState(SwerveModuleState state) {
     // System.out.println(state);
+    if (Math.abs(state.speedMetersPerSecond) < 0.001) {
+      stop();
+      return;
+    }
     state = SwerveModuleState.optimize(state, getSteerAngle());
     setDriveSpeed(state.speedMetersPerSecond);
     setSteerAngle(state.angle.getDegrees());
 
-    System.out.println(this.name + " " + getSteerAngle().getDegrees());
+    // System.out.println(this.name + " " + getSteerAngle().getDegrees());
 
+  }
+
+  public void stop() {
+    driveMotor.set(0);
+    steerMotor.set(0);
   }
 
   public void setDesiredAngle(SwerveModuleState state) {
@@ -103,7 +128,7 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants, Co
   }
 
   public double getDriveSpeed() {
-    return driveMotor.getSelectedSensorVelocity() / kUnitsPerRevoltion;
+    return driveMotor.getSelectedSensorVelocity(0) / kUnitsPerRevoltion;
     // return (kMaxRPM / 600) * (driveMotor.getSelectedSensorVelocity() /
     // kGearRatio);
   }
@@ -118,11 +143,12 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants, Co
   }
 
   public void setDriveSpeed(double speed) {
+    // this.driveMotor.set(driveController.calculate(getDriveSpeed(), speed));
     this.driveMotor.set(speed);
   }
 
   public void setSteerAngle(double angle) {
-    System.out.println("Angle:" + encoder.getAbsolutePosition() + " ");
+    SmartDashboard.putNumber(this.getName() + "Desired Angle", angle);
     steerMotor.set(angleController.calculate(getSteerAngle().getDegrees(), angle));
     // steerMotor.set(angle);
   }

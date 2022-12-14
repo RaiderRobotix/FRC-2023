@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -23,13 +24,17 @@ public class OperatorInterface extends SubsystemBase implements Constants {
     return Math.atan2(getRightY(), getRightX());
   }
 
+  public double getRawLeftJoyStick() {
+    return Math.atan2(getLeftY(), getLeftX());
+  }
+
   public XboxController getController() {
     return this.controller;
   }
 
   public double getLeftY() {
     if (Math.abs(controller.getLeftY()) > leftDeadband) {
-      return controller.getLeftY();
+      return -1 * controller.getLeftY();
     } else {
       return 0;
     }
@@ -37,7 +42,7 @@ public class OperatorInterface extends SubsystemBase implements Constants {
 
   public double getLeftX() {
     if (Math.abs(controller.getLeftX()) > leftDeadband) {
-      return controller.getLeftX();
+      return -1 * controller.getLeftX();
     } else {
       return 0;
     }
@@ -57,6 +62,11 @@ public class OperatorInterface extends SubsystemBase implements Constants {
     } else {
       return 0;
     }
+  }
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
   }
 
   // @Override

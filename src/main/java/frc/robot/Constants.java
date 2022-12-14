@@ -26,5 +26,11 @@ public interface Constants {
 
     public final double rightDeadband = 0.15;
     public final double leftDeadband = 0.15;
+    public final int leftBumberId = 5;
+    public final int rightBumberId = 6;
+
+    // Measurements in metres
+    public final double width = .25;
+    public final double length = .31;
 
 }

@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.text.Normalizer;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -17,11 +19,16 @@ public class Gyro extends SubsystemBase {
   private static AHRS ahrs;
 
   public Gyro() {
-    Gyro.ahrs = new AHRS(Port.kUSB);
+    Gyro.ahrs = new AHRS(Port.kUSB1);
   }
 
   public static AHRS gyro() {
     return ahrs;
+  }
+
+  public static double getHeading() {
+    // return Math.abs(gyro().getYaw() + 180);
+    return (gyro().getYaw() + 180);
   }
 
   @Override
