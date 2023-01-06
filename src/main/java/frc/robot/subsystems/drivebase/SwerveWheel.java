@@ -71,8 +71,17 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants, Co
 
     angleController.enableContinuousInput(0, 360);
 
+    if (encoder.getDeviceID() == 1) {
+      encoder.configMagnetOffset(frontRightEncoderOffset);
+    }
     if (encoder.getDeviceID() == 2) {
-      encoder.configMagnetOffset(270);
+      encoder.configMagnetOffset(backleftEncoderOffset);
+    }
+    if (encoder.getDeviceID() == 3) {
+      encoder.configMagnetOffset(backRightEncoderOffset);
+    }
+    if (encoder.getDeviceID() == 0) {
+      encoder.configMagnetOffset(frontLeftEncoderOffset);
     }
   }
 
@@ -147,8 +156,8 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants, Co
   }
 
   public void setDriveSpeed(double speed) {
-    this.driveMotor.set(driveController.calculate(getDriveSpeed(), speed));
-    // this.driveMotor.set(speed);
+    // this.driveMotor.set(driveController.calculate(getDriveSpeed(), speed));
+    this.driveMotor.set(speed);
   }
 
   public void setSteerAngle(double angle) {
