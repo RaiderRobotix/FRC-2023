@@ -30,7 +30,7 @@ public interface Constants {
     public final int rightBumberId = 6;
 
     // Measurements in metres
-    public final double width = .25;
-    public final double length = .31;
+    public final double width = .63;
+    public final double length = .79;
 
 }

@@ -110,7 +110,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     SmartDashboard.updateValues();
-    SmartDashboard.putNumber("Yaw", Gyro.getHeading());
+    SmartDashboard.putNumber("Yaw", Gyro.gyro().getRotation2d().getDegrees());
+    SmartDashboard.putNumber("Heading", Gyro.getHeading());
 
   }
 

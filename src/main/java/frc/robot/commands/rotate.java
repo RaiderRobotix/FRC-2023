@@ -29,80 +29,62 @@ public class rotate extends CommandBase {
 
   SwerveWheelController swerveWheelController;
   OperatorInterface oi;
-  double angle;
-  boolean reverse;
+
+  private double angle;
+  private boolean reverse;
+  private boolean change;
 
   public rotate(SwerveWheelController swerveWheelController, OperatorInterface m_OperatorInterface, double angle,
-      boolean reverse) {
+      boolean change) {
     this.swerveWheelController = swerveWheelController;
     oi = m_OperatorInterface;
     addRequirements(swerveWheelController);
     addRequirements(oi);
+
+    this.reverse = false;
+
     this.angle = angle;
-    this.reverse = reverse;
+
+    this.change = change;
+
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if (change) {
+      angle += Gyro.getHeading();
+      if (angle > 180) {
+        angle -= 360;
+      } else if (angle < -180) {
+        angle += 360;
+      }
+    }
+
+    if (angle - Gyro.getHeading() >= 0) {
+      reverse = false;
+    } else {
+      reverse = true;
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    // TrajectoryConfig trajectoryConfig = new
-    // TrajectoryConfig(drivebaseConstants.kPhysicalDriveMaxSpeed,
-    // drivebaseConstants.kPhysicalSteerMaxSpeed).setKinematics(swerveWheelController.kinematics);
-    // Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-    // new Pose2d(0, 0, Rotation2d.fromDegrees(Gyro.gyro().getYaw())),
-    // List.of(
-    // new Translation2d(0, 0)),
-    // new Pose2d(0, 0, Rotation2d.fromDegrees(45)),
-    // trajectoryConfig);
-
-    // PIDController xController = new PIDController(1, 0, 0);
-    // PIDController yController = new PIDController(1, 0, 0);
-    // ProfiledPIDController thetaController = new ProfiledPIDController(1, 0, 0,
-    // drivebaseConstants.kThetaControllerConstraint);
-    // thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    // SwerveControllerCommand swerveControllerCommand = new
-    // SwerveControllerCommand(
-    // trajectory,
-    // swerveWheelController::getPose,
-    // swerveWheelController.kinematics,
-    // xController,
-    // yController,
-    // thetaController,
-    // swerveWheelController::setState,
-    // swerveWheelController);
-
-    // return new SequentialCommandGroup(
-    // new InstantCommand(() ->
-    // swerveWheelController.resetOdometry(trajectory.getInitialPose())),
-    // swerveControllerCommand,
-    // new InstantCommand(() -> swerveWheelController.stopMotors()));
-
-    // System.out.println("Passed");
-
-    // if (angle > 360) {
-    // angle -= 360;
-    // }
-    // if (angle < 0) {
-    // angle = +360;
-    // }
-
-    System.out.println("Angle: " + angle + " Yaw " + Gyro.getHeading());
-    //Make Reverse dependent on which value it is closer too
-    while (Math.abs(Gyro.getHeading() - angle) > 2) {
+    while (Math.abs((Gyro.getHeading() - angle)) >= .5) {
+      // System.out.println(Math.abs((Gyro.getHeading() - angle)));
+      SmartDashboard.putNumber("Rotate Angle", angle);
+      System.out.println("Angle: " + angle + " " + Gyro.getHeading());
+      if (oi.getController().getAButton()) {
+        end(true);
+        break;
+      }
       if (!reverse) {
         swerveWheelController.setSpeed(0, 0, drivebaseConstants.rotateSpeed, drivebaseConstants.rotateSpeed);
       } else {
         swerveWheelController.setSpeed(0, 0, -drivebaseConstants.rotateSpeed, drivebaseConstants.rotateSpeed);
       }
-      SmartDashboard.updateValues();
     }
     end(false);
 

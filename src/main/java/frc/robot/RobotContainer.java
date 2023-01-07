@@ -51,10 +51,12 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final drive m_Drive = new drive(m_controller, m_operatorInterface);
+  private final rotate m_rotate = new rotate(m_controller, m_operatorInterface, 0, false);
 
   private final Button leftBumber = new JoystickButton(m_operatorInterface.getController(), Constants.leftBumberId);
   private final Button rightBumber = new JoystickButton(m_operatorInterface.getController(), Constants.rightBumberId);
   private final Button xButton = new JoystickButton(m_operatorInterface.getController(), 2);
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -73,9 +75,15 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    rightBumber.whenPressed(new rotate(m_controller, m_operatorInterface, Gyro.getHeading() - 45, true))
+    rightBumber
+        .whenPressed(
+            new rotate(m_controller, m_operatorInterface, 45, true))
         .whenReleased(m_Drive);
-    leftBumber.whenPressed(new rotate(m_controller, m_operatorInterface, Gyro.getHeading() + 45, false))
+    leftBumber
+        .whenPressed(
+            new rotate(m_controller, m_operatorInterface, -45, true))
+        .whenReleased(m_Drive);
+    xButton.whenPressed(new rotate(m_controller, m_operatorInterface, 0, false))
         .whenReleased(m_Drive);
     // xButton.whenPressed(new rotate(m_controller, m_operatorInterface, 0, false));
   }

@@ -46,8 +46,8 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
 
   private SwerveDriveOdometry odometry;
 
-  private PIDController angleController = new PIDController(angleKd, angleKi,
-      angleKd);
+  private PIDController angleController = new PIDController(robotangleKd, robotangleKi,
+      robotangleKd);
 
   /** Creates a new drivebase. */
   public SwerveWheelController() {
@@ -121,8 +121,11 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
   public void setSpeed(double x, double y, double delta, double maxSpeed) {
     SmartDashboard.putNumber("DesiredXSpeed", x);
     SmartDashboard.putNumber("DesiredYSpeed", y);
-    if (fieldCentric) {
+    if (true) {
       this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(x, y, delta, getRotation2d());
+      // this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(x, y, delta, new
+      // Rotation2d().fromDegrees(45));
+      // System.out.println(rotate.getDegrees());
     } else {
       this.speeds = new ChassisSpeeds(x, y, delta);
 
@@ -144,21 +147,30 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
   }
 
   public void setHeading(double angle, double maxSpeed) {
-    this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(getXSpeed(), getYSpeed(),
-        angleController.calculate(getHeading(), angle),
-        getRotation2d());
+    setSpeed(0, 0, angleController.calculate(Gyro.getHeading(), angle), maxSpeed);
+    // System.out.println(angle + " " + Gyro.getHeading());
+    // // angle += 180;
+    // boolean reverse;
+    // if (a
+    // ngle - Gyro.getHeading() > 360 - angle) {
+    // reverse = true;
+    // } else {
+    // reverse = false;
+    // }
 
-    // this.speeds = new ChassisSpeeds(
-    // getXSpeed(),
-    // getYSpeed(),
-    // angleController.calculate(getHeading(), angle));
+    // System.out.println("Angle: " + angle + " Yaw " + Gyro.getHeading());
+    // // Make Reverse dependent on which value it is closer too
+    // while ((Gyro.getHeading() - angle) > 1) {
+    // if (!reverse) {
+    // setSpeed(0, 0, drivebaseConstants.rotateSpeed,
+    // drivebaseConstants.rotateSpeed);
+    // } else {
+    // setSpeed(0, 0, -drivebaseConstants.rotateSpeed,
+    // drivebaseConstants.rotateSpeed);
+    // }
+    // SmartDashboard.updateValues();
+    // }
 
-    SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
-    SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, maxSpeed);
-    frontLeftModule.setDesiredAngle(moduleStates[0]);
-    frontRightModule.setDesiredAngle(moduleStates[1]);
-    backLeftModule.setDesiredAngle(moduleStates[2]);
-    backRightModule.setDesiredAngle(moduleStates[3]);
   }
 
   // Sets the angle of all the wheel to angle
@@ -177,7 +189,7 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
     }
   }
 
-  public void setSteerZero(){
+  public void setSteerZero() {
     frontLeftModule.resetAngle();
     frontRightModule.resetAngle();
     backLeftModule.resetAngle();
@@ -206,11 +218,12 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
   }
 
   public Rotation2d getRotation2d() {
-    new Rotation2d();
+    // new Rotation2d();
     if (Gyro.gyro() == null) {
-      return Rotation2d.fromDegrees(0);
+      return new Rotation2d().fromDegrees(0);
     } else {
-      return Rotation2d.fromDegrees(Gyro.gyro().getYaw());
+      // return Rotation2d.fromDegrees(Gyro.gyro().getYaw());
+      return new Rotation2d().fromDegrees(Gyro.getHeading());
     }
     // return Rotation2d.fromDegrees(Gyro.gyro().getCompassHeading());
   }
@@ -229,6 +242,7 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
     SmartDashboard.putNumber("Angular Speed", getAngularSpeed());
     SmartDashboard.putBoolean("Field Centric", fieldCentric);
     SmartDashboard.putBoolean("is Coast Mode", coast);
+    // SmartDashboard.putNumber("Compass Angle", Gyro.gyro().getRotation2d().getDegrees());
 
     SmartDashboard.updateValues();
     // This method will be called once per scheduler run

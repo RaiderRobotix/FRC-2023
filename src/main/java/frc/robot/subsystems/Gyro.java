@@ -20,6 +20,15 @@ public class Gyro extends SubsystemBase {
 
   public Gyro() {
     Gyro.ahrs = new AHRS(Port.kUSB);
+
+    new Thread(() -> {
+      try {
+        Thread.sleep(1000);
+        gyro().reset();
+      } catch (Exception e) {
+
+      }
+    }).start();
   }
 
   public static AHRS gyro() {
@@ -27,8 +36,9 @@ public class Gyro extends SubsystemBase {
   }
 
   public static double getHeading() {
-    // return Math.abs(gyro().getYaw() + 180);
-    return (gyro().getYaw() + 180);
+    return -1 * gyro().getYaw();
+    // return Math.abs();
+    // return Math.IEEEremainder(Math.abs(gyro().getAngle()), 360);
   }
 
   @Override

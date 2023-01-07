@@ -31,9 +31,6 @@ public class drive extends CommandBase {
   @Override
   public void initialize() {
     // SwerveWheelController.resetMotors();
-    Gyro.gyro().reset();
-    Gyro.gyro().calibrate();
-    Gyro.gyro().getYaw();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -55,7 +52,7 @@ public class drive extends CommandBase {
       swerveWheelController.setHeading(oi.getRawRightJoyStick(), drivebaseConstants.kPhysicalDriveMaxSpeed);
     } else if (oi.getController().getXButton()) {
       swerveWheelController.resetMotors();
-    }else if(oi.getController().getBButton()){
+    } else if (oi.getController().getBButton()) {
       swerveWheelController.setSteerZero();
     }
 
@@ -68,20 +65,20 @@ public class drive extends CommandBase {
     if (oi.getController().getLeftTriggerAxis() > 0.75) {
       if (oi.getController().getAButton()) {
         switch (oi.getController().getPOV()) {
-          case 0:
+          case 90:
             swerveWheelController.setSpeed(0, 1, 0, drivebaseConstants.kPhysicalDriveMaxSpeed);
             break;
-          case 90:
+          case 180:
             swerveWheelController.setSpeed(-1, 0, 0, drivebaseConstants.kPhysicalDriveMaxSpeed);
             break;
-          case 180:
+          case 270:
             swerveWheelController.setSpeed(0, -1, 0, drivebaseConstants.kPhysicalDriveMaxSpeed);
             break;
-          case 270:
+          case 0:
             swerveWheelController.setSpeed(1, 0, 0, drivebaseConstants.kPhysicalDriveMaxSpeed);
             break;
           default:
-            break;
+            swerveWheelController.stopMotors();
         }
       } else {
         swerveWheelController.setSpeed(oi.getLeftY(),
@@ -113,13 +110,18 @@ public class drive extends CommandBase {
           drivebaseConstants.kPhysicalDriveMaxSpeed);
     }
 
-    if (oi.getController().getRightBumper()) {
-      swerveWheelController.setHeading(swerveWheelController.getHeading() + 45.0,
-          drivebaseConstants.kPhysicalDriveMaxSpeed);
-    } else if (oi.getController().getLeftBumper()) {
-      swerveWheelController.setHeading(swerveWheelController.getHeading() - 45.0,
-          drivebaseConstants.kPhysicalDriveMaxSpeed);
-    }
+    // if (oi.getController().getXButton()) {
+    // swerveWheelController.setHeading(0,
+    // drivebaseConstants.kPhysicalDriveMaxSpeed);
+    // }
+
+    // if (oi.getController().getRightBumper()) {
+    // swerveWheelController.setHeading(swerveWheelController.getHeading() + 45.0,
+    // drivebaseConstants.kPhysicalDriveMaxSpeed);
+    // } else if (oi.getController().getLeftBumper()) {
+    // swerveWheelController.setHeading(swerveWheelController.getHeading() - 45.0,
+    // drivebaseConstants.kPhysicalDriveMaxSpeed);
+    // }
   }
 
   // Called once the command ends or is interrupted.
