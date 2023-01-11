@@ -17,9 +17,9 @@ public interface drivebaseConstants {
     public final double backRightLocationX = 1.0;
     public final double backRightLocationY = 1.0;
 
-    public final double kPhysicalDriveMaxSpeed = 0.07;
-    public final double kPhysicalSteerMaxSpeed = 0.07;
-    public final double rotateSpeed = 0.2;
+    public final double kPhysicalDriveMaxSpeed = 5;
+    public final double kPhysicalSteerMaxSpeed = 5;
+    public final double rotateSpeed = 0.5;
 
     public final int frontLeftDriveID = 20;
     public final int frontLeftSteerID = 10;

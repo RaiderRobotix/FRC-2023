@@ -48,38 +48,31 @@ public class drive extends CommandBase {
       SwerveWheelController.toggleCoast();
     }
 
-    if (oi.getController().getAButton()) {
-      swerveWheelController.setHeading(oi.getRawRightJoyStick(), drivebaseConstants.kPhysicalDriveMaxSpeed);
-    } else if (oi.getController().getXButton()) {
-      swerveWheelController.resetMotors();
-    } else if (oi.getController().getBButton()) {
+    if (oi.getController().getBButton()) {
       swerveWheelController.setSteerZero();
-    }
-
-    if (oi.getController().getYButton()) {
+    } else if (oi.getController().getYButton()) {
       Gyro.gyro().calibrate();
       Gyro.gyro().reset();
 
-    }
-
-    if (oi.getController().getLeftTriggerAxis() > 0.75) {
+    } 
+    if(oi.getController().getAButton()){
+      switch (oi.getController().getPOV()) {
+        case 90:
+          swerveWheelController.setSpeed(0, 1, 0, drivebaseConstants.kPhysicalDriveMaxSpeed);
+          break;
+        case 180:
+          swerveWheelController.setSpeed(-1, 0, 0, drivebaseConstants.kPhysicalDriveMaxSpeed);
+          break;
+        case 270:
+          swerveWheelController.setSpeed(0, -1, 0, drivebaseConstants.kPhysicalDriveMaxSpeed);
+          break;
+        case 0:
+          swerveWheelController.setSpeed(1, 0, 0, drivebaseConstants.kPhysicalDriveMaxSpeed);
+          break;
+        default:
+          swerveWheelController.stopMotors();
+      }} else if (oi.getController().getLeftTriggerAxis() > 0.75) {
       if (oi.getController().getAButton()) {
-        switch (oi.getController().getPOV()) {
-          case 90:
-            swerveWheelController.setSpeed(0, 1, 0, drivebaseConstants.kPhysicalDriveMaxSpeed);
-            break;
-          case 180:
-            swerveWheelController.setSpeed(-1, 0, 0, drivebaseConstants.kPhysicalDriveMaxSpeed);
-            break;
-          case 270:
-            swerveWheelController.setSpeed(0, -1, 0, drivebaseConstants.kPhysicalDriveMaxSpeed);
-            break;
-          case 0:
-            swerveWheelController.setSpeed(1, 0, 0, drivebaseConstants.kPhysicalDriveMaxSpeed);
-            break;
-          default:
-            swerveWheelController.stopMotors();
-        }
       } else {
         swerveWheelController.setSpeed(oi.getLeftY(),
             oi.getLeftX(),
@@ -103,11 +96,17 @@ public class drive extends CommandBase {
         default:
           break;
       }
-    } else {
       swerveWheelController.setSpeed(oi.getLeftY(),
           oi.getLeftX(),
           -1 * oi.getRightX(),
           drivebaseConstants.kPhysicalDriveMaxSpeed);
+
+      
+    } else {
+      swerveWheelController.setSpeed(oi.getLeftY(),
+          oi.getLeftX(),
+          -1 * oi.getRightX(),
+          0.4);
     }
 
     // if (oi.getController().getXButton()) {
