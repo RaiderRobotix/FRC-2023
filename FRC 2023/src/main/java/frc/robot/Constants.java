@@ -12,8 +12,22 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
-  }
+
+public interface Constants {
+  public final int xboxControllerPort = 4;
+
+  // Falcon 500 constants
+  public final int kUnitsPerRevoltion = 2048;
+  public final int kGearRatio = 1;
+  public final int kMaxRPM = 6380;
+
+  public final double rightDeadband = 0.15;
+  public final double leftDeadband = 0.15;
+  public final int leftBumberId = 5;
+  public final int rightBumberId = 6;
+
+  // Measurements in metres
+  public final double width = .63;
+  public final double length = .79;
+
 }

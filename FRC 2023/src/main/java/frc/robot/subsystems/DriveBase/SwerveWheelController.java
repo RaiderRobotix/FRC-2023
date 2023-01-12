@@ -4,27 +4,29 @@
 
 package frc.robot.subsystems.DriveBase;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.Constants;
-import frc.robot.commands.drive;
+
+import frc.robot.commands.Drive;
 import frc.robot.subsystems.Gyro;
 
-public class SwerveWheelController extends SubsystemBase implements drivebaseConstants, Constants {
+public class SwerveWheelController extends SubsystemBase implements DriveBaseConstants, Constants {
 
   private ChassisSpeeds speeds;
 
@@ -46,8 +48,13 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
 
   private SwerveDriveOdometry odometry;
 
+  
+
   private PIDController angleController = new PIDController(robotangleKd, robotangleKi,
       robotangleKd);
+
+   private SwerveModulePosition[] DriveModules = { frontLeftModule.getPosition(),frontRightModule.getPosition(),backLeftModule.getPosition(),backRightModule.getPosition()};
+      
 
   /** Creates a new drivebase. */
   public SwerveWheelController() {
@@ -69,7 +76,7 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
     this.kinematics = new SwerveDriveKinematics(
         frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
 
-    this.odometry = new SwerveDriveOdometry(kinematics, getRotation2d());
+    this.odometry = new SwerveDriveOdometry(kinematics, getRotation2d(), DriveModules ,getPose());
 
     angleController.enableContinuousInput(0, 360);
     resetMotors();
@@ -103,7 +110,7 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
   }
 
   public void resetOdometry(Pose2d pose) {
-    odometry.resetPosition(pose, getRotation2d());
+    odometry.resetPosition( getRotation2d(),DriveModules , pose);
   }
 
   public static void toggleCoast() {
@@ -230,12 +237,7 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
 
   @Override
   public void periodic() {
-    odometry.update(
-        getRotation2d(),
-        frontLeftModule.getState(),
-        frontRightModule.getState(),
-        backLeftModule.getState(),
-        backRightModule.getState());
+    odometry.update(getRotation2d(),DriveModules);
 
     SmartDashboard.putNumber("X Speed", getXSpeed());
     SmartDashboard.putNumber("Y Speed", getYSpeed());

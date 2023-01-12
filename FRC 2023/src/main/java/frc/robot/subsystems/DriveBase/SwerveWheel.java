@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.lang.module.Configuration;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -16,21 +17,36 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+
+import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
+import frc.robot.Constants;
+import frc.robot.commands.Drive;
 
 
-public class SwerveWheel extends SubsystemBase {
+public class SwerveWheel extends SubsystemBase implements DriveBaseConstants, Constants {
 
   private CANSparkMax driveMotor;
   private CANSparkMax steerMotor;
   private WPI_CANCoder encoder;
 
+  private RelativeEncoder driveEncoder;
+  private double driveDistance;
+
+  private RelativeEncoder steerEncoder;
+  private double steerDistance;
+  
+
   private String name;
 
 
-  //private PIDController angleController = new PIDController(angleKp, angleKi, angleKd);
+  private PIDController angleController = new PIDController(angleKp, angleKi, angleKd);
+  private PIDController driveController = new PIDController(driveKp, driveKi, driveKd);
+
   
 
   /** Creates a new ExampleSubsystem. */
@@ -40,13 +56,16 @@ public class SwerveWheel extends SubsystemBase {
     this.encoder = new WPI_CANCoder(encoderID);
     this.name = name;
 
-    driveMotor.restoreFactoryDefaults();
-    steerMotor.restoreFactoryDefaults();
-    encoder.configFactoryDefault();
+    this.driveMotor.restoreFactoryDefaults();
+    this.steerMotor.restoreFactoryDefaults();
+    this.encoder.configFactoryDefault();
 
-    driveMotor.setSmartCurrentLimit(20);
-    steerMotor.setSmartCurrentLimit(20);
-      
+    this.driveMotor.setSmartCurrentLimit(20);
+    this.steerMotor.setSmartCurrentLimit(20);
+    
+    this.driveEncoder = driveMotor.getEncoder();
+  
+    this.driveDistance = this.getDriveEncoder();
   }
 
   public void resetMotors(){
@@ -64,8 +83,29 @@ public class SwerveWheel extends SubsystemBase {
     }
   }
 
+
   public WPI_CANCoder getEncoder() {
     return this.encoder;
+  }
+
+  private double getDriveEncoder() { 
+    return (this.driveEncoder.getPosition() * this.driveEncoder.getVelocity()); 
+  }
+
+  public double getDriveDistance() { 
+    return this.getDriveEncoder() - this.driveDistance; 
+  }
+
+  private double getSteerEncoder() { 
+    return (this.steerEncoder.getPosition() * this.steerEncoder.getVelocity()); 
+  }
+
+  public double getSteerDistance() { 
+    return this.getDriveEncoder() - this.steerDistance; 
+  }
+
+  public SwerveModulePosition getPosition(){
+    return new SwerveModulePosition(this.getDriveDistance(),new Rotation2d(getSteerAngle().getDegrees()));
   }
 
   public String getName(){
@@ -94,6 +134,30 @@ public class SwerveWheel extends SubsystemBase {
   public Rotation2d getSteerAngle(){
     double encoderValue = encoder.getAbsolutePosition();
     return new Rotation2d().fromDegrees(encoderValue);
+  }
+
+  public void setSteerAngle(double angle) {
+   
+    steerMotor.set(angleController.calculate(getSteerAngle().getDegrees(), angle));
+
+  }
+
+  public void resetAngle(){
+    encoder.setPositionToAbsolute(0);
+  }
+
+  public void setDesiredState(SwerveModuleState state) {
+    
+    if (Math.abs(state.speedMetersPerSecond) < 0.001) {
+      stop();
+      return;
+    }
+    state = SwerveModuleState.optimize(state, getSteerAngle());
+    setDriveSpeed(state.speedMetersPerSecond);
+    setSteerAngle(state.angle.getDegrees());
+
+    // System.out.println(this.name + " " + getSteerAngle().getDegrees());
+
   }
 
 
