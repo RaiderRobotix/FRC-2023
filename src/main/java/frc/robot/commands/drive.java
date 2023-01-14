@@ -77,7 +77,7 @@ public class drive extends CommandBase {
         swerveWheelController.setSpeed(oi.getLeftY(),
             oi.getLeftX(),
             -1 * oi.getRightX(),
-            0.1);
+            0.2);
       }
     } else if (oi.getController().getRightTriggerAxis() > 0.75) {
       switch (oi.getController().getPOV()) {

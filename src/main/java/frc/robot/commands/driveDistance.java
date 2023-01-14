@@ -15,7 +15,7 @@ import frc.robot.subsystems.drivebase.drivebaseConstants;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class driveDistance extends PIDCommand implements drivebaseConstants {
   /** Creates a new driveDistance. */
-
+  //Distance is measured in 
   public driveDistance(double distance, SwerveWheelController swerveController) {
     super(
         // The controller that the command will use
