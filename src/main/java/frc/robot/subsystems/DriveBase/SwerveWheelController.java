@@ -53,8 +53,9 @@ public class SwerveWheelController extends SubsystemBase implements DriveBaseCon
   private PIDController angleController = new PIDController(robotangleKd, robotangleKi,
       robotangleKd);
 
-   private SwerveModulePosition[] DriveModules = { frontLeftModule.getPosition(),frontRightModule.getPosition(),backLeftModule.getPosition(),backRightModule.getPosition()};
+  private SwerveModulePosition[] DriveModules = { frontLeftModule.getPosition(),frontRightModule.getPosition(),backLeftModule.getPosition(),backRightModule.getPosition()};
       
+  private SwerveWheel[] modules;
 
   /** Creates a new drivebase. */
   public SwerveWheelController() {
@@ -78,12 +79,21 @@ public class SwerveWheelController extends SubsystemBase implements DriveBaseCon
 
     this.odometry = new SwerveDriveOdometry(kinematics, getRotation2d(), DriveModules ,getPose());
 
+    this.modules[0] = this.frontLeftModule;
+    this.modules[1] = this.frontRightModule;
+    this.modules[2] = this.backLeftModule;
+    this.modules[3] = this.backRightModule;
+
     angleController.enableContinuousInput(0, 360);
     resetMotors();
   }
 
   public static void resetMotors() {
     // frontLeftModule.setSteerAngle(90);
+
+    for(SwerveWheel module : modules){
+      module.s
+    }
     frontLeftModule.resetMotors();
     frontRightModule.resetMotors();
     backLeftModule.resetMotors();
@@ -91,11 +101,7 @@ public class SwerveWheelController extends SubsystemBase implements DriveBaseCon
   }
 
   public static void toggleField() {
-    if (fieldCentric) {
-      fieldCentric = false;
-    } else {
-      fieldCentric = true;
-    }
+    fieldCentric ^= true;
   }
 
   public static void stopMotors() {
@@ -110,15 +116,13 @@ public class SwerveWheelController extends SubsystemBase implements DriveBaseCon
   }
 
   public void resetOdometry(Pose2d pose) {
-    odometry.resetPosition( getRotation2d(),DriveModules , pose);
+    odometry.resetPosition( getRotation2d(), DriveModules, pose);
   }
 
   public static void toggleCoast() {
-    if (coast) {
-      coast = false;
-    } else {
-      coast = true;
-    }
+
+    coast ^= true;
+
     frontLeftModule.setNeutralMode(coast);
     frontRightModule.setNeutralMode(coast);
     backLeftModule.setNeutralMode(coast);
