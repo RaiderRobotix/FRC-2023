@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.drive;
 import frc.robot.commands.driveDistance;
+import frc.robot.commands.driveDistanceNoPID;
 import frc.robot.commands.rotate;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Gyro;
@@ -84,7 +85,7 @@ public class RobotContainer {
     //     .whenPressed(
     //         new rotate(m_controller, m_operatorInterface, -45, true))
     //     .whenReleased(m_Drive);
-    xButton.whenPressed(new driveDistance(1, m_controller))
+    xButton.whenPressed(new driveDistanceNoPID(1, m_controller))
         .whenReleased(m_Drive);
     // xButton.whenPressed(new rotate(m_controller, m_operatorInterface, 0, false));
   }
