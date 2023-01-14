@@ -106,7 +106,7 @@ public class drive extends CommandBase {
       swerveWheelController.setSpeed(oi.getLeftY(),
           oi.getLeftX(),
           -1 * oi.getRightX(),
-          0.4);
+          0.6);
     }
 
     // if (oi.getController().getXButton()) {

@@ -58,6 +58,10 @@ public interface drivebaseConstants {
     public final double robotangleKp = 0.00000; // Speed Default 0.01100
     public final double robotangleKd = 0.00000; // Dampens system Default 0.00037
 
+    public final double robotDriveDistanceKi = 0.0000;
+    public final double robotDriveDistanceKp = 0.0000;
+    public final double robotDriveDistanceKd = 0.0000;
+
     public final double driveKp = 500;
     public final double driveKi = 0.055;
     public final double driveKd = 0.00;

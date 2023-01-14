@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -144,6 +145,10 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants, Co
     return driveMotor.getSelectedSensorVelocity(0) / kUnitsPerRevoltion;
     // return (kMaxRPM / 600) * (driveMotor.getSelectedSensorVelocity() /
     // kGearRatio);
+  }
+
+  public double getDistance(){
+    return driveMotor.getSelectedSensorPosition() / (kUnitsPerRevoltion * kGearRatio) * (2 * Math.PI * Units.inchesToMeters(kWheelRadius));
   }
 
   public Rotation2d getSteerAngle() {

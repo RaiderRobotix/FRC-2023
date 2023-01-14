@@ -217,6 +217,10 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
     return Gyro.gyro().getYaw();
   }
 
+  public double getDistance() {
+    return (frontLeftModule.getDistance() + frontRightModule.getDistance() + backLeftModule.getDistance() + backRightModule.getDistance()) / 4;
+  }
+
   public Rotation2d getRotation2d() {
     // new Rotation2d();
     if (Gyro.gyro() == null) {

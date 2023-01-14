@@ -23,6 +23,7 @@ public interface Constants {
     public final int kUnitsPerRevoltion = 2048;
     public final int kGearRatio = 1;
     public final int kMaxRPM = 6380;
+    public final double kWheelRadius = 1.5;
 
     public final double rightDeadband = 0.15;
     public final double leftDeadband = 0.15;
