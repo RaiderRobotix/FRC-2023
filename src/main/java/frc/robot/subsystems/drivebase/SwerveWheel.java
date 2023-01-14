@@ -147,6 +147,10 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants, Co
     // kGearRatio);
   }
 
+  public void resetEncoder(){
+    driveMotor.setSelectedSensorPosition(0);
+  }
+
   public double getDistance(){
     return driveMotor.getSelectedSensorPosition() / (kUnitsPerRevoltion * kGearRatio) * (2 * Math.PI * Units.inchesToMeters(kWheelRadius));
   }

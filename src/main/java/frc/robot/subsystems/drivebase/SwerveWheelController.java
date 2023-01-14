@@ -44,6 +44,8 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
 
   public SwerveDriveKinematics kinematics;
 
+  private static SwerveWheel[] modules = new SwerveWheel[4];
+
   private SwerveDriveOdometry odometry;
 
   private PIDController angleController = new PIDController(robotangleKd, robotangleKi,
@@ -64,6 +66,11 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
     this.backLeftModule = new SwerveWheel(backLeftDriveID, backLeftSteerID, backLeftEncoderID, "Back Left");
     this.backRightModule = new SwerveWheel(backRightDriveID, backRightSteerID, backRightEncoderID, "Back Right");
 
+    modules[0] = this.frontLeftModule;
+    modules[1] = this.frontRightModule;
+    modules[2] = this.backLeftModule;
+    modules[3] = this.backRightModule;
+    
     // Creates kinematics object using the above module location
     // TODO fill out missing variables
     this.kinematics = new SwerveDriveKinematics(
@@ -73,6 +80,7 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
 
     angleController.enableContinuousInput(0, 360);
     resetMotors();
+    resetEncoders();
   }
 
   public static void resetMotors() {
@@ -88,6 +96,12 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
       fieldCentric = false;
     } else {
       fieldCentric = true;
+    }
+  }
+
+  public static void resetEncoders(){
+    for(SwerveWheel module : modules){
+      module.resetEncoder();
     }
   }
 
