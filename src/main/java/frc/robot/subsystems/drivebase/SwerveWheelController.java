@@ -258,6 +258,7 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
     SmartDashboard.putNumber("X Speed", getXSpeed());
     SmartDashboard.putNumber("Y Speed", getYSpeed());
     SmartDashboard.putNumber("Angular Speed", getAngularSpeed());
+    SmartDashboard.putNumber("Distance", getDistance());
     SmartDashboard.putBoolean("Field Centric", fieldCentric);
     SmartDashboard.putBoolean("is Coast Mode", coast);
     // SmartDashboard.putNumber("Compass Angle", Gyro.gyro().getRotation2d().getDegrees());
