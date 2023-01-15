@@ -89,7 +89,7 @@ public class SwerveWheel extends SubsystemBase implements DriveBaseConstants, Co
   }
 
   private double getDriveEncoder() { 
-    return (this.driveEncoder.getPosition() * this.driveEncoder.getVelocity()); 
+    return (this.driveEncoder.getPosition() * kUnitsPerRevoltion); 
   }
 
   public double getDriveDistance() { 
@@ -97,7 +97,7 @@ public class SwerveWheel extends SubsystemBase implements DriveBaseConstants, Co
   }
 
   private double getSteerEncoder() { 
-    return (this.steerEncoder.getPosition() * this.steerEncoder.getVelocity()); 
+    return (this.steerEncoder.getPosition() * kUnitsPerRevoltion); 
   }
 
   public double getSteerDistance() { 

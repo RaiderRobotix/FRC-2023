@@ -108,19 +108,6 @@ public class Drive extends CommandBase {
           -1 * oi.getRightX(),
           0.4);
     }
-
-    // if (oi.getController().getXButton()) {
-    // swerveWheelController.setHeading(0,
-    // drivebaseConstants.kPhysicalDriveMaxSpeed);
-    // }
-
-    // if (oi.getController().getRightBumper()) {
-    // swerveWheelController.setHeading(swerveWheelController.getHeading() + 45.0,
-    // drivebaseConstants.kPhysicalDriveMaxSpeed);
-    // } else if (oi.getController().getLeftBumper()) {
-    // swerveWheelController.setHeading(swerveWheelController.getHeading() - 45.0,
-    // drivebaseConstants.kPhysicalDriveMaxSpeed);
-    // }
   }
 
   // Called once the command ends or is interrupted.

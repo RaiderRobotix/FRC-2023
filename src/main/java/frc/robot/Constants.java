@@ -16,10 +16,11 @@ package frc.robot;
 public interface Constants {
   public final int xboxControllerPort = 4;
 
-  // Falcon 500 constants
-  public final int kUnitsPerRevoltion = 2048;
-  public final int kGearRatio = 1;
+  // Neo Spark Maxes constants
+  public final double kGearRatio = 6.12;
   public final int kMaxRPM = 6380;
+  public final double kTireCircumference = 1.5;
+  public final double kUnitsPerRevoltion = kGearRatio * kTireCircumference;
 
   public final double rightDeadband = 0.15;
   public final double leftDeadband = 0.15;
@@ -27,6 +28,7 @@ public interface Constants {
   public final int rightBumberId = 6;
 
   // Measurements in metres
+  //TODO UPDATE THIS
   public final double width = .63;
   public final double length = .79;
 

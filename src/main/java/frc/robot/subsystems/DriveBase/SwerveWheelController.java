@@ -55,7 +55,7 @@ public class SwerveWheelController extends SubsystemBase implements DriveBaseCon
 
   private SwerveModulePosition[] DriveModules = { frontLeftModule.getPosition(),frontRightModule.getPosition(),backLeftModule.getPosition(),backRightModule.getPosition()};
       
-  private SwerveWheel[] modules;
+  private static SwerveWheel[] modules;
 
   /** Creates a new drivebase. */
   public SwerveWheelController() {
@@ -73,7 +73,7 @@ public class SwerveWheelController extends SubsystemBase implements DriveBaseCon
     this.backRightModule = new SwerveWheel(backRightDriveID, backRightSteerID, backRightEncoderID, "Back Right");
 
     // Creates kinematics object using the above module location
-    // TODO fill out missing variables
+
     this.kinematics = new SwerveDriveKinematics(
         frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
 
@@ -92,12 +92,8 @@ public class SwerveWheelController extends SubsystemBase implements DriveBaseCon
     // frontLeftModule.setSteerAngle(90);
 
     for(SwerveWheel module : modules){
-      module.s
+      module.resetMotors();
     }
-    frontLeftModule.resetMotors();
-    frontRightModule.resetMotors();
-    backLeftModule.resetMotors();
-    backRightModule.resetMotors();
   }
 
   public static void toggleField() {
@@ -105,10 +101,9 @@ public class SwerveWheelController extends SubsystemBase implements DriveBaseCon
   }
 
   public static void stopMotors() {
-    frontLeftModule.stop();
-    frontRightModule.stop();
-    backLeftModule.stop();
-    backRightModule.stop();
+    for(SwerveWheel module : modules){
+      module.stop();
+    }
   }
 
   public Pose2d getPose() {
@@ -120,13 +115,10 @@ public class SwerveWheelController extends SubsystemBase implements DriveBaseCon
   }
 
   public static void toggleCoast() {
-
     coast ^= true;
-
-    frontLeftModule.setNeutralMode(coast);
-    frontRightModule.setNeutralMode(coast);
-    backLeftModule.setNeutralMode(coast);
-    backRightModule.setNeutralMode(coast);
+    for(SwerveWheel module : modules){
+      module.setNeutralMode(coast);
+    }
   }
 
   public void setSpeed(double x, double y, double delta, double maxSpeed) {
@@ -134,19 +126,11 @@ public class SwerveWheelController extends SubsystemBase implements DriveBaseCon
     SmartDashboard.putNumber("DesiredYSpeed", y);
     if (true) {
       this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(x, y, delta, getRotation2d());
-      // this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(x, y, delta, new
-      // Rotation2d().fromDegrees(45));
-      // System.out.println(rotate.getDegrees());
     } else {
       this.speeds = new ChassisSpeeds(x, y, delta);
-
     }
-    // System.out.println(this.kinematics);
     SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
     setState(moduleStates, maxSpeed);
-    // System.out.println(speeds + " " + speeds.vxMetersPerSecond + " " +
-    // speeds.vyMetersPerSecond + " " + Math.toDegrees(speeds.omegaRadiansPerSecond)
-    // + " Gyro: " + getHeading());
   }
 
   public void setState(SwerveModuleState[] moduleStates, double maxSpeed) {
@@ -159,37 +143,13 @@ public class SwerveWheelController extends SubsystemBase implements DriveBaseCon
 
   public void setHeading(double angle, double maxSpeed) {
     setSpeed(0, 0, angleController.calculate(Gyro.getHeading(), angle), maxSpeed);
-    // System.out.println(angle + " " + Gyro.getHeading());
-    // // angle += 180;
-    // boolean reverse;
-    // if (a
-    // ngle - Gyro.getHeading() > 360 - angle) {
-    // reverse = true;
-    // } else {
-    // reverse = false;
-    // }
-
-    // System.out.println("Angle: " + angle + " Yaw " + Gyro.getHeading());
-    // // Make Reverse dependent on which value it is closer too
-    // while ((Gyro.getHeading() - angle) > 1) {
-    // if (!reverse) {
-    // setSpeed(0, 0, drivebaseConstants.rotateSpeed,
-    // drivebaseConstants.rotateSpeed);
-    // } else {
-    // setSpeed(0, 0, -drivebaseConstants.rotateSpeed,
-    // drivebaseConstants.rotateSpeed);
-    // }
-    // SmartDashboard.updateValues();
-    // }
-
   }
 
   // Sets the angle of all the wheel to angle
   public static void setAngle(double angle) {
-    frontLeftModule.setSteerAngle(angle);
-    frontRightModule.setSteerAngle(angle);
-    backLeftModule.setSteerAngle(angle);
-    backRightModule.setSteerAngle(angle);
+    for(SwerveWheel module : modules){
+      module.setSteerAngle(angle);
+    }
   }
 
   public double getXSpeed() {
@@ -201,11 +161,9 @@ public class SwerveWheelController extends SubsystemBase implements DriveBaseCon
   }
 
   public void setSteerZero() {
-    frontLeftModule.resetAngle();
-    frontRightModule.resetAngle();
-    backLeftModule.resetAngle();
-    backRightModule.resetAngle();
-
+    for(SwerveWheel module : modules){
+      module.resetAngle();
+    }
   }
 
   public double getYSpeed() {
