@@ -30,9 +30,11 @@ import frc.robot.subsystems.drivebase.SwerveWheel;
 import frc.robot.subsystems.drivebase.SwerveWheelController;
 import frc.robot.subsystems.drivebase.drivebaseConstants;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -85,9 +87,17 @@ public class RobotContainer {
     //     .whenPressed(
     //         new rotate(m_controller, m_operatorInterface, -45, true))
     //     .whenReleased(m_Drive);
-    xButton.whenPressed(new driveDistanceNoPID(1, m_controller))
-        .whenReleased(m_Drive);
-    // xButton.whenPressed(new rotate(m_controller, m_operatorInterface, 0, false));
+
+    // new JoystickButton(m_operatorInterface.getController(), edu.wpi.first.wpilibj.XboxController.Axis.kRightTrigger.value)
+    // .onTrue(new Command(() -> SwerveWheelController.setSpeed(m_operatorInterface.getLeftY(), m_operatorInterface.getLeftX(), m_operatorInterface.getRawRightJoyStick())));
+
+    new JoystickButton(m_operatorInterface.getController(), edu.wpi.first.wpilibj.XboxController.Button.kStart.value)
+    .whenPressed(new InstantCommand(
+      () -> SwerveWheelController.toggleField(),
+      m_controller
+    ));
+
+
   }
 
   /**

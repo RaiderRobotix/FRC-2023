@@ -63,12 +63,9 @@ public class SwerveWheel extends SubsystemBase implements drivebaseConstants, Co
     this.steerMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 20, 25, 1.0));
     this.steerMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 10, 15, 0.5));
     // this.encoder.configAbsoluteSensorRange(range);
-
-    TalonFXConfiguration configuration = new TalonFXConfiguration();
-
-    configuration.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
-    // this.driveMotor.configAllSettings(configuration);
-    // this.steerMotor.configAllSettings(configuration);
+    
+    this.driveMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 0);
+    this.steerMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 0);
 
     angleController.enableContinuousInput(0, 360);
 
