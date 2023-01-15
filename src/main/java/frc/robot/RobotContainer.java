@@ -53,7 +53,9 @@ public class RobotContainer {
 
   private final Gyro m_gyro = new Gyro();
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  // private final driveDistance m_autoCommand = new driveDistance(1,m_controller);
+  private final driveDistanceNoPID m_autoCommand = new driveDistanceNoPID(1, m_controller);
+
   private final drive m_Drive = new drive(m_controller, m_operatorInterface);
   private final rotate m_rotate = new rotate(m_controller, m_operatorInterface, 0, false);
 

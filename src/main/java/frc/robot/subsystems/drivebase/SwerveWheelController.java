@@ -232,7 +232,8 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
   }
 
   public double getDistance() {
-    return (frontLeftModule.getDistance() + frontRightModule.getDistance() + backLeftModule.getDistance() + backRightModule.getDistance()) / 4;
+    // return Math.abs((frontLeftModule.getDistance() + frontRightModule.getDistance() + backLeftModule.getDistance() + backRightModule.getDistance()) / 4);
+    return frontLeftModule.getDistance();
   }
 
   public Rotation2d getRotation2d() {
@@ -261,6 +262,11 @@ public class SwerveWheelController extends SubsystemBase implements drivebaseCon
     SmartDashboard.putNumber("Distance", getDistance());
     SmartDashboard.putBoolean("Field Centric", fieldCentric);
     SmartDashboard.putBoolean("is Coast Mode", coast);
+    SmartDashboard.putNumber("Robot X", getPose().getX());
+    SmartDashboard.putNumber("Robot y", getPose().getY());
+    SmartDashboard.putNumber("Robot Rotation", getPose().getRotation().getDegrees());
+
+    // SmartDashboard.putNumber("Sensor", frontLeftModule.getDistance());
     // SmartDashboard.putNumber("Compass Angle", Gyro.gyro().getRotation2d().getDegrees());
 
     SmartDashboard.updateValues();
