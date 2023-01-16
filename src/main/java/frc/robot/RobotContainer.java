@@ -18,12 +18,10 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.drive;
 import frc.robot.commands.driveDistance;
 import frc.robot.commands.driveDistanceNoPID;
 import frc.robot.commands.rotate;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.OperatorInterface;
 import frc.robot.subsystems.drivebase.SwerveWheel;
@@ -48,7 +46,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer implements Constants {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final SwerveWheelController m_controller = new SwerveWheelController();
   private final OperatorInterface m_operatorInterface = new OperatorInterface();
 
