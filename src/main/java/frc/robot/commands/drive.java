@@ -8,11 +8,11 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.OperatorInterface;
 import frc.robot.subsystems.drivebase.SwerveWheel;
 import frc.robot.subsystems.drivebase.SwerveWheelController;
-import frc.robot.subsystems.drivebase.drivebaseConstants;
 
 public class drive extends CommandBase {
   /** Creates a new drive. */
@@ -35,50 +35,27 @@ public class drive extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-
-    // System.out.println(oi.getLeftY() + " " + oi.getLeftX() + " " +
-    // Math.toDegrees(oi.getRawRightJoyStick()));
-
-    if (oi.getController().getStartButton()) {
-      SwerveWheelController.toggleField();
-    }
-
-    if (oi.getController().getBackButton()) {
-      SwerveWheelController.toggleCoast();
-    }
-
-    if (oi.getController().getBButton()) {
-      swerveWheelController.setSteerZero();
-    } else if (oi.getController().getYButton()) {
-      Gyro.gyro().calibrate();
-      Gyro.gyro().reset();
-
-    } 
+  public void execute() { 
     if(oi.getController().getAButton()){
       switch (oi.getController().getPOV()) {
         case 90:
-          swerveWheelController.setSpeed(0, 1, 0, drivebaseConstants.kPhysicalDriveMaxSpeed);
-          break;
+          swerveWheelController.setSpeed(0, 1, 0, Constants.kPhysicalDriveMaxSpeed);
         case 180:
-          swerveWheelController.setSpeed(-1, 0, 0, drivebaseConstants.kPhysicalDriveMaxSpeed);
-          break;
+          swerveWheelController.setSpeed(-1, 0, 0, Constants.kPhysicalDriveMaxSpeed);
         case 270:
-          swerveWheelController.setSpeed(0, -1, 0, drivebaseConstants.kPhysicalDriveMaxSpeed);
-          break;
+          swerveWheelController.setSpeed(0, -1, 0, Constants.kPhysicalDriveMaxSpeed);
         case 0:
-          swerveWheelController.setSpeed(1, 0, 0, drivebaseConstants.kPhysicalDriveMaxSpeed);
-          break;
+          swerveWheelController.setSpeed(1, 0, 0, Constants.kPhysicalDriveMaxSpeed);
         default:
           swerveWheelController.stopMotors();
       }} else if (oi.getController().getLeftTriggerAxis() > 0.75) {
-      if (oi.getController().getAButton()) {
-      } else {
-        swerveWheelController.setSpeed(oi.getLeftY(),
-            oi.getLeftX(),
-            -1 * oi.getRightX(),
-            0.2);
-      }
+        if (oi.getController().getAButton()) {
+        } else {
+          swerveWheelController.setSpeed(oi.getLeftY(),
+              oi.getLeftX(),
+              -1 * oi.getRightX(),
+              0.2);
+        }
     } else if (oi.getController().getRightTriggerAxis() > 0.75) {
       switch (oi.getController().getPOV()) {
         case 0:
@@ -99,7 +76,7 @@ public class drive extends CommandBase {
       swerveWheelController.setSpeed(oi.getLeftY(),
           oi.getLeftX(),
           -1 * oi.getRightX(),
-          drivebaseConstants.kPhysicalDriveMaxSpeed);
+          Constants.kPhysicalDriveMaxSpeed);
 
       
     } else {
@@ -108,19 +85,6 @@ public class drive extends CommandBase {
           -1 * oi.getRightX(),
           0.6);
     }
-
-    // if (oi.getController().getXButton()) {
-    // swerveWheelController.setHeading(0,
-    // drivebaseConstants.kPhysicalDriveMaxSpeed);
-    // }
-
-    // if (oi.getController().getRightBumper()) {
-    // swerveWheelController.setHeading(swerveWheelController.getHeading() + 45.0,
-    // drivebaseConstants.kPhysicalDriveMaxSpeed);
-    // } else if (oi.getController().getLeftBumper()) {
-    // swerveWheelController.setHeading(swerveWheelController.getHeading() - 45.0,
-    // drivebaseConstants.kPhysicalDriveMaxSpeed);
-    // }
   }
 
   // Called once the command ends or is interrupted.
