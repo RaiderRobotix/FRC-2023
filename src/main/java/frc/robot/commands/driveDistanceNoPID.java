@@ -16,7 +16,7 @@ public class driveDistanceNoPID extends CommandBase implements drivebaseConstant
   public driveDistanceNoPID(double distance, SwerveWheelController controller) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.controller = controller;
-    this.targetDistance = distance;
+    this.targetDistance = distance + Math.abs(controller.getDistance());
     addRequirements(controller);
   }
 
@@ -29,7 +29,7 @@ public class driveDistanceNoPID extends CommandBase implements drivebaseConstant
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    while(controller.getDistance() < targetDistance){
+    while(Math.abs(controller.getDistance()) < targetDistance){
       controller.setSpeed(0, 0.5, 0, kPhysicalDriveMaxSpeed);
     }
   }

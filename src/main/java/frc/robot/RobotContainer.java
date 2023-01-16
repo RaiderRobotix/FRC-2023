@@ -30,9 +30,11 @@ import frc.robot.subsystems.drivebase.SwerveWheel;
 import frc.robot.subsystems.drivebase.SwerveWheelController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -52,7 +54,9 @@ public class RobotContainer implements Constants {
 
   private final Gyro m_gyro = new Gyro();
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  // private final driveDistance m_autoCommand = new driveDistance(1,m_controller);
+  private final driveDistanceNoPID m_autoCommand = new driveDistanceNoPID(1, m_controller);
+
   private final drive m_Drive = new drive(m_controller, m_operatorInterface);
   private final rotate m_rotate = new rotate(m_controller, m_operatorInterface, 0, false);
 

@@ -23,6 +23,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableType;
@@ -69,6 +70,9 @@ public class SwerveWheel extends SubsystemBase implements Constants {
     this.driveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 10, 15, 0.5));
     this.steerMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 20, 25, 1.0));
     this.steerMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 10, 15, 0.5));
+
+    this.driveMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 0);
+    this.steerMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 0);
 
     //Sets both motors to be in brake mode by default
     steerMotor.setNeutralMode(NeutralMode.Brake);
@@ -122,7 +126,11 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   }
 
   public double getDistance(){
-    return driveMotor.getSelectedSensorPosition() / (kUnitsPerRevoltion * kGearRatio) * (2 * Math.PI * Units.inchesToMeters(kWheelRadius));
+    return driveMotor.getSelectedSensorPosition(0) / (kUnitsPerRevoltion * kGearRatio) * (2 * Math.PI * Units.inchesToMeters(kWheelRadius));
+  }
+
+  public SwerveModuleStat getPosition(){
+
   }
 
   public Rotation2d getSteerAngle() {
