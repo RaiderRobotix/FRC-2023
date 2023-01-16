@@ -7,13 +7,13 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import frc.robot.Constants;
 import frc.robot.subsystems.drivebase.SwerveWheelController;
-import frc.robot.subsystems.drivebase.drivebaseConstants;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class driveDistance extends PIDCommand implements drivebaseConstants {
+public class driveDistance extends PIDCommand implements Constants {
   /** Creates a new driveDistance. */
   //Distance is measured in 
   public driveDistance(double distance, SwerveWheelController swerveController) {
@@ -21,15 +21,14 @@ public class driveDistance extends PIDCommand implements drivebaseConstants {
         // The controller that the command will use
         new PIDController(robotDriveDistanceKp, robotDriveDistanceKi, robotDriveDistanceKd),
         // This should return the measurement
-        () -> Math.abs(swerveController.getDistance()),
+        () -> swerveController.getPose().getY(),
         // This should return the setpoint (can also be a constant)
-        () -> distance + swerveController.getDistance(),
+        distance + swerveController.getPose().getY(),
         // This uses the outputs
-        output -> swerveController.setSpeed(0, output, 0, kPhysicalDriveMaxSpeed));
+        output -> swerveController.setSpeed(0, output, 0, true));
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(swerveController);
     // Configure additional PID options by calling `getController` here.
-    System.out.println(distance+swerveController.getDistance());
   }
 
   // Returns true when the command should end.

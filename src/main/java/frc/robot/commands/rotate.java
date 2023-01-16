@@ -19,9 +19,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import frc.robot.Constants;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.OperatorInterface;
-import frc.robot.subsystems.drivebase.drivebaseConstants;
 import frc.robot.subsystems.drivebase.SwerveWheelController;
 
 public class rotate extends CommandBase {
@@ -81,9 +81,9 @@ public class rotate extends CommandBase {
         break;
       }
       if (!reverse) {
-        swerveWheelController.setSpeed(0, 0, drivebaseConstants.rotateSpeed, drivebaseConstants.rotateSpeed);
+        swerveWheelController.setSpeed(0, 0, Constants.rotateSpeed);
       } else {
-        swerveWheelController.setSpeed(0, 0, -drivebaseConstants.rotateSpeed, drivebaseConstants.rotateSpeed);
+        swerveWheelController.setSpeed(0, 0, -Constants.rotateSpeed);
       }
     }
     end(false);

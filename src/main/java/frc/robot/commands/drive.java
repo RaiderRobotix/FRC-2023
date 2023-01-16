@@ -39,13 +39,13 @@ public class drive extends CommandBase {
     if(oi.getController().getAButton()){
       switch (oi.getController().getPOV()) {
         case 90:
-          swerveWheelController.setSpeed(0, 1, 0, Constants.kPhysicalDriveMaxSpeed);
+          swerveWheelController.setSpeed(0, 1, 0);
         case 180:
-          swerveWheelController.setSpeed(-1, 0, 0, Constants.kPhysicalDriveMaxSpeed);
+          swerveWheelController.setSpeed(-1, 0, 0);
         case 270:
-          swerveWheelController.setSpeed(0, -1, 0, Constants.kPhysicalDriveMaxSpeed);
+          swerveWheelController.setSpeed(0, -1, 0);
         case 0:
-          swerveWheelController.setSpeed(1, 0, 0, Constants.kPhysicalDriveMaxSpeed);
+          swerveWheelController.setSpeed(1, 0, 0);
         default:
           swerveWheelController.stopMotors();
       }} else if (oi.getController().getLeftTriggerAxis() > 0.75) {
@@ -53,8 +53,7 @@ public class drive extends CommandBase {
         } else {
           swerveWheelController.setSpeed(oi.getLeftY(),
               oi.getLeftX(),
-              -1 * oi.getRightX(),
-              0.2);
+              -1 * oi.getRightX());
         }
     } else if (oi.getController().getRightTriggerAxis() > 0.75) {
       switch (oi.getController().getPOV()) {
@@ -75,15 +74,13 @@ public class drive extends CommandBase {
       }
       swerveWheelController.setSpeed(oi.getLeftY(),
           oi.getLeftX(),
-          -1 * oi.getRightX(),
-          Constants.kPhysicalDriveMaxSpeed);
+          -1 * oi.getRightX());
 
       
     } else {
       swerveWheelController.setSpeed(oi.getLeftY(),
           oi.getLeftX(),
-          -1 * oi.getRightX(),
-          0.6);
+          -1 * oi.getRightX());
     }
   }
 

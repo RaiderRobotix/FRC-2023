@@ -4,19 +4,21 @@
 
 package frc.robot.commands;
 
+import java.lang.constant.Constable;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import frc.robot.Constants;
 import frc.robot.subsystems.drivebase.SwerveWheelController;
-import frc.robot.subsystems.drivebase.drivebaseConstants;
 
-public class driveDistanceNoPID extends CommandBase implements drivebaseConstants {
+public class driveDistanceNoPID extends CommandBase implements Constants {
   /** Creates a new driveDistanceNoPID. */
   SwerveWheelController controller;
   double targetDistance;
   public driveDistanceNoPID(double distance, SwerveWheelController controller) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.controller = controller;
-    this.targetDistance = distance + Math.abs(controller.getDistance());
+    this.targetDistance = distance;
     addRequirements(controller);
   }
 
@@ -29,8 +31,8 @@ public class driveDistanceNoPID extends CommandBase implements drivebaseConstant
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    while(Math.abs(controller.getDistance()) < targetDistance){
-      controller.setSpeed(0, 0.5, 0, kPhysicalDriveMaxSpeed);
+    while(controller.getPose().getY() < targetDistance){
+      controller.setSpeed(0, 0.5, 0);
     }
   }
 
@@ -43,6 +45,6 @@ public class driveDistanceNoPID extends CommandBase implements drivebaseConstant
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(controller.getDistance() - targetDistance) < 1;
+    return Math.abs(controller.getPose().getY() - targetDistance) < 1;
   }
 }

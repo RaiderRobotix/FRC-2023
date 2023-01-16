@@ -129,10 +129,6 @@ public class SwerveWheel extends SubsystemBase implements Constants {
     return driveMotor.getSelectedSensorPosition(0) / (kUnitsPerRevoltion * kGearRatio) * (2 * Math.PI * Units.inchesToMeters(kWheelRadius));
   }
 
-  public SwerveModuleStat getPosition(){
-
-  }
-
   public Rotation2d getSteerAngle() {
     double encoderValue = encoder.getAbsolutePosition();
     return new Rotation2d().fromDegrees(encoderValue);
