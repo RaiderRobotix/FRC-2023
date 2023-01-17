@@ -152,6 +152,7 @@ public class SwerveWheel extends SubsystemBase implements Constants {
 
   public void setDriveSpeed(double speed) {
     // this.driveMotor.set(driveController.calculate(getDriveSpeed(), speed));
+    System.out.println(speed);
     this.driveMotor.set(speed);
   }
   
@@ -166,11 +167,6 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   }
 
   public void setDesiredState(SwerveModuleState state) {
-    // System.out.println(state);
-    if (Math.abs(state.speedMetersPerSecond) < 0.001) {
-      stop();
-      return;
-    }
     state = SwerveModuleState.optimize(state, getSteerAngle());
     setDriveSpeed(state.speedMetersPerSecond);
     setSteerAngle(state.angle.getDegrees());
@@ -178,10 +174,8 @@ public class SwerveWheel extends SubsystemBase implements Constants {
 
   @Override
   public void periodic() {
-
     //Double.parseDouble(df.format()) limits the number of decimal places
     //because I (Zach) thinks too many is ugly and unhelpful
-
     SmartDashboard.putNumber(this.getName() + " Steer Angle",
         Double.parseDouble(df.format(this.getSteerAngle().getDegrees())));
 

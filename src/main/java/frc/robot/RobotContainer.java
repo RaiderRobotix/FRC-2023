@@ -54,7 +54,7 @@ public class RobotContainer implements Constants {
   // private final driveDistance m_autoCommand = new driveDistance(1,m_controller);
   private final driveDistanceNoPID m_autoCommand = new driveDistanceNoPID(1, m_controller);
 
-  private final drive m_Drive = new drive(m_controller, m_operatorInterface);
+  private final drive m_Drive = new drive(0.6, m_controller, m_operatorInterface);
   private final rotate m_rotate = new rotate(m_controller, m_operatorInterface, 0, false);
 
   private final Button leftBumber = new JoystickButton(m_operatorInterface.getController(), Constants.leftBumberId);
@@ -82,6 +82,8 @@ public class RobotContainer implements Constants {
     new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kBack.value).onTrue(new InstantCommand(() -> SwerveWheelController.toggleCoast()));
     new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kStart.value).onTrue(new InstantCommand(() -> SwerveWheelController.toggleField()));
     new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kY.value).onTrue(new InstantCommand(() -> SwerveWheelController.reset()));
+    new JoystickButton(m_operatorInterface.getController(), XboxController.Axis.kLeftTrigger.value).whileTrue(new drive(0.2, m_controller, m_operatorInterface));
+    new JoystickButton(m_operatorInterface.getController(), XboxController.Axis.kRightTrigger.value).whileTrue(new drive(0.2, m_controller, m_operatorInterface));
   }
 
   /**

@@ -16,12 +16,16 @@ import frc.robot.subsystems.drivebase.SwerveWheelController;
 
 public class drive extends CommandBase {
   /** Creates a new drive. */
-  SwerveWheelController swerveWheelController;
-  OperatorInterface oi;
+  private SwerveWheelController swerveWheelController;
+  private OperatorInterface oi;
+  private double maxSpeed;
 
-  public drive(SwerveWheelController m_controller, OperatorInterface m_oInterface) {
+  //maxSpeed is the percentage of the max desired speed
+  public drive(double maxSpeed, SwerveWheelController m_controller, OperatorInterface m_oInterface) {
     swerveWheelController = m_controller;
     oi = m_oInterface;
+    this.maxSpeed = maxSpeed;
+
     addRequirements(swerveWheelController);
     addRequirements(oi);
     // Use addRequirements() here to declare subsystem dependencies.
