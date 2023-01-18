@@ -155,6 +155,10 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     return 0;
   }
 
+  public double getDistance() {
+    return frontLeftModule.getDistance();
+  }
+
   //Returns the current gyro heading as a rotation2d
   //if no gyro is detected returns 0 degrees
   public static Rotation2d getRotation2d() {

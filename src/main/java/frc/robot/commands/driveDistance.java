@@ -21,9 +21,9 @@ public class driveDistance extends PIDCommand implements Constants {
         // The controller that the command will use
         new PIDController(robotDriveDistanceKp, robotDriveDistanceKi, robotDriveDistanceKd),
         // This should return the measurement
-        () -> swerveController.getPose().getY(),
+        () -> swerveController.getDistance(),
         // This should return the setpoint (can also be a constant)
-        distance + swerveController.getPose().getY(),
+        distance + swerveController.getDistance(),
         // This uses the outputs
         output -> swerveController.setSpeed(0, output, 0, true));
     // Use addRequirements() here to declare subsystem dependencies.
