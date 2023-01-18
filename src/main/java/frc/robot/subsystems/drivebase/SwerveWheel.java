@@ -83,14 +83,14 @@ public class SwerveWheel extends SubsystemBase implements Constants {
 
     //Initalizes the indiviual CANcoder's specfic offset
     switch (encoder.getDeviceID()) {
+      case 0:
+        encoder.configMagnetOffset(frontLeftEncoderOffset);
       case 1:
         encoder.configMagnetOffset(frontRightEncoderOffset);
       case 2:
         encoder.configMagnetOffset(backleftEncoderOffset);
       case 3:
         encoder.configMagnetOffset(backRightEncoderOffset);
-      case 4:
-        encoder.configMagnetOffset(frontLeftEncoderOffset);
     }
   }
 
