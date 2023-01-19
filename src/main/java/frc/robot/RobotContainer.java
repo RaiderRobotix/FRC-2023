@@ -54,7 +54,7 @@ public class RobotContainer implements Constants {
   // private final driveDistance m_autoCommand = new driveDistance(1,m_controller);
   private final driveDistanceNoPID m_autoCommand = new driveDistanceNoPID(1, m_controller);
 
-  private final drive m_Drive = new drive(0.6, m_controller, m_operatorInterface);
+  private final drive m_Drive = new drive(5, m_controller, m_operatorInterface);
   private final rotate m_rotate = new rotate(m_controller, m_operatorInterface, 0, false);
 
   private final Button leftBumber = new JoystickButton(m_operatorInterface.getController(), Constants.leftBumberId);
@@ -106,9 +106,9 @@ public class RobotContainer implements Constants {
             // Start at the origin facing the +X direction
             new Pose2d(0, 0, new Rotation2d(0)),
             // Pass through these two interior waypoints, making an 's' curve path
-            List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+            List.of(new Translation2d(0, 0)),
             // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(3, 0, new Rotation2d(0)),
+            new Pose2d(5, 0, new Rotation2d(0)),
             config);
 
     var thetaController =

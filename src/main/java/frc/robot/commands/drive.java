@@ -55,9 +55,9 @@ public class drive extends CommandBase {
       }} else if (oi.getController().getLeftTriggerAxis() > 0.75) {
         if (oi.getController().getAButton()) {
         } else {
-          swerveWheelController.setSpeed(oi.getLeftY(),
-              oi.getLeftX(),
-              -1 * oi.getRightX());
+          swerveWheelController.setSpeed(.2 * oi.getLeftY(),
+              .2 * oi.getLeftX(),
+              -2 * oi.getRightX());
         }
     } else if (oi.getController().getRightTriggerAxis() > 0.75) {
       switch (oi.getController().getPOV()) {
@@ -82,9 +82,9 @@ public class drive extends CommandBase {
 
       
     } else {
-      swerveWheelController.setSpeed(oi.getLeftY(),
-          oi.getLeftX(),
-          -1 * oi.getRightX());
+      swerveWheelController.setSpeed(.6 * oi.getLeftY(),
+          .6 * oi.getLeftX(),
+          -.6 * oi.getRightX());
     }
   }
 

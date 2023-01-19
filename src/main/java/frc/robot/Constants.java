@@ -62,11 +62,11 @@ public interface Constants {
 
     //TODO find what the units are
     //Drivebase movement constraints units are in 
-    public final double kPhysicalDriveMaxSpeed = 5;
-    public final double maxAttainableSpeed = 18.0;
+    public final double kPhysicalDriveMaxSpeed = 0.05;
+    public final double maxAttainableSpeed = 1.0;
     public final double kPhysicalSteerMaxSpeed = 5;
     public final double rotateSpeed = 0.5;
-    public final double kMaxAccelerationMetersPerSecondSquared = 5;
+    public final double kMaxAccelerationMetersPerSecondSquared = 0.1;
 
 
 
@@ -92,22 +92,22 @@ public interface Constants {
     public final double robotangleKd = 0.00000; // Dampens system Default 0.00037
 
     //PID values for robot drive distance
-    public final double robotDriveDistanceKi = 0.0000;
+    public final double robotDriveDistanceKi = 0.2000;
     public final double robotDriveDistanceKp = 0.0000;
     public final double robotDriveDistanceKd = 0.0000;
 
     //PID values for thete controller
-    public final double thetaControllerKp = 0.0000;
+    public final double thetaControllerKp = 0.5000;
     public final double thetaControllerKi = 0.0000;
     public final double thetaControllerKd = 0.0000;
 
     //PID values for position controller
     //X value
-    public final double xControllerKp = 0.0000;
-    public final double xControllerKi = 0.0000; //Dont use
+    public final double xControllerKp = 0.5000;
+    public final double xControllerKi = 0.0100; //Dont use
     public final double xControllerKd = 0.0000; //Dont
     //Y Value
-    public final double yControllerKp = 0.0000;
+    public final double yControllerKp = 0.5000;
     public final double yControllerKi = 0.0000; //Dont use
     public final double yControllerKd = 0.0000; //Dont use
 

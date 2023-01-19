@@ -30,7 +30,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
   private static boolean fieldCentric = true;
   private static boolean coast = false;
 
-  private static SwerveWheel[] modules;
+  private static SwerveWheel[] modules = new SwerveWheel[4];
 
   private static SwerveDriveOdometry odometry;
 

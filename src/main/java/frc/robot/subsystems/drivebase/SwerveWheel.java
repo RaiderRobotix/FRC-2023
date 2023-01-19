@@ -82,15 +82,17 @@ public class SwerveWheel extends SubsystemBase implements Constants {
     angleController.enableContinuousInput(0, 360);
 
     //Initalizes the indiviual CANcoder's specfic offset
-    switch (encoder.getDeviceID()) {
-      case 0:
-        encoder.configMagnetOffset(frontLeftEncoderOffset);
-      case 1:
-        encoder.configMagnetOffset(frontRightEncoderOffset);
-      case 2:
-        encoder.configMagnetOffset(backleftEncoderOffset);
-      case 3:
-        encoder.configMagnetOffset(backRightEncoderOffset);
+    if (encoder.getDeviceID() == 1) {
+      encoder.configMagnetOffset(frontRightEncoderOffset);
+    }
+    if (encoder.getDeviceID() == 2) {
+      encoder.configMagnetOffset(backleftEncoderOffset);
+    }
+    if (encoder.getDeviceID() == 3) {
+      encoder.configMagnetOffset(backRightEncoderOffset);
+    }
+    if (encoder.getDeviceID() == 0) {
+      encoder.configMagnetOffset(frontLeftEncoderOffset);
     }
   }
 
