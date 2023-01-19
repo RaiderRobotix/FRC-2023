@@ -63,10 +63,10 @@ public interface Constants {
     //TODO find what the units are
     //Drivebase movement constraints units are in 
     public final double kPhysicalDriveMaxSpeed = 1;
-    public final double maxAttainableSpeed = 1.0;
+    public final double maxAttainableSpeed = 2.0;
     public final double kPhysicalSteerMaxSpeed = 5;
     public final double rotateSpeed = 0.5;
-    public final double kMaxAccelerationMetersPerSecondSquared = 0.1;
+    public final double kMaxAccelerationMetersPerSecondSquared = 0.5;
 
 
 
@@ -104,7 +104,7 @@ public interface Constants {
     //PID values for position controller
     //X value
     public final double xControllerKp = 0.5000;
-    public final double xControllerKi = 0.0100; //Dont use
+    public final double xControllerKi = 0.1100; //Dont use
     public final double xControllerKd = 0.0000; //Dont
     //Y Value
     public final double yControllerKp = 0.5000;
