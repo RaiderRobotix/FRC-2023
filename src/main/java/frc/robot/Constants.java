@@ -62,7 +62,7 @@ public interface Constants {
 
     //TODO find what the units are
     //Drivebase movement constraints units are in 
-    public final double kPhysicalDriveMaxSpeed = 0.05;
+    public final double kPhysicalDriveMaxSpeed = 1;
     public final double maxAttainableSpeed = 1.0;
     public final double kPhysicalSteerMaxSpeed = 5;
     public final double rotateSpeed = 0.5;
