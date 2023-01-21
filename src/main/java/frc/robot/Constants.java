@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -35,8 +36,8 @@ public interface Constants {
     public final int rightBumberId = 6;
 
     // Robots measurements in metres
-    public final double width = .63;
-    public final double length = .79;
+    public final double width = Units.inchesToMeters(24);
+    public final double length = Units.inchesToMeters(32);
 
     //Robot's kinematics
     public final double frontLeftLocationX = 1.0;
