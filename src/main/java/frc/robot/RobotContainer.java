@@ -19,10 +19,9 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.event.BooleanEvent;
+import frc.robot.commands.balance;
 import frc.robot.commands.drive;
 import frc.robot.commands.driveDistance;
-import frc.robot.commands.driveDistanceNoPID;
-import frc.robot.commands.rotate;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.OperatorInterface;
 import frc.robot.subsystems.drivebase.SwerveWheel;
@@ -53,10 +52,8 @@ public class RobotContainer implements Constants {
   private final Gyro m_gyro = new Gyro();
 
   // private final driveDistance m_autoCommand = new driveDistance(1,m_controller);
-  private final driveDistanceNoPID m_autoCommand = new driveDistanceNoPID(1, m_controller);
 
   private final drive m_Drive = new drive(5, m_controller, m_operatorInterface);
-  private final rotate m_rotate = new rotate(m_controller, m_operatorInterface, 0, false);
 
   private final Button leftBumber = new JoystickButton(m_operatorInterface.getController(), Constants.leftBumberId);
   private final Button rightBumber = new JoystickButton(m_operatorInterface.getController(), Constants.rightBumberId);
@@ -85,6 +82,7 @@ public class RobotContainer implements Constants {
     new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kY.value).onTrue(new InstantCommand(() -> SwerveWheelController.reset()));
     new JoystickButton(m_operatorInterface.getController(), XboxController.Axis.kLeftTrigger.value).whileTrue(new drive(0.2, m_controller, m_operatorInterface));
     new JoystickButton(m_operatorInterface.getController(), XboxController.Axis.kRightTrigger.value).whileTrue(new drive(0.2, m_controller, m_operatorInterface));
+    new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kA.value).whileTrue(new balance(m_controller));
   }
 
   /**

@@ -112,6 +112,11 @@ public interface Constants {
     public final double yControllerKi = 0.0000; //Dont use
     public final double yControllerKd = 0.0000; //Dont use
 
+    //PID values for robot balance command
+    public final double balanceKp = 0.0000;
+    public final double balanceKi = 0.0000;
+    public final double balanceKd = 0.0000;
+
 
 
 
