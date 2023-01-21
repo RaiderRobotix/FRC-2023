@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.drivebase.SwerveWheelController;
@@ -20,8 +22,10 @@ public class limeLight extends SubsystemBase {
   public double tid;
   public Number[] camtrain;
   private String name =  "limelight";
+  private ShuffleboardTab limeLight;
 
   public limeLight() {
+    ShuffleboardTab limeLight = Shuffleboard.getTab("limeLight");
     updateValues();
   }
 
@@ -38,6 +42,13 @@ public class limeLight extends SubsystemBase {
 
   @Override
   public void periodic() {
+    Shuffleboard.selectTab("limeLight");
+    SmartDashboard.putNumber("tv", tv);
+    SmartDashboard.putNumber("tx", tx);
+    SmartDashboard.putNumber("ty", ty);
+    SmartDashboard.putNumber("ta", ta);
+    SmartDashboard.putNumber("tid", tid);
+    System.out.println(camtrain);
     // This method will be called once per scheduler run
   }
 }
