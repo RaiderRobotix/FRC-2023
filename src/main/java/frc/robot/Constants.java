@@ -32,8 +32,8 @@ public interface Constants {
 
     public final double rightDeadband = 0.15;
     public final double leftDeadband = 0.15;
-    public final int leftBumberId = 5;
-    public final int rightBumberId = 6;
+    public final double rightTriggerThreshold = 0.70;
+    public final double leftTriggerThreshold = 0.70;
 
     // Robots measurements in metres
     public final double width = Units.inchesToMeters(24);

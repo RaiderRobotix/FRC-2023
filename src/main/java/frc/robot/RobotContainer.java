@@ -28,6 +28,7 @@ import frc.robot.subsystems.drivebase.SwerveWheel;
 import frc.robot.subsystems.drivebase.SwerveWheelController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
@@ -53,12 +54,7 @@ public class RobotContainer implements Constants {
 
   // private final driveDistance m_autoCommand = new driveDistance(1,m_controller);
 
-  private final drive m_Drive = new drive(5, m_controller, m_operatorInterface);
-
-  private final Button leftBumber = new JoystickButton(m_operatorInterface.getController(), Constants.leftBumberId);
-  private final Button rightBumber = new JoystickButton(m_operatorInterface.getController(), Constants.rightBumberId);
-  private final Button xButton = new JoystickButton(m_operatorInterface.getController(), 2);
-
+  private final drive m_Drive = new drive( m_controller, m_operatorInterface, 0.6);
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -77,12 +73,35 @@ public class RobotContainer implements Constants {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kBack.value).onTrue(new InstantCommand(() -> SwerveWheelController.toggleCoast()));
-    new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kStart.value).onTrue(new InstantCommand(() -> SwerveWheelController.toggleField()));
-    new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kY.value).onTrue(new InstantCommand(() -> SwerveWheelController.reset()));
-    new JoystickButton(m_operatorInterface.getController(), XboxController.Axis.kLeftTrigger.value).whileTrue(new drive(0.2, m_controller, m_operatorInterface));
-    new JoystickButton(m_operatorInterface.getController(), XboxController.Axis.kRightTrigger.value).whileTrue(new drive(0.2, m_controller, m_operatorInterface));
+    new Trigger(m_operatorInterface::getLeftTrigger)
+      .onTrue(new drive(m_controller, m_operatorInterface, 0.2));
+
+    new Trigger(m_operatorInterface::getLeftTrigger)
+      .onTrue(new drive(m_controller, m_operatorInterface, 1));
+
     new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kA.value).whileTrue(new balance(m_controller));
+
+    new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kBack.value)
+      .onTrue(new InstantCommand(() -> SwerveWheelController.toggleCoast()));
+
+    new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kStart.value)
+      .onTrue(new InstantCommand(() -> SwerveWheelController.toggleField()));
+
+    new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kY.value)
+      .onTrue(new InstantCommand(() -> SwerveWheelController.reset()));
+
+    new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kA.value)
+      .and(new Trigger(m_operatorInterface::isPOV)
+      .onTrue(new StartEndCommand(
+        () -> m_controller.setAngle(m_operatorInterface.getController().getPOV()),
+        () -> m_controller.setAngle(0))));
+
+    new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kB.value)
+      .and(new Trigger(m_operatorInterface::isPOV)
+      .onTrue(new StartEndCommand(
+        () -> m_controller.setSpeed(Math.cos(m_operatorInterface.getController().getPOV()), Math.sin(m_operatorInterface.getController().getPOV()), 0),
+        () -> m_controller.stopMotors())));
+        
   }
 
   /**
