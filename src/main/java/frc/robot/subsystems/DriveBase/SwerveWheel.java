@@ -25,10 +25,10 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
 import frc.robot.Constants;
-import frc.robot.commands.Drive;
+import frc.robot.commands.drive;
 
 
-public class SwerveWheel extends SubsystemBase implements DriveBaseConstants, Constants {
+public class SwerveWheel extends SubsystemBase implements Constants {
 
   private CANSparkMax driveMotor;
   private CANSparkMax steerMotor;
@@ -42,7 +42,6 @@ public class SwerveWheel extends SubsystemBase implements DriveBaseConstants, Co
   
 
   private String name;
-
 
   private PIDController angleController = new PIDController(angleKp, angleKi, angleKd);
   private PIDController driveController = new PIDController(driveKp, driveKi, driveKd);
@@ -66,6 +65,19 @@ public class SwerveWheel extends SubsystemBase implements DriveBaseConstants, Co
     this.driveEncoder = driveMotor.getEncoder();
   
     this.driveDistance = this.getDriveEncoder();
+
+    if (encoder.getDeviceID() == 1) {
+      encoder.configMagnetOffset(frontRightEncoderOffset);
+    }
+    if (encoder.getDeviceID() == 2) {
+      encoder.configMagnetOffset(backleftEncoderOffset);
+    }
+    if (encoder.getDeviceID() == 3) {
+      encoder.configMagnetOffset(backRightEncoderOffset);
+    }
+    if (encoder.getDeviceID() == 0) {
+      encoder.configMagnetOffset(frontLeftEncoderOffset);
+    }
   }
 
   public void resetMotors(){
@@ -116,8 +128,6 @@ public class SwerveWheel extends SubsystemBase implements DriveBaseConstants, Co
     driveMotor.stopMotor();
     steerMotor.stopMotor();
   }
-
-
 
   public double getDriveSpeed(){
       return driveMotor.get();

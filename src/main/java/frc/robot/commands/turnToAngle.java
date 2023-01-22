@@ -6,28 +6,28 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
+import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.DriveBase.SwerveWheelController;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class driveDistance extends PIDCommand implements Constants {
-  /** Creates a new driveDistance. */
-  //Distance is measured in 
-  public driveDistance(double distance, SwerveWheelController swerveController, boolean sideToSide) {
+public class turnToAngle extends PIDCommand implements Constants {
+  /** Creates a new turnToAngle. */
+  public turnToAngle(double angle, SwerveWheelController swerveController) {
     super(
         // The controller that the command will use
-        new PIDController(robotDriveDistanceKp, robotDriveDistanceKi, robotDriveDistanceKd),
+        new PIDController(robotangleKp, robotangleKi, robotangleKd),
         // This should return the measurement
-        () -> swerveController.getDistance(),
+        () -> Gyro.getHeading(),
         // This should return the setpoint (can also be a constant)
-        distance + swerveController.getDistance(),
-        // This uses the outputs
-        output -> swerveController.setSpeed(output, sideToSide, true));
+        () -> angle,
+        // This uses the output
+        output -> swerveController.setSpeed(0,0, output));
+          // Use the output here
+        addRequirements(swerveController);
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(swerveController);
     // Configure additional PID options by calling `getController` here.
   }
 
@@ -36,4 +36,4 @@ public class driveDistance extends PIDCommand implements Constants {
   public boolean isFinished() {
     return getController().atSetpoint();
   }
-} 
+}

@@ -64,6 +64,22 @@ public class OperatorInterface extends SubsystemBase implements Constants {
     }
   }
 
+  public boolean getRightTrigger(){
+    return controller.getRightTriggerAxis() > rightTriggerThreshold;
+  }
+
+  public boolean getLeftTrigger(){
+    return controller.getLeftTriggerAxis() > leftTriggerThreshold;
+  }
+
+  public boolean isPOV(){
+    if(controller.getPOV() == -1){
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
