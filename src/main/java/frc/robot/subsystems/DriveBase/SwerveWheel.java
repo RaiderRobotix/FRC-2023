@@ -13,6 +13,8 @@ import java.text.DecimalFormat;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -24,6 +26,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
 import frc.robot.Constants;
@@ -41,6 +44,8 @@ public class SwerveWheel extends SubsystemBase implements Constants {
 
   private RelativeEncoder steerEncoder;
   private double steerDistance;
+
+  private SparkMaxPIDController steeringPid;
   
 
   private String name;
@@ -64,12 +69,24 @@ public class SwerveWheel extends SubsystemBase implements Constants {
     this.steerMotor.restoreFactoryDefaults();
     this.encoder.configFactoryDefault();
 
-    this.driveMotor.setSmartCurrentLimit(20);
-    this.steerMotor.setSmartCurrentLimit(20);
+    this.driveMotor.setSmartCurrentLimit(55);
+    this.steerMotor.setSmartCurrentLimit(55);
     
+    this.steeringPid = steerMotor.getPIDController();
+    this.steeringPid.setOutputRange(0, 360);
+
+    this.steeringPid.setP(angleKp);
+    this.steeringPid.setI(angleKi);
+    this.steeringPid.setD(angleKd);
+
     this.driveEncoder = driveMotor.getEncoder();
+    
+    driveMotor.clearFaults();
+    steerMotor.clearFaults();
   
     this.driveDistance = this.getDriveEncoder();
+    driveMotor.setIdleMode(IdleMode.kBrake);
+    steerMotor.setIdleMode(IdleMode.kBrake);
 
     if (encoder.getDeviceID() == 1) {
       encoder.configMagnetOffset(frontRightEncoderOffset);
@@ -153,8 +170,8 @@ public class SwerveWheel extends SubsystemBase implements Constants {
 
   public void setSteerAngle(double angle) {
    
-    steerMotor.set(angleController.calculate(getSteerAngle().getDegrees(), angle));
-
+    // steerMotor.set(angleController.calculate(getSteerAngle().getDegrees(), angle));
+    steeringPid.setReference(angle, ControlType.kPosition);
   }
 
   public void resetAngle(){

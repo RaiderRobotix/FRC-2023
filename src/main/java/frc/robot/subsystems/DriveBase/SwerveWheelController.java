@@ -135,11 +135,13 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
   public void setSpeed(double x, double y, double delta) {
     SmartDashboard.putNumber("DesiredXSpeed", x);
     SmartDashboard.putNumber("DesiredYSpeed", y);
+    SmartDashboard.putBoolean("Field Centric", fieldCentric );
     if (this.fieldCentric) {
       this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(x, y, delta, getRotation2d());
     } else {
       this.speeds = new ChassisSpeeds(x, y, delta);
     }
+    
     SwerveModuleState[] moduleStates = kDriveKinematics.toSwerveModuleStates(speeds);
     setState(moduleStates);
   }
@@ -229,6 +231,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
 
   public static Rotation2d getRotation2d() {
     // new Rotation2d();
+    
     if (Gyro.gyro() == null) {
       return new Rotation2d().fromDegrees(0);
     } else {
