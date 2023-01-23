@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.lang.module.Configuration;
+import java.text.DecimalFormat;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
@@ -21,11 +22,12 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
 import frc.robot.Constants;
-import frc.robot.commands.drive;
+import frc.robot.commands.Drive;
 
 
 public class SwerveWheel extends SubsystemBase implements Constants {
@@ -45,6 +47,9 @@ public class SwerveWheel extends SubsystemBase implements Constants {
 
   private PIDController angleController = new PIDController(angleKp, angleKi, angleKd);
   private PIDController driveController = new PIDController(driveKp, driveKi, driveKd);
+
+  private DecimalFormat df = new DecimalFormat("###.##");
+
 
   
 
@@ -134,7 +139,7 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   }
 
   public void setDriveSpeed(double speed){
-    setDriveSpeed(speed);
+    driveMotor.set(speed);
   }
 
   public SwerveModuleState getState() {
@@ -179,6 +184,12 @@ public class SwerveWheel extends SubsystemBase implements Constants {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber(this.getName() + " Steer Angle",
+    Double.parseDouble(df.format(this.getSteerAngle().getDegrees())));
+
+    SmartDashboard.putNumber(this.getName() + " Drive Speed",
+    Double.parseDouble(df.format(this.getDriveSpeed())));
+
     // This method will be called once per scheduler run
   }
 

@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.drive;
+import frc.robot.commands.Drive;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.OperatorInterface;
 import frc.robot.subsystems.DriveBase.SwerveWheelController;
@@ -32,9 +32,9 @@ public class RobotContainer {
 
   private final Gyro m_gyro = new Gyro();
 
-  private final drive m_Drive = new drive(m_controller, m_operatorInterface, 0.6);
+  private final Drive m_Drive = new Drive(m_controller, m_operatorInterface, 0.6);
 
-  private final drive m_autoCommand = m_Drive;
+  private final Drive m_autoCommand = m_Drive;
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -54,10 +54,10 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     new Trigger(m_operatorInterface::getLeftTrigger)
-      .onTrue(new drive(m_controller, m_operatorInterface, 0.2));
+      .onTrue(new Drive(m_controller, m_operatorInterface, 0.2));
 
     new Trigger(m_operatorInterface::getLeftTrigger)
-      .onTrue(new drive(m_controller, m_operatorInterface, 1));
+      .onTrue(new Drive(m_controller, m_operatorInterface, 1));
 
     new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kBack.value)
       .onTrue(new InstantCommand(() -> SwerveWheelController.toggleCoast()));

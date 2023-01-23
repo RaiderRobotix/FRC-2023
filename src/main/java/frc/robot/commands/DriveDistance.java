@@ -13,10 +13,10 @@ import frc.robot.subsystems.DriveBase.SwerveWheelController;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class driveDistance extends PIDCommand implements Constants {
+public class DriveDistance extends PIDCommand implements Constants {
   /** Creates a new driveDistance. */
   //Distance is measured in 
-  public driveDistance(double distance, SwerveWheelController swerveController, boolean sideToSide) {
+  public DriveDistance(double distance, SwerveWheelController swerveController, boolean sideToSide) {
     super(
         // The controller that the command will use
         new PIDController(robotDriveDistanceKp, robotDriveDistanceKi, robotDriveDistanceKd),

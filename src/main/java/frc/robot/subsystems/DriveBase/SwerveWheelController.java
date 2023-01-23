@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-import frc.robot.commands.drive;
+import frc.robot.commands.Drive;
 import frc.robot.subsystems.Gyro;
 
 public class SwerveWheelController extends SubsystemBase implements Constants {

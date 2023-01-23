@@ -13,13 +13,13 @@ import frc.robot.subsystems.OperatorInterface;
 import frc.robot.subsystems.DriveBase.SwerveWheel;
 import frc.robot.subsystems.DriveBase.SwerveWheelController;
 
-public class drive extends CommandBase {
+public class Drive extends CommandBase {
   /** Creates a new drive. */
   SwerveWheelController swerveWheelController;
   OperatorInterface oi;
   private double maxSpeed;
 
-  public drive(SwerveWheelController m_controller, OperatorInterface m_oInterface, double maxSpeed) {
+  public Drive(SwerveWheelController m_controller, OperatorInterface m_oInterface, double maxSpeed) {
     swerveWheelController = m_controller;
     oi = m_oInterface;
     this.maxSpeed = maxSpeed;
@@ -38,9 +38,9 @@ public class drive extends CommandBase {
   @Override
   public void execute() {
     swerveWheelController.setSpeed(
-      oi.getLeftY(),
-      oi.getLeftX(),
-      oi.getRawRightJoyStick());
+      oi.getLeftY()*maxSpeed,
+      oi.getLeftX()*maxSpeed,
+      oi.getRightX()*maxSpeed);
   }
 
   // Called once the command ends or is interrupted.
