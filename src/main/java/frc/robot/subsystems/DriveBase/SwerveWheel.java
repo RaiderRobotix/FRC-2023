@@ -53,7 +53,7 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   private PIDController angleController = new PIDController(angleKp, angleKi, angleKd);
   private PIDController driveController = new PIDController(driveKp, driveKi, driveKd);
 
-  private DecimalFormat df = new DecimalFormat("###.##");
+  private DecimalFormat df = new DecimalFormat("###,##");
 
 
   
