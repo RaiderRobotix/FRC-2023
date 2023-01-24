@@ -38,9 +38,9 @@ public class Drive extends CommandBase {
   @Override
   public void execute() {
     swerveWheelController.setSpeed(
-      oi.getLeftX()*maxSpeed,
-      oi.getLeftY()*maxSpeed,
-      oi.getRightY()*maxSpeed);
+      oi.getLeftX() * maxSpeed,
+      oi.getLeftY() * maxSpeed,
+      oi.getRightY() * maxSpeed);
   }
 
   // Called once the command ends or is interrupted.
