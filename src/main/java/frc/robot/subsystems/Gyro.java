@@ -19,7 +19,7 @@ public class Gyro extends SubsystemBase {
   private static AHRS ahrs;
 
   public Gyro() {
-    Gyro.ahrs = new AHRS(Port.kMXP);
+    Gyro.ahrs = new AHRS(Port.kUSB);
 
     new Thread(() -> {
       try {
@@ -36,7 +36,7 @@ public class Gyro extends SubsystemBase {
   }
 
   public static double getHeading() {
-    return -1 * gyro().getYaw();
+    return -gyro().getYaw();
     // return Math.abs();
     // return Math.IEEEremainder(Math.abs(gyro().getAngle()), 360);
   }
