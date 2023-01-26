@@ -8,12 +8,13 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.OperatorInterface;
 import frc.robot.subsystems.DriveBase.SwerveWheel;
 import frc.robot.subsystems.DriveBase.SwerveWheelController;
 
-public class Drive extends CommandBase {
+public class Drive extends CommandBase implements Constants {
   /** Creates a new drive. */
   SwerveWheelController swerveWheelController;
   OperatorInterface oi;
@@ -51,6 +52,12 @@ public class Drive extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if(maxSpeed == turboSpeed){
+      return !oi.getLeftTrigger();
+    } else if (maxSpeed == slowSpeed){
+      return !oi.getRightTrigger();
+    } else {
+      return Math.abs(oi.getLeftX()) < 0.05 && Math.abs(oi.getLeftY()) < 0.05 && Math.abs(oi.getRightY()) < 0.05;
+    }
   }
 }

@@ -22,7 +22,7 @@ public interface Constants {
   public final int xboxControllerPort = 4;
 
   // Neo Spark Maxes constants
-  public final double kGearRatio = 6.12;
+  public final double kGearRatio = 6.75;
   public final int kMaxRPM = 6380;
   public final double kTireCircumference = 1.5;
   public final double kUnitsPerRevoltion = kGearRatio * kTireCircumference;
@@ -57,10 +57,13 @@ public interface Constants {
   );
 
   public final double kPhysicalDriveMaxSpeed = 1;
-  public final double maxAttainableSpeed = 2.0;
+  public final double maxAttainableSpeed = 18.0;
   public final double kPhysicalSteerMaxSpeed = 5;
   public final double rotateSpeed = 0.5;
   public final double kMaxAccelerationMetersPerSecondSquared = 0.5;
+  public final double turboSpeed = 1;
+  public final double normalSpeed = 0.6;
+  public final double slowSpeed = 0.2;
 
   public final int frontLeftDriveID = 20;
   public final int frontLeftSteerID = 10;

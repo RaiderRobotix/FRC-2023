@@ -25,14 +25,14 @@ import frc.robot.subsystems.DriveBase.SwerveWheelController;
  * the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
-public class RobotContainer {
+public class RobotContainer implements Constants {
   // The robot's subsystems and commands are defined here...
   private final SwerveWheelController m_controller = new SwerveWheelController();
   private final OperatorInterface m_operatorInterface = new OperatorInterface();
 
   private final Gyro m_gyro = new Gyro();
 
-  private final Drive m_Drive = new Drive(m_controller, m_operatorInterface, 0.6);
+  private final Drive m_Drive = new Drive(m_controller, m_operatorInterface, normalSpeed);
 
   private final Drive m_autoCommand = m_Drive;
   /**
@@ -53,11 +53,11 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    new Trigger(m_operatorInterface::getLeftTrigger)
-      .onTrue(new Drive(m_controller, m_operatorInterface, 0.2));
+    new Trigger(m_operatorInterface::getRightTrigger)
+      .onTrue(new Drive(m_controller, m_operatorInterface, slowSpeed));
 
     new Trigger(m_operatorInterface::getLeftTrigger)
-      .onTrue(new Drive(m_controller, m_operatorInterface, 1));
+      .onTrue(new Drive(m_controller, m_operatorInterface, turboSpeed));
 
     new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kBack.value)
       .onTrue(new InstantCommand(() -> SwerveWheelController.toggleCoast()));
@@ -70,13 +70,13 @@ public class RobotContainer {
 
     new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kA.value)
       .and(new Trigger(m_operatorInterface::isPOV)
-      .onTrue(new StartEndCommand(
+      .whileTrue(new StartEndCommand(
         () -> m_controller.setAngle(m_operatorInterface.getController().getPOV()),
         () -> m_controller.setAngle(0))));
 
     new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kB.value)
       .and(new Trigger(m_operatorInterface::isPOV)
-      .onTrue(new StartEndCommand(
+      .whileTrue(new StartEndCommand(
         () -> m_controller.setSpeed(Math.cos(m_operatorInterface.getController().getPOV()), Math.sin(m_operatorInterface.getController().getPOV()), 0),
         () -> m_controller.stopMotors())));
   }

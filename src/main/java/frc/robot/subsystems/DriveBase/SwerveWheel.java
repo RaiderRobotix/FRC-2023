@@ -69,8 +69,7 @@ public class SwerveWheel extends SubsystemBase implements Constants {
     this.steerMotor.restoreFactoryDefaults();
     this.encoder.configFactoryDefault();
 
-    this.driveMotor.setSmartCurrentLimit(55);
-    this.steerMotor.setSmartCurrentLimit(55);
+    this.driveMotor.setSmartCurrentLimit(80);
     
     this.steeringPid = steerMotor.getPIDController();
     this.steeringPid.setOutputRange(0, 360);
@@ -80,14 +79,16 @@ public class SwerveWheel extends SubsystemBase implements Constants {
     this.steeringPid.setD(angleKd);
 
     this.driveEncoder = driveMotor.getEncoder();
+    this.steerEncoder = steerMotor.getEncoder();
+
     
-    driveMotor.clearFaults();
-    steerMotor.clearFaults();
+
   
     this.driveDistance = this.getDriveEncoder();
     driveMotor.setIdleMode(IdleMode.kBrake);
-    steerMotor.setIdleMode(IdleMode.kBrake);
-
+    if (encoder.getDeviceID() == 0) {
+      encoder.configMagnetOffset(frontLeftEncoderOffset);
+    }
     if (encoder.getDeviceID() == 1) {
       encoder.configMagnetOffset(frontRightEncoderOffset);
     }
@@ -97,8 +98,31 @@ public class SwerveWheel extends SubsystemBase implements Constants {
     if (encoder.getDeviceID() == 3) {
       encoder.configMagnetOffset(backRightEncoderOffset);
     }
-    if (encoder.getDeviceID() == 0) {
-      encoder.configMagnetOffset(frontLeftEncoderOffset);
+  }
+
+  public void configureSteerMotor(){
+    steerMotor.restoreFactoryDefaults();
+    steerMotor.clearFaults();
+    steerMotor.setIdleMode(IdleMode.kBrake);
+    steerMotor.setSmartCurrentLimit(20);
+    steerEncoder.setPositionConversionFactor(360 / (150/7));
+    driveEncoder.setVelocityConversionFactor((kTireCircumference / kGearRatio) / 60);
+    steerMotor.enableVoltageCompensation(12);
+    steerMotor.burnFlash();
+
+    switch (encoder.getDeviceID()) {
+      case 0:
+        steerEncoder.setPosition(getSteerAngle().getDegrees() + frontLeftEncoderOffset);
+        break;
+      case 1:
+        steerEncoder.setPosition(getSteerAngle().getDegrees() + frontRightEncoderOffset);
+        break;
+      case 2:
+        steerEncoder.setPosition(getSteerAngle().getDegrees() + backleftEncoderOffset);
+        break;
+      case 3:
+        steerEncoder.setPosition(getSteerAngle().getDegrees() + backRightEncoderOffset);
+        break;
     }
   }
 
@@ -152,10 +176,11 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   }
 
   public double getDriveSpeed(){
-      return driveMotor.get();
+      return driveEncoder.getVelocity();
   }
 
   public void setDriveSpeed(double speed){
+    // System.out.println(speed);
     driveMotor.set(speed);
   }
 
@@ -169,9 +194,12 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   }
 
   public void setSteerAngle(double angle) {
-   
-    // steerMotor.set(angleController.calculate(getSteerAngle().getDegrees(), angle));
-    steeringPid.setReference(angle, ControlType.kPosition);
+  //  double desiredAngle = angleController.calculate(getSteerAngle().getDegrees(), angle);
+  //  steerMotor.set(desiredAngle);
+
+  //  SmartDashboard.putNumber("PIDangle", desiredAngle);
+  // System.out.println(angle);
+    steeringPid.setReference(-0.5, ControlType.kPosition);
   }
 
   public void resetAngle(){
@@ -179,11 +207,7 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   }
 
   public void setDesiredState(SwerveModuleState state) {
-    
-    if (Math.abs(state.speedMetersPerSecond) < 0.001) {
-      stop();
-      return;
-    }
+    System.out.println(state.speedMetersPerSecond);
     state = SwerveModuleState.optimize(state, getSteerAngle());
     setDriveSpeed(state.speedMetersPerSecond);
     setSteerAngle(state.angle.getDegrees());
@@ -193,20 +217,17 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   }
 
 
-
-  /*public void setSteerAngle(double angle) {
-    steerMotor.set(angleController.calculate(getSteerAngle().getDegrees(), angle));
-    // steerMotor.set(angle);
-  }*/
-
   @Override
   public void periodic() {
+    // SmartDashboard.putNumber(this.getName() + " Steer Angle",
+    // Double.parseDouble(df.format(this.getSteerAngle().getDegrees())));
     SmartDashboard.putNumber(this.getName() + " Steer Angle",
-    Double.parseDouble(df.format(this.getSteerAngle().getDegrees())));
+    Double.parseDouble(df.format(this.steerEncoder.getPosition())));
 
-    SmartDashboard.putNumber(this.getName() + " Drive Speed",
-    Double.parseDouble(df.format(this.getDriveSpeed())));
-
+    SmartDashboard.putNumber(this.getName() + " Steer Angle", steerMotor.get());
+    
+    // SmartDashboard.putNumber(this.getName() + " Drive Speed", getDriveSpeed());
+    SmartDashboard.putNumber(this.getName() + " Drive Speed", driveMotor.get());
     // This method will be called once per scheduler run
   }
 
