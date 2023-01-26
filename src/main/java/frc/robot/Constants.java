@@ -94,9 +94,9 @@ public interface Constants {
 
   // Increase ki
 
-  public final double angleKp = 0.01120; // Speed Default 0.01100
-  public final double angleKi = 0.0000001; // Amount to react Default 0.00001
-  public final double angleKd = 0.00023; // Dampens system Default 0.00037
+  public final double angleKp = 0.0030; // Speed Default 0.01100
+  public final double angleKi = 0.0000; // Amount to react Default 0.00001
+  public final double angleKd = 0.0000; // Dampens system Default 0.00037
 
   public final double driveKp = 500;
   public final double driveKi = 0.055;

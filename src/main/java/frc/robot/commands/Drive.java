@@ -41,7 +41,7 @@ public class Drive extends CommandBase implements Constants {
     swerveWheelController.setSpeed(
       oi.getLeftX() * maxSpeed,
       oi.getLeftY() * maxSpeed,
-      oi.getRightY() * maxSpeed);
+      -oi.getRightX() * maxSpeed);
   }
 
   // Called once the command ends or is interrupted.

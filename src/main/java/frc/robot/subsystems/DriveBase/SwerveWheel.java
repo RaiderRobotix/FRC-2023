@@ -53,7 +53,7 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   private PIDController angleController = new PIDController(angleKp, angleKi, angleKd);
   private PIDController driveController = new PIDController(driveKp, driveKi, driveKd);
 
-  private DecimalFormat df = new DecimalFormat("###,##");
+  private DecimalFormat df = new DecimalFormat("###.##");
 
 
   
@@ -69,14 +69,16 @@ public class SwerveWheel extends SubsystemBase implements Constants {
     this.steerMotor.restoreFactoryDefaults();
     this.encoder.configFactoryDefault();
 
+    this.angleController.enableContinuousInput(0, 360);
+
     this.driveMotor.setSmartCurrentLimit(80);
     
-    this.steeringPid = steerMotor.getPIDController();
-    this.steeringPid.setOutputRange(0, 360);
+    // this.steeringPid = steerMotor.getPIDController();
+    // this.steeringPid.setOutputRange(0, 360);
 
-    this.steeringPid.setP(angleKp);
-    this.steeringPid.setI(angleKi);
-    this.steeringPid.setD(angleKd);
+    // this.steeringPid.setP(angleKp);
+    // this.steeringPid.setI(angleKi);
+    // this.steeringPid.setD(angleKd);
 
     this.driveEncoder = driveMotor.getEncoder();
     this.steerEncoder = steerMotor.getEncoder();
@@ -98,6 +100,7 @@ public class SwerveWheel extends SubsystemBase implements Constants {
     if (encoder.getDeviceID() == 3) {
       encoder.configMagnetOffset(backRightEncoderOffset);
     }
+    configureSteerMotor();
   }
 
   public void configureSteerMotor(){
@@ -105,25 +108,12 @@ public class SwerveWheel extends SubsystemBase implements Constants {
     steerMotor.clearFaults();
     steerMotor.setIdleMode(IdleMode.kBrake);
     steerMotor.setSmartCurrentLimit(20);
-    steerEncoder.setPositionConversionFactor(360 / (150/7));
-    driveEncoder.setVelocityConversionFactor((kTireCircumference / kGearRatio) / 60);
+    steerEncoder.setPositionConversionFactor(360 * (14/50) * (10/60));
+    driveEncoder.setVelocityConversionFactor(500);
     steerMotor.enableVoltageCompensation(12);
     steerMotor.burnFlash();
 
-    switch (encoder.getDeviceID()) {
-      case 0:
-        steerEncoder.setPosition(getSteerAngle().getDegrees() + frontLeftEncoderOffset);
-        break;
-      case 1:
-        steerEncoder.setPosition(getSteerAngle().getDegrees() + frontRightEncoderOffset);
-        break;
-      case 2:
-        steerEncoder.setPosition(getSteerAngle().getDegrees() + backleftEncoderOffset);
-        break;
-      case 3:
-        steerEncoder.setPosition(getSteerAngle().getDegrees() + backRightEncoderOffset);
-        break;
-    }
+    steerEncoder.setPosition(encoder.getAbsolutePosition());
   }
 
   public void resetMotors(){
@@ -189,7 +179,8 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   }
 
   public Rotation2d getSteerAngle(){
-    double encoderValue = encoder.getAbsolutePosition();
+    // double encoderValue = encoder.getAbsolutePosition();
+    double encoderValue = steerEncoder.getPosition();
     return new Rotation2d().fromDegrees(encoderValue);
   }
 
@@ -197,22 +188,23 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   //  double desiredAngle = angleController.calculate(getSteerAngle().getDegrees(), angle);
   //  steerMotor.set(desiredAngle);
 
+
   //  SmartDashboard.putNumber("PIDangle", desiredAngle);
-  // System.out.println(angle);
-    steeringPid.setReference(-0.5, ControlType.kPosition);
+    System.out.println(angle);
+    steerMotor.set(angleController.calculate(getSteerAngle().getDegrees(), angle));
   }
 
   public void resetAngle(){
-    encoder.setPositionToAbsolute(0);
+    steerEncoder.setPosition(encoder.getAbsolutePosition());
   }
 
   public void setDesiredState(SwerveModuleState state) {
-    System.out.println(state.speedMetersPerSecond);
+    // System.out.println(state.speedMetersPerSecond);
     state = SwerveModuleState.optimize(state, getSteerAngle());
     setDriveSpeed(state.speedMetersPerSecond);
     setSteerAngle(state.angle.getDegrees());
 
-    // System.out.println(this.name + " " + getSteerAngle().getDegrees());
+    // System.out.println(this.name + " " + state.angle.getDegrees());
 
   }
 
@@ -221,10 +213,8 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   public void periodic() {
     // SmartDashboard.putNumber(this.getName() + " Steer Angle",
     // Double.parseDouble(df.format(this.getSteerAngle().getDegrees())));
-    SmartDashboard.putNumber(this.getName() + " Steer Angle",
-    Double.parseDouble(df.format(this.steerEncoder.getPosition())));
-
-    SmartDashboard.putNumber(this.getName() + " Steer Angle", steerMotor.get());
+    SmartDashboard.putNumber(this.getName() + " Steer Angle", getSteerAngle().getDegrees());
+    // SmartDashboard.putNumber(this.getName() + " Steer Angle", steerMotor.get());
     
     // SmartDashboard.putNumber(this.getName() + " Drive Speed", getDriveSpeed());
     SmartDashboard.putNumber(this.getName() + " Drive Speed", driveMotor.get());
