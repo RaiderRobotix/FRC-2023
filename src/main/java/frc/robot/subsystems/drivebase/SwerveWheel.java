@@ -118,8 +118,9 @@ public class SwerveWheel extends SubsystemBase implements Constants {
     // kGearRatio);
   }
 
+  //units in metres
   public double getDistance(){
-    return driveMotor.getSelectedSensorPosition(0) / (kUnitsPerRevoltion * kGearRatio) * (2 * Math.PI * Units.inchesToMeters(kWheelRadius));
+    return driveMotor.getSelectedSensorPosition(0) / (kUnitsPerRevoltion * kGearRatio) * (Math.PI * kWheelDiameter);
   }
 
   public Rotation2d getSteerAngle() {
