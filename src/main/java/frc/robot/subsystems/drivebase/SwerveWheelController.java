@@ -86,20 +86,12 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     resetOdometry(new Pose2d());
     Gyro.gyro().reset();
     Gyro.gyro().calibrate();
-    resetAngle();
   }
 
   //Sets Steer angle to 0
   public static void resetMotors() {
     for(SwerveWheel module : modules){
       module.resetMotors();
-    }
-  }
-
-  //Resets the CANcoder angles to 0
-  public static void resetAngle() {
-    for(SwerveWheel module : modules){
-      module.resetAngle();
     }
   }
 
