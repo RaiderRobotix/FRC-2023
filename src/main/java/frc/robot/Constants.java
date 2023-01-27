@@ -22,10 +22,9 @@ public interface Constants {
   public final int xboxControllerPort = 4;
 
   // Neo Spark Maxes constants
-  public final double kGearRatio = 6.75;
-  public final int kMaxRPM = 6380;
-  public final double kTireCircumference = 1.5;
-  public final double kUnitsPerRevoltion = kGearRatio * kTireCircumference;
+  public final double kGearRatio = 6.12;
+  public final double kWheelDiameter = Units.inchesToMeters(4);
+  public final double kUnitsPerRevoltion = kGearRatio * kWheelDiameter;
 
   public final double rightDeadband = 0.15;
   public final double leftDeadband = 0.15;

@@ -89,21 +89,21 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
 
   public static void reset(){
     resetMotors();
+    resetSteerMotors();
     resetOdometry(new Pose2d());
     Gyro.gyro().reset();
     Gyro.gyro().calibrate();
-    resetAngle();
   }
   public static void resetMotors() {
     for(SwerveWheel module : modules){
-      module.resetMotors();
+      module.resetEncoders();
     }
   }
 
   //Resets the CANcoder angles to 0
-  public static void resetAngle() {
+  public static void resetSteerMotors() {
     for(SwerveWheel module : modules){
-      module.resetAngle();
+      module.resetSteerMotor();
     }
   }  
 
@@ -205,7 +205,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
 
   public void setSteerZero() {
     for(SwerveWheel module : modules){
-      module.resetAngle();
+      module.absoluteAngle();
     }
   }
 
@@ -242,7 +242,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
   }
 
   public double getDistance(){
-    return frontLeftModule.getDriveDistance();
+    return frontLeftModule.getDriveEncoderPosition();
   }
 
   @Override
