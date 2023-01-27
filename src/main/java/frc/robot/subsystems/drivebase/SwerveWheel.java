@@ -5,6 +5,8 @@
 package frc.robot.subsystems.drivebase;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -38,7 +40,7 @@ public class SwerveWheel extends SubsystemBase implements Constants {
 
   //Initalizes the format that will limit decimal places in doubles
   //To use Double.parseDouble(df.format(DOUBLE))
-  private DecimalFormat df = new DecimalFormat("###.##");
+  private DecimalFormat df = new DecimalFormat("###.##", new DecimalFormatSymbols(Locale.US));
 
   public SwerveWheel(
       int driveID,

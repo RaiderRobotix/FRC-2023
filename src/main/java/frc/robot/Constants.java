@@ -61,12 +61,15 @@ public interface Constants {
         );
 
 
-    //TODO find what the units are
-    //Drivebase movement constraints units are in 
+    //Drivebase movement constraints units are in metres
+    public final double maxAttainableSpeed = 18.0;
+    //Units in percentage of maxAttainableSpeed
+    public final double turboSpeed = 1;
+    public final double slowSpeed = 0.2;
+
+    //Drivebase movement constraints for auton
     public final double kPhysicalDriveMaxSpeed = 1;
-    public final double maxAttainableSpeed = 2.0;
     public final double kPhysicalSteerMaxSpeed = 5;
-    public final double rotateSpeed = 0.5;
     public final double kMaxAccelerationMetersPerSecondSquared = 0.5;
 
 

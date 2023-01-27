@@ -73,13 +73,11 @@ public class RobotContainer implements Constants {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    new Trigger(m_operatorInterface::getLeftTrigger)
-      .onTrue(new drive(m_controller, m_operatorInterface, 0.2));
+    new Trigger(m_operatorInterface::getRightTrigger)
+      .onTrue(new drive(m_controller, m_operatorInterface, slowSpeed));
 
     new Trigger(m_operatorInterface::getLeftTrigger)
-      .onTrue(new drive(m_controller, m_operatorInterface, 1));
-
-    new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kA.value).whileTrue(new balance(m_controller));
+      .onTrue(new drive(m_controller, m_operatorInterface, turboSpeed));
 
     new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kBack.value)
       .onTrue(new InstantCommand(() -> SwerveWheelController.toggleCoast()));
@@ -92,13 +90,13 @@ public class RobotContainer implements Constants {
 
     new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kA.value)
       .and(new Trigger(m_operatorInterface::isPOV)
-      .onTrue(new StartEndCommand(
+      .whileTrue(new StartEndCommand(
         () -> m_controller.setAngle(m_operatorInterface.getController().getPOV()),
         () -> m_controller.setAngle(0))));
 
     new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kB.value)
       .and(new Trigger(m_operatorInterface::isPOV)
-      .onTrue(new StartEndCommand(
+      .whileTrue(new StartEndCommand(
         () -> m_controller.setSpeed(Math.cos(m_operatorInterface.getController().getPOV()), Math.sin(m_operatorInterface.getController().getPOV()), 0),
         () -> m_controller.stopMotors())));
         
