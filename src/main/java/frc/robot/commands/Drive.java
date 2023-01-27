@@ -57,7 +57,7 @@ public class Drive extends CommandBase implements Constants {
     } else if (maxSpeed == slowSpeed){
       return !oi.getRightTrigger();
     } else {
-      return Math.abs(oi.getLeftX()) < 0.05 && Math.abs(oi.getLeftY()) < 0.05 && Math.abs(oi.getRightY()) < 0.05;
+      return Math.abs(oi.getLeftX()) < 0.05 && Math.abs(oi.getLeftY()) < 0.05 && Math.abs(oi.getRightX()) < 0.05;
     }
   }
 }

@@ -23,6 +23,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -185,13 +186,8 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   }
 
   public void setSteerAngle(double angle) {
-  //  double desiredAngle = angleController.calculate(getSteerAngle().getDegrees(), angle);
-  //  steerMotor.set(desiredAngle);
-
-
-  //  SmartDashboard.putNumber("PIDangle", desiredAngle);
     System.out.println(angle);
-    steerMotor.set(angleController.calculate(getSteerAngle().getDegrees(), angle));
+    steerMotor.setVoltage(angleController.calculate(getSteerAngle().getDegrees(), angle) * RobotController.getBatteryVoltage());
   }
 
   public void resetAngle(){
@@ -199,26 +195,19 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   }
 
   public void setDesiredState(SwerveModuleState state) {
-    // System.out.println(state.speedMetersPerSecond);
     state = SwerveModuleState.optimize(state, getSteerAngle());
     setDriveSpeed(state.speedMetersPerSecond);
     setSteerAngle(state.angle.getDegrees());
-
-    // System.out.println(this.name + " " + state.angle.getDegrees());
-
   }
 
 
   @Override
   public void periodic() {
-    // SmartDashboard.putNumber(this.getName() + " Steer Angle",
-    // Double.parseDouble(df.format(this.getSteerAngle().getDegrees())));
-    SmartDashboard.putNumber(this.getName() + " Steer Angle", getSteerAngle().getDegrees());
-    // SmartDashboard.putNumber(this.getName() + " Steer Angle", steerMotor.get());
+    SmartDashboard.putNumber(this.getName() + " Steer Angle", 
+    Double.parseDouble(df.format(steerMotor.get())));
     
-    // SmartDashboard.putNumber(this.getName() + " Drive Speed", getDriveSpeed());
-    SmartDashboard.putNumber(this.getName() + " Drive Speed", driveMotor.get());
-    // This method will be called once per scheduler run
+    SmartDashboard.putNumber(this.getName() + " Drive Speed", 
+    Double.parseDouble(df.format(driveMotor.get())));
   }
 
   @Override
