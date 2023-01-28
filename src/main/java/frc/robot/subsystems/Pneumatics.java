@@ -21,9 +21,9 @@ public class Pneumatics extends SubsystemBase {
 
   public Pneumatics(int module, PneumaticsModuleType moduleType) {
     this.pneumatics = new Compressor(module, moduleType);
-    this.pneumatics.enableHybrid(0.0,80.0);
-
-    this.solenoid = new Solenoid(moduleType, module);
+    //this.pneumatics.enableHybrid(0.0,80.0);
+    this.pneumatics.enableDigital();
+    this.solenoid = new Solenoid(moduleType, 2);
 
 
   }
@@ -42,6 +42,7 @@ public class Pneumatics extends SubsystemBase {
 
   public void setSolenoidValue(boolean on){
     solenoid.set(on);
+    System.out.println("passed");
   }
 
 
@@ -49,6 +50,7 @@ public class Pneumatics extends SubsystemBase {
 
   @Override
   public void periodic() {
+    // setSolenoidValue(true);
     SmartDashboard.putNumber(this.getName() + "Pneumatics Pressure", getPneumaticsPressure());
 
   }

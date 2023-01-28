@@ -17,14 +17,16 @@ public class PneumaticsCmd extends CommandBase {
   private final Pneumatics m_PneumaticsSub;
   private OperatorInterface oi;
   private double PSI;
+  boolean state;
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public PneumaticsCmd(Pneumatics Pneumatics,OperatorInterface m_oInterface) {
+  public PneumaticsCmd(Pneumatics Pneumatics,OperatorInterface m_oInterface, boolean state) {
     m_PneumaticsSub = Pneumatics;
     oi = m_oInterface;
+    this.state = state;
 
 
     // Use addRequirements(z) here to declare subsystem dependencies.
@@ -40,7 +42,7 @@ public class PneumaticsCmd extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_PneumaticsSub.setSolenoidValue(true);
+    m_PneumaticsSub.setSolenoidValue(state);
   }
 
   // Called once the command ends or is interrupted.
