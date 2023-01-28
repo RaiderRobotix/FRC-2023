@@ -17,13 +17,16 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.event.BooleanEvent;
+import frc.robot.commands.PneumaticsCmd;
 import frc.robot.commands.balance;
 import frc.robot.commands.drive;
 import frc.robot.commands.driveDistance;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.OperatorInterface;
+import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.drivebase.SwerveWheel;
 import frc.robot.subsystems.drivebase.SwerveWheelController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -49,12 +52,15 @@ public class RobotContainer implements Constants {
   // The robot's subsystems and commands are defined here...
   private final SwerveWheelController m_controller = new SwerveWheelController();
   private final OperatorInterface m_operatorInterface = new OperatorInterface();
+  private final Pneumatics mPneumatics = new Pneumatics(1, PneumaticsModuleType.REVPH);
 
   private final Gyro m_gyro = new Gyro();
 
   // private final driveDistance m_autoCommand = new driveDistance(1,m_controller);
 
   private final drive m_Drive = new drive( m_controller, m_operatorInterface, 0.6);
+
+  private final PneumaticsCmd m_PneumaticsCMD = new PneumaticsCmd(mPneumatics, m_operatorInterface);
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -81,6 +87,10 @@ public class RobotContainer implements Constants {
 
     new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kBack.value)
       .onTrue(new InstantCommand(() -> SwerveWheelController.toggleCoast()));
+
+    new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kX.value)
+      .onTrue(m_PneumaticsCMD);
+
 
     new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kStart.value)
       .onTrue(new InstantCommand(() -> SwerveWheelController.toggleField()));
