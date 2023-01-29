@@ -17,6 +17,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.event.BooleanEvent;
@@ -52,15 +53,14 @@ public class RobotContainer implements Constants {
   // The robot's subsystems and commands are defined here...
   // private final SwerveWheelController m_controller = new SwerveWheelController();
   private final OperatorInterface m_operatorInterface = new OperatorInterface();
-  private final Pneumatics mPneumatics = new Pneumatics(1, PneumaticsModuleType.REVPH);
-
+  private final Pneumatics mPneumatics = new Pneumatics();
   private final Gyro m_gyro = new Gyro();
 
   // private final driveDistance m_autoCommand = new driveDistance(1,m_controller);
 
   // private final drive m_Drive = new drive( m_controller, m_operatorInterface, 0.6);
 
-  private final PneumaticsCmd m_PneumaticsCMD = new PneumaticsCmd(mPneumatics, m_operatorInterface, true);
+  private final PneumaticsCmd m_PneumaticsCMD = new PneumaticsCmd();
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -85,18 +85,20 @@ public class RobotContainer implements Constants {
     // new Trigger(m_operatorInterface::getLeftTrigger)
     //   .onTrue(new drive(m_controller, m_operatorInterface, turboSpeed));
 
-    new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kBack.value)
+    new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kBack.value)
       .onTrue(new InstantCommand(() -> SwerveWheelController.toggleCoast()));
 
-    new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kX.value)
-      .whileTrue(m_PneumaticsCMD);
-      // .whileFalse(m_PneumaticsCMD)(new PneumaticsCmd(mPneumatics, m_operatorInterface, false));
+    new JoystickButton(m_operatorInterface.getOperatorStick(), 12)
+      .onTrue(new PneumaticsCmd(new Pneumatics(1, PneumaticsModuleType.REVPH , 13), m_operatorInterface, true));
+    
+    new JoystickButton(m_operatorInterface.getOperatorStick(), 11)
+      .onTrue(new PneumaticsCmd(new Pneumatics(1, PneumaticsModuleType.REVPH , 2), m_operatorInterface, true));
 
 
-    new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kStart.value)
+    new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kStart.value)
       .onTrue(new InstantCommand(() -> SwerveWheelController.toggleField()));
 
-    new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kY.value)
+    new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kY.value)
       .onTrue(new InstantCommand(() -> SwerveWheelController.reset()));
 
     // new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kA.value)

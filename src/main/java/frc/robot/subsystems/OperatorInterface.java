@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -14,10 +15,12 @@ public class OperatorInterface extends SubsystemBase implements Constants {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private final XboxController controller;
+  private final XboxController xboxcontroller;
+  private final Joystick operatorStick;
 
   public OperatorInterface() {
-    this.controller = new XboxController(xboxControllerPort);
+    this.xboxcontroller = new XboxController(xboxControllerPort);
+    this.operatorStick = new Joystick(operatorStickPort);
   }
 
   public double getRawRightJoyStick() {
@@ -28,57 +31,64 @@ public class OperatorInterface extends SubsystemBase implements Constants {
     return Math.atan2(getLeftY(), getLeftX());
   }
 
-  public XboxController getController() {
-    return this.controller;
+  public XboxController getXboxController() {
+    return this.xboxcontroller;
   }
 
+  public Joystick getOperatorStick(){
+    return this.operatorStick;
+  }
+
+
   public double getLeftY() {
-    if (Math.abs(controller.getLeftY()) > leftDeadband) {
-      return -1 * controller.getLeftY();
+    if (Math.abs(xboxcontroller.getLeftY()) > leftDeadband) {
+      return -1 * xboxcontroller.getLeftY();
     } else {
       return 0;
     }
   }
 
   public double getLeftX() {
-    if (Math.abs(controller.getLeftX()) > leftDeadband) {
-      return -1 * controller.getLeftX();
+    if (Math.abs(xboxcontroller.getLeftX()) > leftDeadband) {
+      return -1 * xboxcontroller.getLeftX();
     } else {
       return 0;
     }
   }
 
   public double getRightY() {
-    if (Math.abs(controller.getRightY()) > rightDeadband) {
-      return controller.getRightY();
+    if (Math.abs(xboxcontroller.getRightY()) > rightDeadband) {
+      return xboxcontroller.getRightY();
     } else {
       return 0;
     }
   }
 
   public double getRightX() {
-    if (Math.abs(controller.getRightX()) > rightDeadband) {
-      return controller.getRightX();
+    if (Math.abs(xboxcontroller.getRightX()) > rightDeadband) {
+      return xboxcontroller.getRightX();
     } else {
       return 0;
     }
   }
 
   public boolean getRightTrigger(){
-    return controller.getRightTriggerAxis() > rightTriggerThreshold;
+    return xboxcontroller.getRightTriggerAxis() > rightTriggerThreshold;
   }
 
   public boolean getLeftTrigger(){
-    return controller.getLeftTriggerAxis() > leftTriggerThreshold;
+    return xboxcontroller.getLeftTriggerAxis() > leftTriggerThreshold;
   }
 
   public boolean isPOV(){
-    if(controller.getPOV() == -1){
+    if(xboxcontroller.getPOV() == -1){
       return false;
     } else {
       return true;
     }
   }
+
+
 
   @Override
   public void periodic() {

@@ -23,6 +23,7 @@ import edu.wpi.first.math.util.Units;
  */
 public interface Constants {
     public final int xboxControllerPort = 4;
+    public final int operatorStickPort = 1;
 
     // Falcon 500 constants
     public final int kUnitsPerRevoltion = 2048;
@@ -73,7 +74,9 @@ public interface Constants {
     public final double kMaxAccelerationMetersPerSecondSquared = 0.5;
 
 
-
+    //Pneumatics Constansts
+    public static final double maxPSI = 80.0;
+    public static final double minPSI = 0.0;
 
 
     //PID values

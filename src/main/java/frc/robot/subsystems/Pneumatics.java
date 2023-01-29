@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 
 public class Pneumatics extends SubsystemBase {
@@ -19,11 +20,18 @@ public class Pneumatics extends SubsystemBase {
   private Solenoid solenoid;
 
 
-  public Pneumatics(int module, PneumaticsModuleType moduleType) {
+  public Pneumatics(int module, PneumaticsModuleType moduleType, int channel) {
     this.pneumatics = new Compressor(module, moduleType);
-    //this.pneumatics.enableHybrid(0.0,80.0);
-    this.pneumatics.enableDigital();
-    this.solenoid = new Solenoid(moduleType, 2);
+    this.pneumatics.enableHybrid(Constants.minPSI,Constants.maxPSI);
+    //this.pneumatics.enableDigital();
+    this.solenoid = new Solenoid(moduleType, channel); 
+  }
+
+  public Pneumatics() {
+    this.pneumatics = new Compressor(1, PneumaticsModuleType.REVPH);
+    this.pneumatics.enableHybrid(Constants.minPSI,Constants.maxPSI);
+    //this.pneumatics.enableDigital();
+    this.solenoid = new Solenoid(PneumaticsModuleType.REVPH, 0); 
 
 
   }

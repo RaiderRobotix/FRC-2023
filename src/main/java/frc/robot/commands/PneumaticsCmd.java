@@ -9,6 +9,8 @@ import frc.robot.subsystems.Pneumatics;
 
 import javax.swing.text.PlainView;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
@@ -28,8 +30,15 @@ public class PneumaticsCmd extends CommandBase {
     oi = m_oInterface;
     this.state = state;
 
-
     // Use addRequirements(z) here to declare subsystem dependencies.
+    addRequirements(oi);
+  }
+
+  public PneumaticsCmd() {
+   this.m_PneumaticsSub = new Pneumatics(0,PneumaticsModuleType.REVPH,0);
+   this.oi = new OperatorInterface();
+   this.state = true; 
+     // Use addRequirements(z) here to declare subsystem dependencies.
     addRequirements(oi);
 
 
