@@ -6,11 +6,15 @@ package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.OperatorInterface;
+import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.drivebase.SwerveWheel;
 import frc.robot.subsystems.drivebase.SwerveWheelController;
 
@@ -27,6 +31,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  private AnalogInput sonic;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -111,8 +116,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     SmartDashboard.updateValues();
     SmartDashboard.putNumber("Yaw", Gyro.gyro().getRotation2d().getDegrees());
-    SmartDashboard.putNumber("Heading", Gyro.getHeading());
-
+    SmartDashboard.putNumber("Heading", Gyro.getHeading());    
   }
 
   @Override

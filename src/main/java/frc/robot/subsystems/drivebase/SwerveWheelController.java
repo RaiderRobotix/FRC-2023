@@ -215,6 +215,8 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
   
   @Override
   public void periodic() {
+
+    
     odometry.update(
         getRotation2d(),
         getModulePositions());

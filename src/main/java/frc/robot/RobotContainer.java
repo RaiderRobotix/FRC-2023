@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -24,6 +25,8 @@ import edu.wpi.first.wpilibj.event.BooleanEvent;
 import frc.robot.commands.balance;
 import frc.robot.commands.drive;
 import frc.robot.commands.driveDistance;
+import frc.robot.commands.motor;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.OperatorInterface;
 import frc.robot.subsystems.Pneumatics;
@@ -52,12 +55,17 @@ public class RobotContainer implements Constants {
   // The robot's subsystems and commands are defined here...
   private final SwerveWheelController m_controller = new SwerveWheelController();
   private final OperatorInterface m_operatorInterface = new OperatorInterface();
-  private final Pneumatics mPneumatics = new Pneumatics();
+  private final Pneumatics mPneumatics = new Pneumatics(m_operatorInterface);
   private final Gyro m_gyro = new Gyro();
+  private final Elevator m_elevator = new Elevator();
 
   private final driveDistance m_autoCommand = new driveDistance(1,m_controller);
 
   private final drive m_Drive = new drive( m_controller, m_operatorInterface, 0.6);
+
+  private motor m_motor = new motor(m_operatorInterface);
+
+  private DigitalInput sensor;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -66,6 +74,7 @@ public class RobotContainer implements Constants {
     // Configure the button bindings
     configureButtonBindings();
     this.m_controller.setDefaultCommand(m_Drive);
+    // sensor = new DigitalInput(0);
   }
 
   /**
@@ -108,6 +117,11 @@ public class RobotContainer implements Constants {
       // Operator Controls
       new JoystickButton(m_operatorInterface.getOperatorJoystick(), grabberJoystickButton)
         .onTrue(new InstantCommand(() -> Pneumatics.toggleGrabberSolenoid()));
+      new JoystickButton(m_operatorInterface.getOperatorJoystick(), 2)
+        .onTrue(new InstantCommand(() -> Pneumatics.setGrabberSolenoid(!sensor.get())));
+      new JoystickButton(m_operatorInterface.getOperatorJoystick(), 3)
+        .whileTrue(m_motor);
+
   }
 
   /**
