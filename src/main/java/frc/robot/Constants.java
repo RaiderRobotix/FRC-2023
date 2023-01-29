@@ -22,8 +22,13 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public interface Constants {
+
+    // Driver constants
     public final int xboxControllerPort = 4;
+
+    // Operator Constants
     public final int operatorStickPort = 1;
+    public final int grabberJoystickButton = 1;
 
     // Falcon 500 constants
     public final int kUnitsPerRevoltion = 2048;
@@ -75,8 +80,18 @@ public interface Constants {
 
 
     //Pneumatics Constansts
-    public static final double maxPSI = 80.0;
-    public static final double minPSI = 0.0;
+    public final double maxPSI = 80.0;
+    public final double minPSI = 0.0;
+
+    // Solenoid Channel Values
+
+    //Channels for solenoid that grabs the game pieces
+    public final int grabberSolenoidOnChannel = 13;
+    public final int grabberSolenoidOffChannel = 2;
+
+    //Channels for solenoids that pop game piece in auton
+    public final int popperSolenoidOnChannel = 12;
+    public final int popperSolenoidOffChannel = 1;
 
 
     //PID values

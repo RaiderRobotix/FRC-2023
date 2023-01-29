@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.event.BooleanEvent;
-import frc.robot.commands.PneumaticsCmd;
 import frc.robot.commands.balance;
 import frc.robot.commands.drive;
 import frc.robot.commands.driveDistance;
@@ -51,23 +50,22 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer implements Constants {
   // The robot's subsystems and commands are defined here...
-  // private final SwerveWheelController m_controller = new SwerveWheelController();
+  private final SwerveWheelController m_controller = new SwerveWheelController();
   private final OperatorInterface m_operatorInterface = new OperatorInterface();
   private final Pneumatics mPneumatics = new Pneumatics();
   private final Gyro m_gyro = new Gyro();
 
-  // private final driveDistance m_autoCommand = new driveDistance(1,m_controller);
+  private final driveDistance m_autoCommand = new driveDistance(1,m_controller);
 
-  // private final drive m_Drive = new drive( m_controller, m_operatorInterface, 0.6);
+  private final drive m_Drive = new drive( m_controller, m_operatorInterface, 0.6);
 
-  private final PneumaticsCmd m_PneumaticsCMD = new PneumaticsCmd();
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    // this.m_controller.setDefaultCommand(m_Drive);
+    this.m_controller.setDefaultCommand(m_Drive);
   }
 
   /**
@@ -79,21 +77,15 @@ public class RobotContainer implements Constants {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // new Trigger(m_operatorInterface::getRightTrigger)
-    //   .onTrue(new drive(m_controller, m_operatorInterface, slowSpeed));
+    // Driver Controls
+    new Trigger(m_operatorInterface::getRightTrigger)
+      .onTrue(new drive(m_controller, m_operatorInterface, slowSpeed));
 
-    // new Trigger(m_operatorInterface::getLeftTrigger)
-    //   .onTrue(new drive(m_controller, m_operatorInterface, turboSpeed));
+    new Trigger(m_operatorInterface::getLeftTrigger)
+      .onTrue(new drive(m_controller, m_operatorInterface, turboSpeed));
 
     new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kBack.value)
       .onTrue(new InstantCommand(() -> SwerveWheelController.toggleCoast()));
-
-    new JoystickButton(m_operatorInterface.getOperatorStick(), 12)
-      .onTrue(new PneumaticsCmd(new Pneumatics(1, PneumaticsModuleType.REVPH , 13), m_operatorInterface, true));
-    
-    new JoystickButton(m_operatorInterface.getOperatorStick(), 11)
-      .onTrue(new PneumaticsCmd(new Pneumatics(1, PneumaticsModuleType.REVPH , 2), m_operatorInterface, true));
-
 
     new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kStart.value)
       .onTrue(new InstantCommand(() -> SwerveWheelController.toggleField()));
@@ -101,18 +93,21 @@ public class RobotContainer implements Constants {
     new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kY.value)
       .onTrue(new InstantCommand(() -> SwerveWheelController.reset()));
 
-    // new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kA.value)
-    //   .and(new Trigger(m_operatorInterface::isPOV)
-    //   .whileTrue(new StartEndCommand(
-    //     () -> m_controller.setAngle(m_operatorInterface.getController().getPOV()),
-    //     () -> m_controller.setAngle(0))));
-
-    // new JoystickButton(m_operatorInterface.getController(), XboxController.Button.kB.value)
-    //   .and(new Trigger(m_operatorInterface::isPOV)
-    //   .whileTrue(new StartEndCommand(
-    //     () -> m_controller.setSpeed(Math.cos(m_operatorInterface.getController().getPOV()), Math.sin(m_operatorInterface.getController().getPOV()), 0),
-    //     () -> m_controller.stopMotors())));
+    new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kA.value)
+    .and(new Trigger(m_operatorInterface::isPOV))
+    .whileTrue(new StartEndCommand(
+      () -> m_controller.setAngle(m_operatorInterface.getXboxController().getPOV()),
+      () -> m_controller.setAngle(0)));
+      
+      new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kB.value)
+    .and(new Trigger(m_operatorInterface::isPOV)
+    .whileTrue(new StartEndCommand(
+      () -> m_controller.setSpeed(Math.cos(m_operatorInterface.getXboxController().getPOV()), Math.sin(m_operatorInterface.getXboxController().getPOV()), 0),
+      () -> m_controller.stopMotors())));
         
+      // Operator Controls
+      new JoystickButton(m_operatorInterface.getOperatorJoystick(), grabberJoystickButton)
+        .onTrue(new InstantCommand(() -> Pneumatics.toggleGrabberSolenoid()));
   }
 
   /**
@@ -122,46 +117,44 @@ public class RobotContainer implements Constants {
    */
   public Command getAutonomousCommand() {
     // Create config for trajectory
-  //   TrajectoryConfig config =
-  //       new TrajectoryConfig(
-  //               kPhysicalDriveMaxSpeed,
-  //               kMaxAccelerationMetersPerSecondSquared)
-  //           // Add kinematics to ensure max speed is actually obeyed
-  //           .setKinematics(kDriveKinematics);
+    TrajectoryConfig config =
+        new TrajectoryConfig(
+                kPhysicalDriveMaxSpeed,
+                kMaxAccelerationMetersPerSecondSquared)
+            // Add kinematics to ensure max speed is actually obeyed
+            .setKinematics(kDriveKinematics);
 
-  //   // An example trajectory to follow.  All units in meters.
-  //   Trajectory exampleTrajectory =
-  //       TrajectoryGenerator.generateTrajectory(
-  //           List.of(new Pose2d(0,0, new Rotation2d().fromDegrees(0)),
-  //                   // new Pose2d(2,0, new Rotation2d().fromDegrees(90)),
-  //                   new Pose2d(5, 0, new Rotation2d().fromDegrees(0))
-  //           ),
-  //           config);
+    // An example trajectory to follow.  All units in meters.
+    Trajectory exampleTrajectory =
+        TrajectoryGenerator.generateTrajectory(
+            List.of(new Pose2d(0,0, new Rotation2d().fromDegrees(0)),
+                    // new Pose2d(2,0, new Rotation2d().fromDegrees(90)),
+                    new Pose2d(5, 0, new Rotation2d().fromDegrees(0))
+            ),
+            config);
 
-  //   var thetaController =
-  //       new ProfiledPIDController(
-  //           thetaControllerKp, thetaControllerKi, thetaControllerKd, kThetaControllerConstraint);
-  //   thetaController.enableContinuousInput(-Math.PI, Math.PI);
+    var thetaController =
+        new ProfiledPIDController(
+            thetaControllerKp, thetaControllerKi, thetaControllerKd, kThetaControllerConstraint);
+    thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-  //   SwerveControllerCommand swerveControllerCommand =
-  //       new SwerveControllerCommand(
-  //           exampleTrajectory,
-  //           m_controller::getPose, // Functional interface to feed supplier
-  //           kDriveKinematics,
-  //           // Position controllers
-  //           new PIDController(xControllerKp, xControllerKi, xControllerKd),
-  //           new PIDController(yControllerKp, yControllerKi, yControllerKd),
-  //           thetaController,
-  //           () -> Rotation2d.fromDegrees(180),
-  //           m_controller::setState,
-  //           m_controller);
+    SwerveControllerCommand swerveControllerCommand =
+        new SwerveControllerCommand(
+            exampleTrajectory,
+            m_controller::getPose, // Functional interface to feed supplier
+            kDriveKinematics,
+            // Position controllers
+            new PIDController(xControllerKp, xControllerKi, xControllerKd),
+            new PIDController(yControllerKp, yControllerKi, yControllerKd),
+            thetaController,
+            () -> Rotation2d.fromDegrees(180),
+            m_controller::setState,
+            m_controller);
 
-  //   // Reset odometry to the starting pose of the trajectory.
-  //   m_controller.resetOdometry(exampleTrajectory.getInitialPose());
+    // Reset odometry to the starting pose of the trajectory.
+    m_controller.resetOdometry(exampleTrajectory.getInitialPose());
 
-  //   // Run path following command, then stop at the end.
-  //   return swerveControllerCommand.andThen(() -> m_controller.setSpeed(0, 0, 0, true));
-  // }
-  return m_PneumaticsCMD;
+    // Run path following command, then stop at the end.
+    return swerveControllerCommand.andThen(() -> m_controller.setSpeed(0, 0, 0, true));
   }
 }

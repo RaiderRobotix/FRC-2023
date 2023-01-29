@@ -173,7 +173,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
   // Sets the angle of all the wheel to angle
   public static void setAngle(double angle) {
     for(SwerveWheel module : modules){
-      // module.setSteerAngle(angle);
+      module.setSteerAngle(angle);
     }
   }
   

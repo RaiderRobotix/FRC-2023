@@ -16,11 +16,11 @@ public class OperatorInterface extends SubsystemBase implements Constants {
   // here. Call these from Commands.
 
   private final XboxController xboxcontroller;
-  private final Joystick operatorStick;
+  private final Joystick operatorJoystick;
 
   public OperatorInterface() {
     this.xboxcontroller = new XboxController(xboxControllerPort);
-    this.operatorStick = new Joystick(operatorStickPort);
+    this.operatorJoystick = new Joystick(operatorStickPort);
   }
 
   public double getRawRightJoyStick() {
@@ -35,8 +35,8 @@ public class OperatorInterface extends SubsystemBase implements Constants {
     return this.xboxcontroller;
   }
 
-  public Joystick getOperatorStick(){
-    return this.operatorStick;
+  public Joystick getOperatorJoystick(){
+    return this.operatorJoystick;
   }
 
 

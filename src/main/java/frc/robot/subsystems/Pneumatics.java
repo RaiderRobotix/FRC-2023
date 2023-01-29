@@ -13,26 +13,35 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 
-public class Pneumatics extends SubsystemBase {
+public class Pneumatics extends SubsystemBase implements Constants {
   /** Creates a new ExampleSubsystem. */
 
-  private Compressor pneumatics;
+  private static Compressor pneumatics;
   private Solenoid solenoid;
+  private static Solenoid grabberSolenoidOn;
+  private static Solenoid grabberSolenoidOff;
+
+  private static Solenoid popperSolenoidOn;
+  private static Solenoid popperSolenoidOff;
 
 
-  public Pneumatics(int module, PneumaticsModuleType moduleType, int channel) {
-    this.pneumatics = new Compressor(module, moduleType);
-    this.pneumatics.enableHybrid(Constants.minPSI,Constants.maxPSI);
+  public Pneumatics(int channel) {
+    pneumatics = new Compressor(1, PneumaticsModuleType.REVPH);
+    pneumatics.enableHybrid(minPSI, maxPSI);
     //this.pneumatics.enableDigital();
-    this.solenoid = new Solenoid(moduleType, channel); 
+    solenoid = new Solenoid(PneumaticsModuleType.REVPH, channel); 
   }
 
   public Pneumatics() {
-    this.pneumatics = new Compressor(1, PneumaticsModuleType.REVPH);
-    this.pneumatics.enableHybrid(Constants.minPSI,Constants.maxPSI);
+    pneumatics = new Compressor(1, PneumaticsModuleType.REVPH);
+    pneumatics.enableHybrid(minPSI, maxPSI);
     //this.pneumatics.enableDigital();
-    this.solenoid = new Solenoid(PneumaticsModuleType.REVPH, 0); 
 
+    grabberSolenoidOn = new Solenoid(PneumaticsModuleType.REVPH, grabberSolenoidOnChannel); 
+    grabberSolenoidOff = new Solenoid(PneumaticsModuleType.REVPH, grabberSolenoidOffChannel);
+
+    popperSolenoidOn = new Solenoid(PneumaticsModuleType.REVPH, popperSolenoidOnChannel);
+    popperSolenoidOn = new Solenoid(PneumaticsModuleType.REVPH, popperSolenoidOffChannel);
 
   }
 
@@ -44,15 +53,23 @@ public class Pneumatics extends SubsystemBase {
     return pneumatics.isEnabled();
   }
 
-  public boolean getSolenoidValue(){
-    return solenoid.get();
+  public static boolean getGrabberSolenoid(){
+    return grabberSolenoidOn.get();
   }
 
-  public void setSolenoidValue(boolean on){
-    solenoid.set(on);
-    System.out.println("passed");
+  public static void toggleGrabberSolenoid(){
+    grabberSolenoidOff.set(getGrabberSolenoid());
+    grabberSolenoidOn.set(!getGrabberSolenoid());
   }
 
+  public static boolean getPopperSolenoid(){
+    return popperSolenoidOn.get();
+  }
+
+  public static void togglePopperSolenoid(){
+    popperSolenoidOff.set(getPopperSolenoid());
+    popperSolenoidOn.set(!getPopperSolenoid());
+  }
 
 
 
@@ -60,6 +77,8 @@ public class Pneumatics extends SubsystemBase {
   public void periodic() {
     // setSolenoidValue(true);
     SmartDashboard.putNumber(this.getName() + "Pneumatics Pressure", getPneumaticsPressure());
+    SmartDashboard.putBoolean("Grabber Solenoid", getGrabberSolenoid());
+    SmartDashboard.putBoolean("Popper Solenoid", getPopperSolenoid());
 
   }
 
