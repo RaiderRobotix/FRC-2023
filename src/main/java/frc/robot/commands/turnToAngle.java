@@ -27,6 +27,7 @@ public class turnToAngle extends PIDCommand implements Constants {
         output -> swerveController.setSpeed(0,0, output));
           // Use the output here
         addRequirements(swerveController);
+        getController().setTolerance(robotAngleTolerance);
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
   }
@@ -34,6 +35,6 @@ public class turnToAngle extends PIDCommand implements Constants {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return getController().atSetpoint();
   }
 }

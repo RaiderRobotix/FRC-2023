@@ -24,7 +24,7 @@ public class balance extends PIDCommand implements Constants {
         // The controller that the command will use
         new PIDController(balanceKp, balanceKi, balanceKd),
         // This should return the measurement
-        () -> Gyro.gyro().getYaw(),
+        () -> Gyro.gyro().getPitch(),
         // This should return the setpoint (can also be a constant)
         () -> 0,
         // This uses the output
@@ -33,6 +33,7 @@ public class balance extends PIDCommand implements Constants {
         });
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
+    getController().setTolerance(robotBalanceTolerance);
   }
 
   // Returns true when the command should end.

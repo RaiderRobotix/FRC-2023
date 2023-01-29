@@ -28,6 +28,7 @@ public class driveDistance extends PIDCommand implements Constants {
         output -> swerveController.setSpeed(output, 0, 0, true));
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(swerveController);
+    getController().setTolerance(robotDistanceTolerance);
     // Configure additional PID options by calling `getController` here.
   }
 

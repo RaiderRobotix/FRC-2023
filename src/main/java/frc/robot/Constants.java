@@ -41,9 +41,18 @@ public interface Constants {
     public final double rightTriggerThreshold = 0.70;
     public final double leftTriggerThreshold = 0.70;
 
+
+
+
+
+
     // Robots measurements in metres
     public final double width = Units.inchesToMeters(24);
     public final double length = Units.inchesToMeters(32);
+
+
+
+
 
     //Robot's kinematics
     public final double frontLeftLocationX = 1.0;
@@ -112,11 +121,13 @@ public interface Constants {
     public final double robotangleKi = 0.00100; // Amount to react Default 0.00001
     public final double robotangleKp = 0.00000; // Speed Default 0.01100
     public final double robotangleKd = 0.00000; // Dampens system Default 0.00037
+    public final double robotAngleTolerance = 1.5;
 
     //PID values for robot drive distance
     public final double robotDriveDistanceKi = 0.2000;
     public final double robotDriveDistanceKp = 0.0000;
     public final double robotDriveDistanceKd = 0.0000;
+    public final double robotDistanceTolerance = .1;
 
     //PID values for thete controller
     public final double thetaControllerKp = 0.5000;
@@ -137,6 +148,7 @@ public interface Constants {
     public final double balanceKp = 0.0000;
     public final double balanceKi = 0.0000;
     public final double balanceKd = 0.0000;
+    public final double robotBalanceTolerance = 1;
 
 
 
