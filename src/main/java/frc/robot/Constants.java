@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import java.util.ArrayList;
+
+import com.pathplanner.lib.PathPlannerTrajectory;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -81,6 +85,10 @@ public interface Constants {
     //Units in percentage of maxAttainableSpeed
     public final double turboSpeed = 1;
     public final double slowSpeed = 0.2;
+
+    //Auton Path trajectory thing ---- STILL IN TESTING
+    //ArrayList<PathPlannerTrajectory> pathGroup = new ArrayList<PathPlannerTrajectory>();
+
 
     //Drivebase movement constraints for auton
     public final double kPhysicalDriveMaxSpeed = 1;

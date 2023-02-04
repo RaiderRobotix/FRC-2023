@@ -119,6 +119,10 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     return odometry.getPoseMeters();
   }
 
+  public Pose2d resetPose(){
+    return new Pose2d(0,0,new Rotation2d());
+  }
+
   //Gets the current X speed of the robot
   public double getXSpeed() {
     if (this.speeds != null) {
