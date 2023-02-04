@@ -84,7 +84,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
 
 
     angleController.enableContinuousInput(0, 360);
-    resetMotors();
+    // reset();
   }
 
   public static void reset(){

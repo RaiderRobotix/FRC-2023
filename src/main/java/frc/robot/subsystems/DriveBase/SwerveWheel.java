@@ -69,17 +69,9 @@ public class SwerveWheel extends SubsystemBase implements Constants {
     this.driveEncoder = driveMotor.getEncoder();
     this.steerEncoder = steerMotor.getEncoder();
     this.name = name;
-
+    //configureSteerMotor();
     
     this.angleController.enableContinuousInput(0, 360);
-    
-    
-    // this.steeringPid = steerMotor.getPIDController();
-    // this.steeringPid.setOutputRange(0, 360);
-    
-    // this.steeringPid.setP(angleKp);
-    // this.steeringPid.setI(angleKi);
-    // this.steeringPid.setD(angleKd);
     
     
     if (CANencoder.getDeviceID() == 0) {
@@ -94,10 +86,43 @@ public class SwerveWheel extends SubsystemBase implements Constants {
     if (CANencoder.getDeviceID() == 3) {
       CANencoder.configMagnetOffset(backRightEncoderOffset);
     }
-    configureSteerMotor();
+
+    this.steeringPid = steerMotor.getPIDController();
+    
+    this.steeringPid.setOutputRange(0, 360);
+
+    driveMotor.restoreFactoryDefaults();
+    steerMotor.restoreFactoryDefaults();
+    CANencoder.configFactoryDefault();
+    
+    steerMotor.clearFaults();
+    steerMotor.setIdleMode(IdleMode.kBrake);
+    steerMotor.setSmartCurrentLimit(20);
+    steerEncoder.setVelocityConversionFactor(360 * (14/50) * (10/60) / 60);
+    steerEncoder.setPositionConversionFactor(17);
+    steerMotor.enableVoltageCompensation(12);
+    steerMotor.burnFlash();
+    
+    
+    driveMotor.setIdleMode(IdleMode.kBrake);
+    driveMotor.setSmartCurrentLimit(80);
+    driveMotor.enableVoltageCompensation(12);
+    driveEncoder.setVelocityConversionFactor(kWheelDiameter * Math.PI / kGearRatio);
+    driveEncoder.setPositionConversionFactor(kWheelDiameter * Math.PI / kGearRatio / 60);
+    driveMotor.burnFlash();
+    
+    // steerEncoder.setPosition(CANencoder.getAbsolutePosition());
+
+    System.out.println("Passed");
+
+  
   }
   
-  public void configureSteerMotor(){
+ /* public void configureSteerMotor(){
+    this.steeringPid = steerMotor.getPIDController();
+    
+    this.steeringPid.setOutputRange(-180, 180);
+
     driveMotor.restoreFactoryDefaults();
     steerMotor.restoreFactoryDefaults();
     CANencoder.configFactoryDefault();
@@ -120,10 +145,15 @@ public class SwerveWheel extends SubsystemBase implements Constants {
     driveMotor.burnFlash();
     
     steerEncoder.setPosition(CANencoder.getAbsolutePosition());
-  }
+
+    System.out.println("Passed");
+
+  }*/
+
+  
   
   public void resetSteerMotor(){
-    setSteerAngle(0);
+    //setSteerAngle(0);
   }
 
   public void resetEncoders(){
@@ -166,23 +196,49 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   }
 
   public SwerveModuleState getState() {
-    return new SwerveModuleState(getDriveEncoderVelocity(), new Rotation2d(getSteerEncoderAngle().getDegrees()));
+    return new SwerveModuleState(getDriveEncoderVelocity(), getSteerEncoderAngle());
   }
 
   public void setDriveSpeed(double speed){
-    driveMotor.setVoltage(driveController.calculate(getDriveEncoderVelocity(), speed));
+    // driveMotor.setVoltage(driveController.calculate(getDriveEncoderVelocity(), speed));
   }
 
   public void setSteerAngle(double angle) {
     // System.out.println(angle);
-    steerMotor.setVoltage(angleController.calculate(getSteerEncoderAngle().getDegrees(), angle) * RobotController.getBatteryVoltage());
+    this.steeringPid.setP(angleKp, 1);
+    this.steeringPid.setI(angleKi, 1);
+    this.steeringPid.setD(angleKd, 1);
+    this.steeringPid.setPositionPIDWrappingMaxInput(2*Math.PI);
+    this.steeringPid.setPositionPIDWrappingMinInput(-2*Math.PI);
+    this.steeringPid.setPositionPIDWrappingEnabled(true);
+    steerEncoder.setPositionConversionFactor(1);
+    // steeringPid.setReference(angle, ControlType.kPosition, 1);
+    System.out.println(steeringPid.getD(1));
+    // steerMotor.setVoltage(angleController.calculate(getSteerEncoderAngle().getDegrees(), angle) * RobotController.getBatteryVoltage());
   }
 
+
+
   public void setDesiredState(SwerveModuleState state) {
-    state = SwerveModuleState.optimize(state, getSteerEncoderAngle());
-    setDriveSpeed(state.speedMetersPerSecond);
-    setSteerAngle(state.angle.getDegrees());
+    
+    //setDriveSpeed(state.speedMetersPerSecond);
+    //setSteerAngle(state.angle.getDegrees());
+
+    if(Math.abs(state.speedMetersPerSecond) < 0.01){
+      driveMotor.set(0);
+      steerMotor.set(0);
+      return;
+    }
+    state = SwerveModuleState.optimize(state, getState().angle);
+    double angle = angleController.calculate(steerEncoder.getPosition(), state.angle.getRadians());
+    // driveMotor.set(state.speedMetersPerSecond/ Constants.kPhysicalDriveMaxSpeed);
+    steerMotor.set(angle);
+    SmartDashboard.putNumber("PIDangle", angle);
+    SmartDashboard.putNumber("DesiredAngle", getState().angle.getDegrees());
+    
   }
+
+ 
 
   public void setNeutralMode(boolean coast){
     if(coast){
@@ -198,7 +254,7 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   @Override
   public void periodic() {
     SmartDashboard.putNumber(getName() + " Steer Angle", 
-    Double.parseDouble(df.format(steerEncoder.getPosition())));
+    Double.parseDouble(df.format(getSteerEncoderAngle().getDegrees())));
     
     SmartDashboard.putNumber(getName() + " Drive Speed", 
     Double.parseDouble(df.format(driveEncoder.getVelocity())));
