@@ -28,9 +28,9 @@ public class Pneumatics extends SubsystemBase implements Constants {
   private static Solenoid popperSolenoidOn;
   private static Solenoid popperSolenoidOff;
 
-  private AnalogInput sonic;
+  // private AnalogInput sonic;
 
-  private DigitalInput sensor;
+  // private DigitalInput sensor;
 
   private OperatorInterface oi;
 
@@ -55,8 +55,8 @@ public class Pneumatics extends SubsystemBase implements Constants {
     popperSolenoidOn = new Solenoid(PneumaticsModuleType.REVPH, popperSolenoidOnChannel);
     popperSolenoidOn = new Solenoid(PneumaticsModuleType.REVPH, popperSolenoidOffChannel);
 
-    sonic = new AnalogInput(0);
-    sensor = new DigitalInput(0);
+    // sonic = new AnalogInput(0);
+    // sensor = new DigitalInput(0);
     this.oi = oi;
   }
 
@@ -76,6 +76,7 @@ public class Pneumatics extends SubsystemBase implements Constants {
     System.out.println("Passed");
     grabberSolenoidOff.set(getGrabberSolenoid());
     grabberSolenoidOn.set(!getGrabberSolenoid());
+    // togglePopperSolenoid(); 
   }
 
   public static void setGrabberSolenoid(boolean state){
@@ -102,12 +103,12 @@ public class Pneumatics extends SubsystemBase implements Constants {
     SmartDashboard.putBoolean("Grabber Solenoid", getGrabberSolenoid());
     SmartDashboard.putBoolean("Popper Solenoid", getPopperSolenoid());
 
-    SmartDashboard.putNumber("sonic", sonic.getValue());
-    if (!sensor.get() && !oi.getOperatorJoystick().getRawButton(5)) {
-      Pneumatics.setGrabberSolenoid(true);
-    } else if (oi.getOperatorJoystick().getRawButton(3)) {
-      Pneumatics.setGrabberSolenoid(false);
-    }
+    // SmartDashboard.putNumber("sonic", sonic.getValue());
+    // if (!sensor.get() && !oi.getOperatorJoystick().getRawButton(5)) {
+    //   Pneumatics.setGrabberSolenoid(true);
+    // } else if (oi.getOperatorJoystick().getRawButton(3)) {
+    //   Pneumatics.setGrabberSolenoid(false);
+    // }
 
   }
 

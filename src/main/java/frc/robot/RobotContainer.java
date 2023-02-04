@@ -65,7 +65,7 @@ public class RobotContainer implements Constants {
 
   private motor m_motor = new motor(m_operatorInterface);
 
-  private DigitalInput sensor;
+  // private DigitalInput sensor;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -117,8 +117,8 @@ public class RobotContainer implements Constants {
       // Operator Controls
       new JoystickButton(m_operatorInterface.getOperatorJoystick(), grabberJoystickButton)
         .onTrue(new InstantCommand(() -> Pneumatics.toggleGrabberSolenoid()));
-      new JoystickButton(m_operatorInterface.getOperatorJoystick(), 2)
-        .onTrue(new InstantCommand(() -> Pneumatics.setGrabberSolenoid(!sensor.get())));
+      // new JoystickButton(m_operatorInterface.getOperatorJoystick(), 2)
+      //   .onTrue(new InstantCommand(() -> Pneumatics.setGrabberSolenoid(!sensor.get())));
       new JoystickButton(m_operatorInterface.getOperatorJoystick(), 3)
         .whileTrue(m_motor);
 
