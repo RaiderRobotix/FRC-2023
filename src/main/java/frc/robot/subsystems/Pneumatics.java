@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.PneumaticsBase;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -16,17 +17,26 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+
+
+
 
 public class Pneumatics extends SubsystemBase implements Constants {
   /** Creates a new ExampleSubsystem. */
 
   private static Compressor pneumatics;
   private Solenoid solenoid;
-  private static Solenoid grabberSolenoidOn;
-  private static Solenoid grabberSolenoidOff;
+// private static Solenoid grabberSolenoidOn;
+//   private static Solenoid grabberSolenoidOff;
 
-  private static Solenoid popperSolenoidOn;
-  private static Solenoid popperSolenoidOff;
+//   private static Solenoid popperSolenoidOn;
+//   private static Solenoid popperSolenoidOff;
+
+  private static DoubleSolenoid grabberSolenoid;
+  private static DoubleSolenoid popperSolenoid;
+
+  private static Value value;
 
   // private AnalogInput sonic;
 
@@ -35,25 +45,21 @@ public class Pneumatics extends SubsystemBase implements Constants {
   private OperatorInterface oi;
 
 
-  public Pneumatics(int channel) {
+  public Pneumatics(int enterChannel, int closeChannel) {
     pneumatics = new Compressor(1, PneumaticsModuleType.REVPH);
-    pneumatics.enableHybrid(minPSI, maxPSI);
-    //this.pneumatics.enableDigital();
-    solenoid = new Solenoid(PneumaticsModuleType.REVPH, channel); 
+    pneumatics.enableDigital();
+
+
+    
   }
 
   public Pneumatics(OperatorInterface oi) {
     pneumatics = new Compressor(1, PneumaticsModuleType.REVPH);
-    // pneumatics.enableHybrid(minPSI, maxPSI);
-    // pneumatics.enableAnalog(minPSI, maxPSI);
+    
     this.pneumatics.enableDigital();
-    // pneumatics.disable();
-
-    grabberSolenoidOn = new Solenoid(PneumaticsModuleType.REVPH, grabberSolenoidOnChannel); 
-    grabberSolenoidOff = new Solenoid(PneumaticsModuleType.REVPH, grabberSolenoidOffChannel);
-
-    popperSolenoidOn = new Solenoid(PneumaticsModuleType.REVPH, popperSolenoidOnChannel);
-    popperSolenoidOn = new Solenoid(PneumaticsModuleType.REVPH, popperSolenoidOffChannel);
+    
+    grabberSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, grabberSolenoidOnChannel, grabberSolenoidOffChannel);
+    popperSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, popperSolenoidOnChannel, popperSolenoidOffChannel);
 
     // sonic = new AnalogInput(0);
     // sensor = new DigitalInput(0);
@@ -68,40 +74,40 @@ public class Pneumatics extends SubsystemBase implements Constants {
     return pneumatics.isEnabled();
   }
 
-  public static boolean getGrabberSolenoid(){
-    return grabberSolenoidOn.get();
+  public static String getGrabberSolenoid(){
+    return "" + grabberSolenoid.get();
   }
 
   public static void toggleGrabberSolenoid(){
     System.out.println("Passed");
-    grabberSolenoidOff.set(getGrabberSolenoid());
-    grabberSolenoidOn.set(!getGrabberSolenoid());
-    // togglePopperSolenoid(); 
+    grabberSolenoid.toggle();
   }
 
   public static void setGrabberSolenoid(boolean state){
-    grabberSolenoidOn.set(state);
-    grabberSolenoidOff.set(!state);
+    if(state){
+        grabberSolenoid.set(Value.kForward);}
+    else{
+        grabberSolenoid.set(Value.kReverse);
+    }
+    
   }
 
-  public static boolean getPopperSolenoid(){
-    return popperSolenoidOn.get();
+  public static String getPopperSolenoid(){
+    return "" + popperSolenoid.get();
   }
 
   public static void togglePopperSolenoid(){
-    popperSolenoidOff.set(getPopperSolenoid());
-    popperSolenoidOn.set(!getPopperSolenoid());
+    popperSolenoid.toggle();
   }
 
 
 
   @Override
   public void periodic() {
-    // setSolenoidValue(true);
 
     SmartDashboard.putNumber(this.getName() + "Pneumatics Pressure", getPneumaticsPressure());
-    SmartDashboard.putBoolean("Grabber Solenoid", getGrabberSolenoid());
-    SmartDashboard.putBoolean("Popper Solenoid", getPopperSolenoid());
+    SmartDashboard.putString("Grabber Solenoid", getGrabberSolenoid());
+    SmartDashboard.putString("Popper Solenoid", getPopperSolenoid());
 
     // SmartDashboard.putNumber("sonic", sonic.getValue());
     // if (!sensor.get() && !oi.getOperatorJoystick().getRawButton(5)) {
