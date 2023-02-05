@@ -12,26 +12,37 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
-public class Elevator extends SubsystemBase {
+public class Elevator extends SubsystemBase implements Constants {
   private static DutyCycleEncoder boreThrough;
   private static WPI_TalonFX motor;
   private static PIDController pid;
   /** Creates a new Elevator. */
   public Elevator() {
-    this.boreThrough = new DutyCycleEncoder(1);
-    this.motor = new WPI_TalonFX(0);
-    this.pid = new PIDController(0.1, 0, 0);
-    pid.enableContinuousInput(0, 1);
+    this.boreThrough = new DutyCycleEncoder(kElevatorEncoder);
+    this.boreThrough.setDistancePerRotation(kElevatorDistancePerRotation);
+    this.motor = new WPI_TalonFX(kElevatorTalonFX);
+    this.pid = new PIDController(elevatorKp, elevatorKi, elevatorKd);
+    // pid.enableContinuousInput(0, 1);
   }
 
-  public static void setMotor(){
-    System.out.println("passed");
-    motor.set(pid.calculate(boreThrough.getAbsolutePosition(), 1));
+  public static void setMotorPID(double height){
+    motor.set(pid.calculate(boreThrough.getAbsolutePosition(), height));
   }
 
   public static void setMotor(double speed){
     motor.set(speed);
+  }
+
+  public static void setElevatorUpperRow(){
+    setMotorPID(kUpperRowHeight);
+  }
+  public static void setElevatorMidRow(){
+    setMotorPID(kMidRowHeight);
+  }
+  public static void setElevatorLowerRow(){
+    setMotorPID(kLowerRowHeight);
   }
 
   public static double getSensor(){
@@ -40,7 +51,7 @@ public class Elevator extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Bore THrough", boreThrough.getAbsolutePosition());
+    SmartDashboard.putNumber("Bore Through", boreThrough.getAbsolutePosition());
     // This method will be called once per scheduler run
   }
 }

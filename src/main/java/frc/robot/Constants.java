@@ -110,6 +110,30 @@ public interface Constants {
     public final int popperSolenoidOnChannel = 12;
     public final int popperSolenoidOffChannel = 1;
 
+    //Elevator Variables
+    public final int kElevatorEncoder = 1;
+    public final int kElevatorTalonFX = 1;
+    public final double kElevatorDistancePerRotation = 0.0;
+    //Present Height Values for rows
+    public final double kUpperRowHeight = 0.0;
+    public final double kMidRowHeight = 0.0;
+    public final double kLowerRowHeight = 0.0;
+    //PID values for elevator
+    public final double elevatorKp = 0.0100;
+    public final double elevatorKi = 0.0000;
+    public final double elevatorKd = 0.0000;
+
+    
+    //Grabber Variables
+    public final int kGrabberEncoder = 0;
+    public final int kGrabberTalonFX = 0;
+    public final double kGrabberDistancePerRotation = 0.0;
+     //PID values for Grabber
+     public final double grabberKp = 0.0100;
+     public final double grabberKi = 0.0000;
+     public final double grabberKd = 0.0000;
+
+
 
     //PID values
     
@@ -156,10 +180,7 @@ public interface Constants {
     public final double balanceKp = 0.0000;
     public final double balanceKi = 0.0000;
     public final double balanceKd = 0.0000;
-    public final double robotBalanceTolerance = 1;
-
-
-
+    public final double robotBalanceTolerance = 1;   
 
     //CAN IDs and Encoder Offsets
     public final int frontLeftDriveID = 20;
