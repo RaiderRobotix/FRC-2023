@@ -129,14 +129,19 @@ public interface Constants {
     public final double elevatorKd = 0.0000;
 
 
-    //Grabber Variables
-    public final int kGrabberEncoder = 0;
-    public final int kGrabberTalonFX = 0;
-    public final double kGrabberDistancePerRotation = 0.0;
-     //PID values for Grabber
-     public final double grabberKp = 0.0100;
-     public final double grabberKi = 0.0000;
-     public final double grabberKd = 0.0000;
+    //Arm Variables
+    public final int kArmEncoder = 0;
+    public final int kArmTalonFX = 0;
+    public final double kArmDistancePerRotation = 0.0;
+
+    //Speeds for Operator Arm
+    public final double kArmInSpeed = 0.1;
+    public final double kArmOutSpeed = 0.1;
+    
+     //PID values for Arm
+     public final double armKp = 0.0100;
+     public final double armKi = 0.0000;
+     public final double armKd = 0.0000;
 
 
 
