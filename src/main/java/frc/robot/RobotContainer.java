@@ -130,12 +130,12 @@ public class RobotContainer implements Constants {
       //eventMap.put("intakeDown", turnTOturnToAngle(10, m_controller));
 
     SwerveAutoBuilder autoBuilder =  new SwerveAutoBuilder(
-      SwerveWheelController::getPose, // Pose2d supplier
-      new Pose2d(0, 0, new Rotation2d(0)), // Pose2d consumer, used to reset odometry at the beginning of auto
+      m_controller::getPose, // Pose2d supplier
+      m_controller::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
       kDriveKinematics, // SwerveDriveKinematics
       new PIDConstants(5.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
       new PIDConstants(0.5, 0.0, 0.0), // PID constants to correct for rotation error (used to create the rotation controller)
-      SwerveWheelController::setState, // Module states consumer used to output to the drive subsystem
+      m_controller::setState, // Module states consumer used to output to the drive subsystem
       eventMap,
       true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
       m_Drive // The drive subsystem. Used to properly set the requirements of path following commands
