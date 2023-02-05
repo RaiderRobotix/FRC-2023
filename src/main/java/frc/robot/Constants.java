@@ -34,6 +34,12 @@ public interface Constants {
     public final int operatorStickPort = 1;
     public final int grabberJoystickButton = 1;
 
+    public final int armInJoystickButton = 11;
+    public final int armOutJoystickButton = 12;
+
+    public final int elevatorUpJoystickButton = 5;
+    public final int elevatorDownJoystickButton = 3;
+
     // Falcon 500 constants
     public final int kUnitsPerRevoltion = 2048;
     public final double kGearRatio = 6.12;

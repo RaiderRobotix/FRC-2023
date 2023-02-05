@@ -28,6 +28,7 @@ import frc.robot.commands.drive;
 import frc.robot.commands.driveDistance;
 import frc.robot.commands.motor;
 import frc.robot.commands.turnToAngle;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.OperatorInterface;
@@ -50,6 +51,7 @@ public class RobotContainer implements Constants {
   private final Pneumatics mPneumatics = new Pneumatics(m_operatorInterface);
   private final Gyro m_gyro = new Gyro();
   private final Elevator m_elevator = new Elevator();
+  private final Arm m_arm = new Arm();
 
   private final driveDistance m_autoCommand = new driveDistance(1,m_controller);
 
@@ -95,25 +97,45 @@ public class RobotContainer implements Constants {
       .onTrue(new InstantCommand(() -> SwerveWheelController.reset()));
 
     new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kA.value)
-    .and(new Trigger(m_operatorInterface::isPOV))
-    .whileTrue(new StartEndCommand(
-      () -> m_controller.setAngle(m_operatorInterface.getXboxController().getPOV()),
-      () -> m_controller.setAngle(0)));
+      .and(new Trigger(m_operatorInterface::isPOV))
+      .whileTrue(new StartEndCommand(
+        () -> m_controller.setAngle(m_operatorInterface.getXboxController().getPOV()),
+        () -> m_controller.setAngle(0)));
       
-      new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kB.value)
-    .and(new Trigger(m_operatorInterface::isPOV)
-    .whileTrue(new StartEndCommand(
-      () -> m_controller.setSpeed(Math.cos(m_operatorInterface.getXboxController().getPOV()), Math.sin(m_operatorInterface.getXboxController().getPOV()), 0),
-      () -> m_controller.stopMotors())));
+    new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kB.value)
+      .and(new Trigger(m_operatorInterface::isPOV)
+      .whileTrue(new StartEndCommand(
+        () -> m_controller.setSpeed(Math.cos(m_operatorInterface.getXboxController().getPOV()), Math.sin(m_operatorInterface.getXboxController().getPOV()), 0),
+        () -> m_controller.stopMotors(),
+        m_controller)));
         
       // Operator Controls
-      new JoystickButton(m_operatorInterface.getOperatorJoystick(), grabberJoystickButton)
-        .onTrue(new InstantCommand(() -> Pneumatics.toggleGrabberSolenoid()));
-      // new JoystickButton(m_operatorInterface.getOperatorJoystick(), 2)
-      //   .onTrue(new InstantCommand(() -> Pneumatics.setGrabberSolenoid(!sensor.get())));
-      new JoystickButton(m_operatorInterface.getOperatorJoystick(), 3)
-        .whileTrue(m_motor);
+    new JoystickButton(m_operatorInterface.getOperatorJoystick(), grabberJoystickButton)
+      .onTrue(new InstantCommand(() -> Pneumatics.toggleGrabberSolenoid()));
 
+
+    new JoystickButton(m_operatorInterface.getOperatorJoystick(), armInJoystickButton)
+      .onTrue(new StartEndCommand(
+        () -> Arm.setMotor(kArmInSpeed),
+        () -> Arm.setMotor(0)));
+
+    new JoystickButton(m_operatorInterface.getOperatorJoystick(), armOutJoystickButton)
+      .onTrue(new StartEndCommand(
+        () -> Arm.setMotor(kArmOutSpeed),
+        () -> Arm.setMotor(0),
+        m_arm));
+
+    new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorUpJoystickButton)
+    .onTrue(new StartEndCommand(
+      () -> Elevator.setMotor(kElevatorUpSpeed),
+      () -> Elevator.setMotor(0),
+      m_elevator));
+      
+    new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorDownJoystickButton)
+    .onTrue(new StartEndCommand(
+      () -> Elevator.setMotor(kElevatorDownSpeed),
+      () -> Elevator.setMotor(0),
+      m_elevator));
 
   }
 

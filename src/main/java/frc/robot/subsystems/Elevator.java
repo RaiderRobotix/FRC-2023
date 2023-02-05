@@ -47,14 +47,6 @@ public class Elevator extends SubsystemBase implements Constants {
     setMotorPID(kLowerRowHeight);
   }
 
-  public static void setElevatorUp(){
-    setMotor(kElevatorUpSpeed);
-  }
-
-  public static void setElevatorDown(){
-    setMotor(kElevatorDownSpeed);
-  }
-
   public static double getSensor(){
     return boreThrough.getAbsolutePosition();
   }
