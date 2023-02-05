@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,10 +18,12 @@ public class OperatorInterface extends SubsystemBase implements Constants {
 
   private final XboxController xboxcontroller;
   private final Joystick operatorJoystick;
+  private final DigitalInput sensor;
 
   public OperatorInterface() {
     this.xboxcontroller = new XboxController(xboxControllerPort);
     this.operatorJoystick = new Joystick(operatorStickPort);
+    this.sensor = new DigitalInput(kGrabberDistanceSensorDIO);
   }
 
   public double getRawRightJoyStick() {
@@ -37,6 +40,10 @@ public class OperatorInterface extends SubsystemBase implements Constants {
 
   public Joystick getOperatorJoystick(){
     return this.operatorJoystick;
+  }
+
+  public boolean getDistanceSensor(){
+    return sensor.get();
   }
 
 

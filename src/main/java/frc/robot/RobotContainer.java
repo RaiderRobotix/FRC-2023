@@ -137,6 +137,12 @@ public class RobotContainer implements Constants {
       () -> Elevator.setMotor(0),
       m_elevator));
 
+
+
+    //Button for Sensor trigger
+    new Trigger(m_operatorInterface::getDistanceSensor)
+      .debounce(kDistanceSensorDebounceTime)
+      .onTrue(new InstantCommand(() -> Pneumatics.toggleGrabberSolenoid()));
   }
 
   /**

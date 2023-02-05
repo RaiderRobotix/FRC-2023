@@ -40,6 +40,12 @@ public interface Constants {
     public final int elevatorUpJoystickButton = 5;
     public final int elevatorDownJoystickButton = 3;
 
+    //Distance Sensor Constants
+    public final int kGrabberDistanceSensorDIO = 0;
+    //Time between the sensor allowing to trigger the grabber
+    //in seconds
+    public final double kDistanceSensorDebounceTime = 30;
+
     // Falcon 500 constants
     public final int kUnitsPerRevoltion = 2048;
     public final double kGearRatio = 6.12;
