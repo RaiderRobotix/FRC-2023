@@ -38,11 +38,21 @@ public class Elevator extends SubsystemBase implements Constants {
   public static void setElevatorUpperRow(){
     setMotorPID(kUpperRowHeight);
   }
+
   public static void setElevatorMidRow(){
     setMotorPID(kMidRowHeight);
   }
+
   public static void setElevatorLowerRow(){
     setMotorPID(kLowerRowHeight);
+  }
+
+  public static void setElevatorUp(){
+    setMotor(kElevatorUpSpeed);
+  }
+
+  public static void setElevatorDown(){
+    setMotor(kElevatorDownSpeed);
   }
 
   public static double getSensor(){

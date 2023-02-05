@@ -114,6 +114,11 @@ public interface Constants {
     public final int kElevatorEncoder = 1;
     public final int kElevatorTalonFX = 1;
     public final double kElevatorDistancePerRotation = 0.0;
+
+    //Speeds for Operator Controller
+    public final double kElevatorUpSpeed = 0.1;
+    public final double kElevatorDownSpeed = 0.1;
+
     //Present Height Values for rows
     public final double kUpperRowHeight = 0.0;
     public final double kMidRowHeight = 0.0;
@@ -123,7 +128,7 @@ public interface Constants {
     public final double elevatorKi = 0.0000;
     public final double elevatorKd = 0.0000;
 
-    
+
     //Grabber Variables
     public final int kGrabberEncoder = 0;
     public final int kGrabberTalonFX = 0;
