@@ -6,6 +6,8 @@ package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -31,6 +33,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  private AddressableLED led;
+  private AddressableLEDBuffer ledBuffer;
   // private AnalogInput sonic;
 
   /**
@@ -44,6 +48,15 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    led = new AddressableLED(0);
+    ledBuffer = new AddressableLEDBuffer(60);
+    led.setLength(ledBuffer.getLength());
+    
+    for(int i = 0; i < ledBuffer.getLength(); i++){
+      ledBuffer.setRGB(i, 255, 255, 0);
+    }
+    led.setData(ledBuffer);
+    led.start();
   }
 
   /**

@@ -141,7 +141,7 @@ public class RobotContainer implements Constants {
 
     //Button for Sensor trigger
     new Trigger(m_operatorInterface::getDistanceSensor)
-      .debounce(kDistanceSensorDebounceTime)
+      .debounce(kDistanceSensorDebounceTime, )
       .onTrue(new InstantCommand(() -> Pneumatics.toggleGrabberSolenoid()));
   }
 
