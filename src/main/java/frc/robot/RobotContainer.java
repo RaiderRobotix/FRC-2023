@@ -141,7 +141,7 @@ public class RobotContainer implements Constants {
 
     //Button for Sensor trigger
     new Trigger(m_operatorInterface::getDistanceSensor)
-      .debounce(kDistanceSensorDebounceTime, )
+      .debounce(kDistanceSensorDebounceTime)
       .onTrue(new InstantCommand(() -> Pneumatics.toggleGrabberSolenoid()));
   }
 
@@ -152,24 +152,24 @@ public class RobotContainer implements Constants {
    */
   public Command getAutonomousCommand() {
 
-    ArrayList<PathPlannerTrajectory> pathGroup = (ArrayList<PathPlannerTrajectory>) PathPlanner.loadPathGroup("Auton Test path", new PathConstraints(4, 3));
+//     ArrayList<PathPlannerTrajectory> pathGroup = (ArrayList<PathPlannerTrajectory>) PathPlanner.loadPathGroup("Auton Test path", new PathConstraints(4, 3));
 
-    HashMap<String, Command> eventMap = new HashMap<>();
-    eventMap.put("marker1", new PrintCommand("Passed marker 1"));
+//     HashMap<String, Command> eventMap = new HashMap<>();
+//     eventMap.put("marker1", new PrintCommand("Passed marker 1"));
     
-    SwerveAutoBuilder autoBuilder =  new SwerveAutoBuilder(
-      m_controller::getPose, // Pose2d supplier
-      SwerveWheelController::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of autokDriveKinematics, // SwerveDriveKinematics
-      kDriveKinematics,
-      new PIDConstants(5.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
-      new PIDConstants(0.5, 0.0, 0.0), // PID constants to correct for rotation error (used to create the rotation controller)
-      m_controller::setState, // Module states consumer used to output to the drive subsystemeventMap,
-      eventMap,
-      true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-      m_Drive // The drive subsystem. Used to properly set the requirements of path following commands
-    );
+//     SwerveAutoBuilder autoBuilder =  new SwerveAutoBuilder(
+//       m_controller::getPose, // Pose2d supplier
+//       SwerveWheelController::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of autokDriveKinematics, // SwerveDriveKinematics
+//       kDriveKinematics,
+//       new PIDConstants(5.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
+//       new PIDConstants(0.5, 0.0, 0.0), // PID constants to correct for rotation error (used to create the rotation controller)
+//       m_controller::setState, // Module states consumer used to output to the drive subsystemeventMap,
+//       eventMap,
+//       true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+//       m_Drive // The drive subsystem. Used to properly set the requirements of path following commands
+//     );
 
-Command fullAuto = autoBuilder.fullAuto(pathGroup);
+// Command fullAuto = autoBuilder.fullAuto(pathGroup);
    
   /*// Create config for trajectory
     TrajectoryConfig config =
@@ -210,6 +210,6 @@ Command fullAuto = autoBuilder.fullAuto(pathGroup);
     m_controller.resetOdometry(exampleTrajectory.getInitialPose());
 
     // Run path following command, then stop at the end.*/
-    return fullAuto;
+    return m_autoCommand;
   }
 }

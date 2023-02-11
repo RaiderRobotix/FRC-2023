@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems.drivebase;
 
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -13,6 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Gyro;
@@ -66,6 +70,28 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     resetMotors();
     resetEncoders();
   }
+
+  public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
+    return new SequentialCommandGroup(
+         new InstantCommand(() -> {
+           // Reset odometry for the first path you run during auto
+           if(isFirstPath){
+               SwerveWheelController.resetOdometry(traj.getInitialHolonomicPose());
+           }
+         }),
+         new PPSwerveControllerCommand(
+             traj, 
+             this::getPose, // Pose supplier
+             kDriveKinematics, // SwerveDriveKinematics
+             new PIDController(xControllerKp, xControllerKi, xControllerKd), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+             new PIDController(yControllerKp, yControllerKi, yControllerKd), // Y controller (usually the same values as X controller)
+             new PIDController(thetaControllerKp, thetaControllerKi, thetaControllerKd), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+             this::setState, // Module states consumer
+             true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+             this // Requires this drive subsystem
+         )
+     );
+ }
   
   //Toggles between field centric and robot centric
   public static void toggleField() {
