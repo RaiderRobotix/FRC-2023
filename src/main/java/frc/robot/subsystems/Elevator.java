@@ -28,10 +28,16 @@ public class Elevator extends SubsystemBase implements Constants {
   }
 
   public static void setMotorPID(double height){
+    if(getSensor() >= kElevatorMaxHeight || getSensor() <= kElevatorMinHeight){
+      motor.set(0);
+    }
     motor.set(pid.calculate(boreThrough.getAbsolutePosition(), height));
   }
 
   public static void setMotor(double speed){
+    if(getSensor() >= kElevatorMaxHeight || getSensor() <= kElevatorMinHeight){
+      motor.set(0);
+    }
     motor.set(speed);
   }
 

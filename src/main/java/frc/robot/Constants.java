@@ -135,6 +135,8 @@ public interface Constants {
     public final double kUpperRowHeight = 0.0;
     public final double kMidRowHeight = 0.0;
     public final double kLowerRowHeight = 0.0;
+    public final double kElevatorMaxHeight = 0.0;
+    public final double kElevatorMinHeight = 0.0;
     //PID values for elevator
     public final double elevatorKp = 0.0100;
     public final double elevatorKi = 0.0000;
@@ -145,6 +147,8 @@ public interface Constants {
     public final int kArmEncoder = 0;
     public final int kArmTalonFX = 0;
     public final double kArmDistancePerRotation = 0.0;
+    public final double kArmMaxHeight = 0.0;
+    public final double kArmMinHeight = 0.0;
 
     //Speeds for Operator Arm
     public final double kArmInSpeed = 0.1;

@@ -26,12 +26,22 @@ public class Arm extends SubsystemBase implements Constants{
   }
 
   public static void setMotorPID(double distance){
+    if(getSensor() >= kArmMaxHeight || getSensor() <= kArmMinHeight){
+      armFx.set(0);
+    }
     armFx.set(pid.calculate(boreThrough.getAbsolutePosition(), distance));
   }
 
   public static void setMotor(double speed){
+    if(getSensor() >= kArmMaxHeight || getSensor() <= kArmMinHeight){
+      armFx.set(0);
+    }
     armFx.set(speed);
   } 
+
+  public static double getSensor(){
+    return boreThrough.getAbsolutePosition();
+  }
 
   @Override
   public void periodic() {
