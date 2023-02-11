@@ -241,16 +241,6 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     backLeftModule.setDesiredState(moduleStates[2]);
     backRightModule.setDesiredState(moduleStates[3]);
   }
-
-  
-
-
-
-  
-
-  
-  
-
   
   @Override
   public void periodic() {

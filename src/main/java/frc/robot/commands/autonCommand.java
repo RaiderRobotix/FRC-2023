@@ -25,13 +25,12 @@ public class autonCommand extends CommandBase implements Constants{
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    path = PathPlanner.loadPath("path", new PathConstraints(kPhysicalDriveMaxSpeed, kMaxAccelerationMetersPerSecondSquared));
+    path = PathPlanner.loadPath("Straight Line", new PathConstraints(kPhysicalDriveMaxSpeed, kMaxAccelerationMetersPerSecondSquared));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
     m_controller.followTrajectoryCommand(path, true);
   }
 
