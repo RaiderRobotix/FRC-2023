@@ -21,7 +21,8 @@ public class Elevator extends SubsystemBase implements Constants {
   /** Creates a new Elevator. */
   public Elevator() {
     this.boreThrough = new DutyCycleEncoder(kElevatorEncoder);
-    this.boreThrough.setDistancePerRotation(kElevatorDistancePerRotation);
+    this.boreThrough.setDutyCycleRange(0, 4096);
+    this.boreThrough.setDistancePerRotation(10);
     this.motor = new WPI_TalonFX(kElevatorTalonFX);
     this.pid = new PIDController(elevatorKp, elevatorKi, elevatorKd);
     // pid.enableContinuousInput(0, 1);
@@ -35,9 +36,9 @@ public class Elevator extends SubsystemBase implements Constants {
   }
 
   public static void setMotor(double speed){
-    if(getSensor() >= kElevatorMaxHeight || getSensor() <= kElevatorMinHeight){
-      motor.set(0);
-    }
+    // if(getSensor() <= kElevatorMaxHeight || getSensor() >= kElevatorMinHeight){
+    //   motor.set(0);
+    // }
     motor.set(speed);
   }
 
@@ -54,12 +55,12 @@ public class Elevator extends SubsystemBase implements Constants {
   }
 
   public static double getSensor(){
-    return boreThrough.getAbsolutePosition();
+    return boreThrough.get();
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Bore Through", boreThrough.getAbsolutePosition());
+    SmartDashboard.putNumber("Elevator Bore Through", getSensor());
     // This method will be called once per scheduler run
   }
 }

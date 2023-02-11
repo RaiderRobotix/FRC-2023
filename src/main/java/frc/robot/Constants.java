@@ -37,11 +37,11 @@ public interface Constants {
     public final int armInJoystickButton = 11;
     public final int armOutJoystickButton = 12;
 
-    public final int elevatorUpJoystickButton = 5;
-    public final int elevatorDownJoystickButton = 3;
+    public final int elevatorUpJoystickButton = 3;
+    public final int elevatorDownJoystickButton = 5;
 
     //Distance Sensor Constants
-    public final int kGrabberDistanceSensorDIO = 0;
+    public final int kGrabberDistanceSensorDIO = 2;
     //Time between the sensor allowing to trigger the grabber
     //in seconds
     public final double kDistanceSensorDebounceTime = 30;
@@ -123,20 +123,20 @@ public interface Constants {
     public final int popperSolenoidOffChannel = 1;
 
     //Elevator Variables
-    public final int kElevatorEncoder = 1;
-    public final int kElevatorTalonFX = 1;
-    public final double kElevatorDistancePerRotation = 0.0;
+    public final int kElevatorEncoder = 0;
+    public final int kElevatorTalonFX = 0;
+    public final double kElevatorDistancePerRotation = 1000.0;
 
     //Speeds for Operator Controller
-    public final double kElevatorUpSpeed = 0.1;
-    public final double kElevatorDownSpeed = 0.1;
+    public final double kElevatorUpSpeed = 0.5;
+    public final double kElevatorDownSpeed = 0.5;
 
     //Present Height Values for rows
     public final double kUpperRowHeight = 0.0;
     public final double kMidRowHeight = 0.0;
     public final double kLowerRowHeight = 0.0;
-    public final double kElevatorMaxHeight = 0.0;
-    public final double kElevatorMinHeight = 0.0;
+    public final double kElevatorMaxHeight = -22.75;
+    public final double kElevatorMinHeight = 8.25;
     //PID values for elevator
     public final double elevatorKp = 0.0100;
     public final double elevatorKi = 0.0000;
@@ -144,8 +144,8 @@ public interface Constants {
 
 
     //Arm Variables
-    public final int kArmEncoder = 0;
-    public final int kArmTalonFX = 0;
+    public final int kArmEncoder = 1;
+    public final int kArmTalonFX = 2;
     public final double kArmDistancePerRotation = 0.0;
     public final double kArmMaxHeight = 0.0;
     public final double kArmMinHeight = 0.0;
