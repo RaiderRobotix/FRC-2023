@@ -5,6 +5,8 @@
 package frc.robot.subsystems.DriveBase;
 
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.swervedrivespecialties.swervelib.Mk4iSwerveModuleHelper;
+import com.swervedrivespecialties.swervelib.SwerveModule;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -29,13 +31,15 @@ import frc.robot.subsystems.Gyro;
 public class SwerveWheelController extends SubsystemBase implements Constants {
 
   private ChassisSpeeds speeds;
+  private SwerveModuleState[] m_desiredStates;
+
 
   // private Gyro gyro = new Gyro();
 
-  private static SwerveWheel frontLeftModule;
-  private static SwerveWheel frontRightModule;
-  private static SwerveWheel backLeftModule;
-  private static SwerveWheel backRightModule;
+  private static SwerveModule frontLeftModule;
+  private static SwerveModule frontRightModule;
+  private static SwerveModule backLeftModule;
+  private static SwerveModule backRightModule;
   private static boolean fieldCentric = true;
   private static boolean coast = false;
 
@@ -64,21 +68,35 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     this.backLeftLocation = new Translation2d(-width / 2, length / 2);
     this.backRightLocation = new Translation2d(-width / 2, -length / 2);
 
-    this.frontLeftModule = new SwerveWheel(frontLeftDriveID, frontLeftSteerID, frontLeftEncoderID, "Front Left");
-    this.frontRightModule = new SwerveWheel(frontRightDriveID, frontRightSteerID, frontRightEncoderID,
-        "Front Right");
-    this.backLeftModule = new SwerveWheel(backLeftDriveID, backLeftSteerID, backLeftEncoderID, "Back Left");
-    this.backRightModule = new SwerveWheel(backRightDriveID, backRightSteerID, backRightEncoderID, "Back Right");
+    frontLeftModule = Mk4iSwerveModuleHelper.createFalcon500(
+      Mk4iSwerveModuleHelper.GearRatio.L3,
+      frontLeftDriveID,
+      frontLeftSteerID,
+      frontLeftEncoderID,
+      frontLeftEncoderOffset);
 
-    this.modules[0] = this.frontLeftModule;
-    this.modules[1] = this.frontRightModule;
-    this.modules[2] = this.backLeftModule;
-    this.modules[3] = this.backRightModule;
+    frontRightModule = Mk4iSwerveModuleHelper.createFalcon500(
+      Mk4iSwerveModuleHelper.GearRatio.L3,
+      frontRightDriveID,
+      frontRightSteerID,
+      frontRightEncoderID,
+      frontRightEncoderOffset);
 
-    this.driveModules[0] = this.frontLeftModule.getPosition();
-    this.driveModules[1] = this.frontRightModule.getPosition();
-    this.driveModules[2] = this.backLeftModule.getPosition();
-    this.driveModules[3] = this.backRightModule.getPosition();
+    backLeftModule = Mk4iSwerveModuleHelper.createFalcon500(
+      Mk4iSwerveModuleHelper.GearRatio.L3,
+      backLeftDriveID,
+      backLeftSteerID,
+      backLeftEncoderID,
+      backleftEncoderOffset);
+
+    backRightModule = Mk4iSwerveModuleHelper.createFalcon500(
+      Mk4iSwerveModuleHelper.GearRatio.L3,
+      backRightDriveID,
+      backRightSteerID,
+      backRightEncoderID,
+      backRightEncoderOffset);
+
+    m_desiredStates = kDriveKinematics.toSwerveModuleStates(speeds);
 
     this.odometry = new SwerveDriveOdometry(kDriveKinematics, getRotation2d(), driveModules, new Pose2d());
 
@@ -105,7 +123,11 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     for(SwerveWheel module : modules){
       module.resetSteerMotor();
     }
-  }  
+  }
+  
+  public static void zeroGyroscope(){
+    Gyro.gyro().zeroYaw(); 
+  }
 
   public static void toggleField() {
     fieldCentric ^= true;
