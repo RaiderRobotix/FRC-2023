@@ -55,7 +55,7 @@ public class Elevator extends SubsystemBase implements Constants {
   }
 
   public static double getSensor(){
-    return boreThrough.get();
+    return boreThrough.getAbsolutePosition();
   }
 
   @Override
