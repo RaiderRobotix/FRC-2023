@@ -37,8 +37,11 @@ public interface Constants {
     public final int armInJoystickButton = 11;
     public final int armOutJoystickButton = 12;
 
-    public final int elevatorUpJoystickButton = 3;
-    public final int elevatorDownJoystickButton = 5;
+    public final int elevatorUpJoystickButton = 5;
+    public final int elevatorDownJoystickButton = 3;
+    public final int elevatorLowerRowJoystickButton = 9;
+    public final int elevatorMidRowJoystickButton = 10;
+    public final int elevatorUpperRowJoystickButton = 8;
 
     //Distance Sensor Constants
     public final int kGrabberDistanceSensorDIO = 2;
