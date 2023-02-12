@@ -41,7 +41,7 @@ public class Arm extends SubsystemBase implements Constants{
   } 
 
   public static double getSensor(){
-    return boreThrough.getAbsolutePosition();
+    return boreThrough.get();
   }
 
   @Override

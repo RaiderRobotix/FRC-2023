@@ -20,10 +20,7 @@ public class Elevator extends SubsystemBase implements Constants {
   private static PIDController pid;
   /** Creates a new Elevator. */
   public Elevator() {
-    this.boreThrough = new DutyCycleEncoder(kElevatorEncoder);
-    this.boreThrough.setDutyCycleRange(0, 4096);
-    this.boreThrough.setDistancePerRotation(10);
-    this.motor = new WPI_TalonFX(kElevatorTalonFX);
+    this.boreThrough = new DutyCycleEncoder(kElevatorEncoder);    this.motor = new WPI_TalonFX(kElevatorTalonFX);
     this.pid = new PIDController(elevatorKp, elevatorKi, elevatorKd);
     // pid.enableContinuousInput(0, 1);
   }
@@ -55,7 +52,8 @@ public class Elevator extends SubsystemBase implements Constants {
   }
 
   public static double getSensor(){
-    return boreThrough.getAbsolutePosition();
+    // return boreThrough.getAbsolutePosition() - boreThrough.getPositionOffset();
+    return boreThrough.get();
   }
 
   @Override

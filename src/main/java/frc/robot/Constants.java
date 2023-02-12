@@ -58,16 +58,9 @@ public interface Constants {
     public final double leftTriggerThreshold = 0.70;
 
 
-
-
-
-
     // Robots measurements in metres
     public final double width = Units.inchesToMeters(24);
     public final double length = Units.inchesToMeters(32);
-
-
-
 
 
     //Robot's kinematics
@@ -106,7 +99,6 @@ public interface Constants {
     public final double kPhysicalDriveMaxSpeed = 1;
     public final double kPhysicalSteerMaxSpeed = 5;
     public final double kMaxAccelerationMetersPerSecondSquared = 0.5;
-
 
     //Pneumatics Constansts
     public final double maxPSI = 80.0;
