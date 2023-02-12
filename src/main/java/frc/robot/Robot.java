@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Gyro;
-import frc.robot.subsystems.DriveBase.SwerveWheel;
 import frc.robot.subsystems.DriveBase.SwerveWheelController;
 
 /**

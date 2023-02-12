@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.OperatorInterface;
-import frc.robot.subsystems.DriveBase.SwerveWheel;
 import frc.robot.subsystems.DriveBase.SwerveWheelController;
 
 public class Drive extends CommandBase implements Constants {
