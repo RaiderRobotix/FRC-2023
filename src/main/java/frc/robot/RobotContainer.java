@@ -113,7 +113,6 @@ public class RobotContainer implements Constants {
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), grabberJoystickButton)
       .onTrue(new InstantCommand(() -> Pneumatics.toggleGrabberSolenoid()));
 
-
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), armInJoystickButton)
       .onTrue(new StartEndCommand(
         () -> Arm.setMotor(kArmInSpeed),
@@ -126,14 +125,32 @@ public class RobotContainer implements Constants {
         m_arm));
 
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorUpJoystickButton)
-    .whileTrue(new StartEndCommand(
+    .onTrue(new StartEndCommand(
       () -> Elevator.setMotor(kElevatorUpSpeed),
       () -> Elevator.setMotor(0),
       m_elevator));
       
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorDownJoystickButton)
+    .onTrue(new StartEndCommand(
+      () -> Elevator.setMotor(kElevatorDownSpeed),
+      () -> Elevator.setMotor(0),
+      m_elevator));
+
+    new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorLowerRowJoystickButton)
     .whileTrue(new StartEndCommand(
-      () -> Elevator.setMotor(-kElevatorDownSpeed),
+      () -> Elevator.setMotorPID(kUpperRowHeight),
+      () -> Elevator.setMotor(0),
+      m_elevator));
+
+    new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorMidRowJoystickButton)
+    .whileTrue(new StartEndCommand(
+      () -> Elevator.setMotorPID(kMidRowHeight),
+      () -> Elevator.setMotor(0),
+      m_elevator));
+
+    new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorUpperRowJoystickButton)
+    .whileTrue(new StartEndCommand(
+      () -> Elevator.setMotorPID(kLowerRowHeight),
       () -> Elevator.setMotor(0),
       m_elevator));
 
