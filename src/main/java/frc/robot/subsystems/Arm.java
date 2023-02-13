@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,13 +16,12 @@ import frc.robot.Constants;
 public class Arm extends SubsystemBase implements Constants{
   /** Creates a new Arm. */
 
-  private static DutyCycleEncoder  boreThrough;
+  private static AnalogPotentiometer tenTurnPot;
   private static WPI_TalonFX armFx;
   private static PIDController pid;
 
   public Arm() {
-    boreThrough = new DutyCycleEncoder(kArmEncoder);
-    boreThrough.setDistancePerRotation(kArmDistancePerRotation);
+    tenTurnPot = new AnalogPotentiometer(kArmPotentiometer);
     armFx = new WPI_TalonFX(kArmTalonFX);
     pid = new PIDController(armKp, armKi, armKd);
   }
@@ -30,7 +30,7 @@ public class Arm extends SubsystemBase implements Constants{
     if(getSensor() >= kArmMaxHeight || getSensor() <= kArmMinHeight){
       armFx.set(0);
     }
-    armFx.set(pid.calculate(boreThrough.getAbsolutePosition(), distance));
+    armFx.set(pid.calculate(getSensor(), distance));
   }
 
   public static void setMotor(double speed){
@@ -41,12 +41,12 @@ public class Arm extends SubsystemBase implements Constants{
   } 
 
   public static double getSensor(){
-    return boreThrough.get();
+    return tenTurnPot.get();
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Arm Bore Through", boreThrough.getAbsolutePosition());
+    SmartDashboard.putNumber("Arm Bore Through", getSensor());
 
     // This method will be called once per scheduler run
   }
