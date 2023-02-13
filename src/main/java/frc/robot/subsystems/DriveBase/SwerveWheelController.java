@@ -19,6 +19,9 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SerialPort.Port;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -75,6 +78,8 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
   /** Creates a new drivebase. */
   public SwerveWheelController() {
 
+  ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+
     gyro = new AHRS(Port.kMXP);
 
     Pose2d robotPose = new Pose2d();
@@ -86,6 +91,9 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     this.backRightLocation = new Translation2d(-width / 2, -length / 2);
 
     frontLeftModule = Mk4iSwerveModuleHelper.createNeo(
+      tab.getLayout("Front Left Module", BuiltInLayouts.kList)
+                    .withSize(2, 4)
+                    .withPosition(0, 0),
       Mk4iSwerveModuleHelper.GearRatio.L3,
       frontLeftDriveID,
       frontLeftSteerID,
@@ -93,6 +101,9 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
       frontLeftEncoderOffset);
 
     frontRightModule = Mk4iSwerveModuleHelper.createNeo(
+      tab.getLayout("Front Right Module", BuiltInLayouts.kList)
+                    .withSize(2, 4)
+                    .withPosition(0, 0),
       Mk4iSwerveModuleHelper.GearRatio.L3,
       frontRightDriveID,
       frontRightSteerID,
@@ -100,6 +111,9 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
       frontRightEncoderOffset);
 
     backLeftModule = Mk4iSwerveModuleHelper.createNeo(
+      tab.getLayout("Back Left Module", BuiltInLayouts.kList)
+                    .withSize(2, 4)
+                    .withPosition(0, 0),
       Mk4iSwerveModuleHelper.GearRatio.L3,
       backLeftDriveID,
       backLeftSteerID,
@@ -107,6 +121,9 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
       backleftEncoderOffset);
 
     backRightModule = Mk4iSwerveModuleHelper.createNeo(
+      tab.getLayout("Back Right Module", BuiltInLayouts.kList)
+                    .withSize(2, 4)
+                    .withPosition(0, 0),
       Mk4iSwerveModuleHelper.GearRatio.L3,
       backRightDriveID,
       backRightSteerID,
