@@ -52,10 +52,10 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
   SdsModuleConfigurations.MK4_L2.getDriveReduction() *
   SdsModuleConfigurations.MK4_L2.getWheelDiameter() * Math.PI;
 
-  private CANCoder frontLeftEncoder = new CANCoder(frontLeftEncoderID);
-  private CANCoder frontRightEncoder = new CANCoder(frontRightEncoderID);
-  private CANCoder backLeftEncoder = new CANCoder(backLeftEncoderID);
-  private CANCoder backRightEncoder = new CANCoder(backRightEncoderID);
+  private static CANCoder frontLeftEncoder = new CANCoder(frontLeftEncoderID);
+  private static CANCoder frontRightEncoder = new CANCoder(frontRightEncoderID);
+  private static CANCoder backLeftEncoder = new CANCoder(backLeftEncoderID);
+  private static CANCoder backRightEncoder = new CANCoder(backRightEncoderID);
   
   // public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND /
   // Math.hypot(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0);
@@ -171,7 +171,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
   }
 
   public static void resetOdometry(Pose2d pose) {
-    odometry.resetPosition(getRotation2d(), driveModules, pose);
+    odometry.resetPosition(getRotation2d(), new SwerveModulePosition[]{getPosition(0), getPosition(1), getPosition(2), getPosition(3)}, pose);
   }
 
   public static void toggleCoast() {
@@ -266,7 +266,11 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     }
   }
 
-  public SwerveModulePosition getPosition(int moduleNum){
+  /**
+   * @param moduleNum
+   * @return
+   */
+  public static SwerveModulePosition getPosition(int moduleNum){
     double frontLeftPos = frontLeftEncoder.getPosition();
     double frontRightPos = frontRightEncoder.getPosition();
     double backLeftPos = backLeftEncoder.getPosition();
@@ -363,7 +367,7 @@ public SwerveModulePosition backRightPos()
 
   @Override
   public void periodic() {
-    odometry.update(getRotation2d(), new SwerveModulePosition[]{getPosition(0), getPosition(1), getPosition(2), getPosition(3)},
+    odometry.update(getRotation2d(), new SwerveModulePosition[]{getPosition(0), getPosition(1), getPosition(2), getPosition(3)}
     );
 
     SmartDashboard.putNumber("X Speed", getXSpeed());
