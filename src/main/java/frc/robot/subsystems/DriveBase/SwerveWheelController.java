@@ -26,7 +26,7 @@ import frc.robot.subsystems.Gyro;
 
 public class SwerveWheelController extends SubsystemBase implements Constants {
 
-  private ChassisSpeeds speeds;
+  private ChassisSpeeds speeds = new ChassisSpeeds();
   private SwerveModuleState[] m_desiredStates;
 
 
@@ -65,7 +65,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
 
   public AHRS gyro;
 
-  private static SwerveModulePosition[] driveModules = new SwerveModulePosition[4];  
+  private static SwerveModulePosition[] driveModules = new SwerveModulePosition[3];  
   
   //private static SwerveWheel[] modules =  new SwerveWheel[4];
 
