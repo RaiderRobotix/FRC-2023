@@ -65,7 +65,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
 
   public AHRS gyro;
 
-  private static SwerveModulePosition[] driveModules = new SwerveModulePosition[]{};  
+  // private static SwerveModulePosition[] driveModules = new SwerveModulePosition[]{};  
   
   //private static SwerveWheel[] modules =  new SwerveWheel[4];
 
@@ -363,7 +363,8 @@ public SwerveModulePosition backRightPos()
 
   @Override
   public void periodic() {
-    odometry.update(getRotation2d(),driveModules);
+    odometry.update(getRotation2d(), new SwerveModulePosition[]{getPosition(0), getPosition(1), getPosition(2), getPosition(3)},
+    );
 
     SmartDashboard.putNumber("X Speed", getXSpeed());
     SmartDashboard.putNumber("Y Speed", getYSpeed());
