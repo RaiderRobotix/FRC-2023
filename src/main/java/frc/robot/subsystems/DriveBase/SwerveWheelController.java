@@ -65,7 +65,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
 
   public AHRS gyro;
 
-  private static SwerveModulePosition[] driveModules = new SwerveModulePosition[3];  
+  private static SwerveModulePosition[] driveModules = new SwerveModulePosition[]{};  
   
   //private static SwerveWheel[] modules =  new SwerveWheel[4];
 
@@ -112,12 +112,16 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
 
     this.odometry = new SwerveDriveOdometry(kDriveKinematics, 
     getRotation2d(),
-    driveModules[]{getPostition(0), getPostition(1), getPostition(2), getPostition(3)},
+    new SwerveModulePosition[]{getPosition(0), getPosition(1), getPosition(2), getPosition(3)},
     new Pose2d());
 
 
     angleController.enableContinuousInput(0, 360);
     // reset();
+  }
+
+  private void getPostition(int i, SwerveModulePosition position, SwerveModulePosition position2,
+      SwerveModulePosition position3, Pose2d pose2d) {
   }
 
   public static void reset(){
