@@ -22,12 +22,15 @@ import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Gyro;
 
 public class SwerveWheelController extends SubsystemBase implements Constants {
 
   private ChassisSpeeds speeds = new ChassisSpeeds();
   private SwerveModuleState[] m_desiredStates;
+
+  private static Pose2d robotPose;
 
 
   // private Gyro gyro = new Gyro();
@@ -73,6 +76,8 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
   public SwerveWheelController() {
 
     gyro = new AHRS(Port.kMXP);
+
+    Pose2d robotPose = new Pose2d();
 
     // Location of modules relative to the centre of the robot
     this.frontLeftLocation = new Translation2d(width / 2, length / 2);
@@ -367,8 +372,18 @@ public SwerveModulePosition backRightPos()
 
   @Override
   public void periodic() {
-    odometry.update(getRotation2d(), new SwerveModulePosition[]{getPosition(0), getPosition(1), getPosition(2), getPosition(3)}
-    );
+    SwerveModuleState[] states = m_desiredStates;
+    //SwerveDriveKinematics.normalizeWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
+    frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
+    frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
+    backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
+    backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
+
+
+    Rotation2d gyroAngle = new Rotation2d().fromDegrees(Gyro.getHeading());
+
+  // Update the pose
+    updateOdometry();
 
     SmartDashboard.putNumber("X Speed", getXSpeed());
     SmartDashboard.putNumber("Y Speed", getYSpeed());
