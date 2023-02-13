@@ -110,7 +110,10 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
 
     m_desiredStates = kDriveKinematics.toSwerveModuleStates(speeds);
 
-    this.odometry = new SwerveDriveOdometry(kDriveKinematics, getRotation2d(), driveModules, new Pose2d());
+    this.odometry = new SwerveDriveOdometry(kDriveKinematics, 
+    getRotation2d(),
+    driveModules[]{getPostition(0), getPostition(1), getPostition(2), getPostition(3)},
+    new Pose2d());
 
 
     angleController.enableContinuousInput(0, 360);
