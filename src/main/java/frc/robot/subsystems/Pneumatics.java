@@ -47,7 +47,8 @@ public class Pneumatics extends SubsystemBase implements Constants {
 
   public Pneumatics(int enterChannel, int closeChannel) {
     pneumatics = new Compressor(1, PneumaticsModuleType.REVPH);
-    pneumatics.enableDigital();
+    // pneumatics.enableDigital();
+    pneumatics.enableHybrid(110, 120);
 
 
     
@@ -56,10 +57,10 @@ public class Pneumatics extends SubsystemBase implements Constants {
   public Pneumatics(OperatorInterface oi) {
     pneumatics = new Compressor(1, PneumaticsModuleType.REVPH);
     
-    this.pneumatics.enableDigital();
-    
-    grabberSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, grabberSolenoidOnChannel, grabberSolenoidOffChannel);
-    popperSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, popperSolenoidOnChannel, popperSolenoidOffChannel);
+    // this.pneumatics.enableDigital();
+    pneumatics.enableHybrid(110, 120);
+    popperSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, grabberSolenoidOnChannel, grabberSolenoidOffChannel);
+    grabberSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, popperSolenoidOnChannel, popperSolenoidOffChannel);
 
     // sonic = new AnalogInput(0);
     // sensor = new DigitalInput(0);
@@ -81,6 +82,8 @@ public class Pneumatics extends SubsystemBase implements Constants {
   public static void toggleGrabberSolenoid(){
     System.out.println("Passed");
     grabberSolenoid.toggle();
+    popperSolenoid.toggle();
+    // grabberSolenoid.set(Value.kForward);
   }
 
   public static void setGrabberSolenoid(boolean state){

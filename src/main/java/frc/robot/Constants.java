@@ -44,7 +44,7 @@ public interface Constants {
     public final int elevatorUpperRowJoystickButton = 8;
 
     //Distance Sensor Constants
-    public final int kGrabberDistanceSensorDIO = 2;
+    public final int kGrabberDistanceSensorDIO = 9;
     //Time between the sensor allowing to trigger the grabber
     //in seconds
     public final double kDistanceSensorDebounceTime = 30;
