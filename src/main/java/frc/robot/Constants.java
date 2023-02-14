@@ -33,6 +33,7 @@ public interface Constants {
     // Operator Constants
     public final int operatorStickPort = 1;
     public final int grabberJoystickButton = 1;
+    public final int popperJoystickButton = 8;
 
     public final int armInJoystickButton = 11;
     public final int armOutJoystickButton = 12;
@@ -110,12 +111,12 @@ public interface Constants {
     // Solenoid Channel Values
 
     //Channels for solenoid that grabs the game pieces
-    public final int grabberSolenoidOnChannel = 13;
-    public final int grabberSolenoidOffChannel = 2;
+    public final int grabberSolenoidOnChannel = 15;
+    public final int grabberSolenoidOffChannel = 0;
 
     //Channels for solenoids that pop game piece in auton
-    public final int popperSolenoidOnChannel = 12;
-    public final int popperSolenoidOffChannel = 1;
+    public final int popperSolenoidOnChannel = 13;
+    public final int popperSolenoidOffChannel = 2;
 
     //Elevator Variables
     public final int kElevatorPotentiometer = 0;

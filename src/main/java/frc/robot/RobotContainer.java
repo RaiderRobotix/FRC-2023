@@ -113,6 +113,9 @@ public class RobotContainer implements Constants {
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), grabberJoystickButton)
       .onTrue(new InstantCommand(() -> Pneumatics.toggleGrabberSolenoid()));
 
+      new JoystickButton(m_operatorInterface.getOperatorJoystick(), popperJoystickButton)
+      .onTrue(new InstantCommand(() -> Pneumatics.togglePopperSolenoid()));
+
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), armInJoystickButton)
       .whileTrue(new StartEndCommand(
         () -> Arm.setMotor(kArmInSpeed),

@@ -63,7 +63,7 @@ public class Pneumatics extends SubsystemBase implements Constants {
     grabberSolenoidOff = new Solenoid(PneumaticsModuleType.REVPH, grabberSolenoidOffChannel);
 
     popperSolenoidOn = new Solenoid(PneumaticsModuleType.REVPH, popperSolenoidOnChannel);
-    popperSolenoidOn = new Solenoid(PneumaticsModuleType.REVPH, popperSolenoidOffChannel);
+    popperSolenoidOff = new Solenoid(PneumaticsModuleType.REVPH, popperSolenoidOffChannel);
 
     // sonic = new AnalogInput(0);
     // sensor = new DigitalInput(0);
