@@ -118,7 +118,7 @@ public interface Constants {
     public final int popperSolenoidOffChannel = 1;
 
     //Elevator Variables
-    public final int kElevatorEncoder = 0;
+    public final int kElevatorPotentiometer = 0;
     public final int kElevatorTalonFX = 0;
     public final double kElevatorDistancePerRotation = 1000.0;
 
@@ -139,7 +139,7 @@ public interface Constants {
 
 
     //Arm Variables
-    public final int kArmEncoder = 1;
+    public final int kArmPotentiometer = 1;
     public final int kArmTalonFX = 2;
     public final double kArmDistancePerRotation = 0.0;
     public final double kArmMaxHeight = 0.0;
