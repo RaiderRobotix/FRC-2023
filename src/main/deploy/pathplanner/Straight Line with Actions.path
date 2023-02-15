@@ -28,7 +28,7 @@
         "y": 3.0
       },
       "prevControl": {
-        "x": 5.82759850500921,
+        "x": 4.0,
         "y": 3.0
       },
       "nextControl": null,
@@ -45,5 +45,12 @@
       }
     }
   ],
-  "markers": []
+  "markers": [
+    {
+      "position": 0.4765624999999992,
+      "names": [
+        "Grabber Open"
+      ]
+    }
+  ]
 }

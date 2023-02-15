@@ -18,12 +18,15 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.autos.AutonSelector;
 import frc.robot.commands.drive;
 import frc.robot.commands.driveDistance;
 import frc.robot.commands.motor;
@@ -52,6 +55,7 @@ public class RobotContainer implements Constants {
   private final Gyro m_gyro = new Gyro();
   private final Elevator m_elevator = new Elevator();
   private final Arm m_arm = new Arm();
+  private final AutonSelector autonSelector = new AutonSelector();
 
   private final driveDistance m_autoCommand = new driveDistance(1,m_controller);
 
@@ -171,65 +175,6 @@ public class RobotContainer implements Constants {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-
-//     ArrayList<PathPlannerTrajectory> pathGroup = (ArrayList<PathPlannerTrajectory>) PathPlanner.loadPathGroup("Auton Test path", new PathConstraints(4, 3));
-
-//     HashMap<String, Command> eventMap = new HashMap<>();
-//     eventMap.put("marker1", new PrintCommand("Passed marker 1"));
-    
-//     SwerveAutoBuilder autoBuilder =  new SwerveAutoBuilder(
-//       m_controller::getPose, // Pose2d supplier
-//       SwerveWheelController::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of autokDriveKinematics, // SwerveDriveKinematics
-//       kDriveKinematics,
-//       new PIDConstants(5.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
-//       new PIDConstants(0.5, 0.0, 0.0), // PID constants to correct for rotation error (used to create the rotation controller)
-//       m_controller::setState, // Module states consumer used to output to the drive subsystemeventMap,
-//       eventMap,
-//       true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-//       m_Drive // The drive subsystem. Used to properly set the requirements of path following commands
-//     );
-
-// Command fullAuto = autoBuilder.fullAuto(pathGroup);
-   
-  /*// Create config for trajectory
-    TrajectoryConfig config =
-        new TrajectoryConfig(
-                kPhysicalDriveMaxSpeed,
-                kMaxAccelerationMetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(kDriveKinematics);
-
-    // An example trajectory to follow.  All units in meters.
-    Trajectory exampleTrajectory =
-        TrajectoryGenerator.generateTrajectory(
-            List.of(new Pose2d(0,0, new Rotation2d().fromDegrees(0)),
-                    // new Pose2d(2,0, new Rotation2d().fromDegrees(90)),
-                    new Pose2d(5, 0, new Rotation2d().fromDegrees(0))
-            ),
-            config);
-
-    var thetaController =
-        new ProfiledPIDController(
-            thetaControllerKp, thetaControllerKi, thetaControllerKd, kThetaControllerConstraint);
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            exampleTrajectory,
-            m_controller::getPose, // Functional interface to feed supplier
-            kDriveKinematics,
-            // Position controllers
-            new PIDController(xControllerKp, xControllerKi, xControllerKd),
-            new PIDController(yControllerKp, yControllerKi, yControllerKd),
-            thetaController,
-            () -> Rotation2d.fromDegrees(180),
-            m_controller::setState,
-            m_controller);
-
-    // Reset odometry to the starting pose of the trajectory.
-    m_controller.resetOdometry(exampleTrajectory.getInitialPose());
-
-    // Run path following command, then stop at the end.*/
-    return m_autoCommand;
+    return autonSelector.getCommand(m_controller);
   }
 }
