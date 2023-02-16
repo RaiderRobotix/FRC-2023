@@ -46,6 +46,7 @@ public interface Constants {
 
     //Distance Sensor Constants
     public final int kGrabberDistanceSensorDIO = 9;
+
     //Time between the sensor allowing to trigger the grabber
     //in seconds
     public final double kDistanceSensorDebounceTime = 30;
@@ -121,7 +122,9 @@ public interface Constants {
     //Elevator Variables
     public final int kElevatorPotentiometer = 0;
     public final int kElevatorTalonFX = 0;
-    public final double kElevatorDistancePerRotation = 1000.0;
+    public final double kElevatorDistancePerRotation = 2048;
+    public final double kEleveatorGearRatio = 5;
+
 
     //Speeds for Operator Controller
     public final double kElevatorUpSpeed = 0.5;
@@ -142,7 +145,8 @@ public interface Constants {
     //Arm Variables
     public final int kArmPotentiometer = 1;
     public final int kArmTalonFX = 2;
-    public final double kArmDistancePerRotation = 0.0;
+    public final double kArmDistancePerRotation = 2048;
+    public final double kArmGearRatio = 1;
     public final double kArmMaxHeight = 0.0;
     public final double kArmMinHeight = 0.0;
 

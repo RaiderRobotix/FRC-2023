@@ -17,31 +17,32 @@ public class Arm extends SubsystemBase implements Constants{
   /** Creates a new Arm. */
 
   private static AnalogPotentiometer tenTurnPot;
-  private static WPI_TalonFX armFx;
+  private static WPI_TalonFX motor;
   private static PIDController pid;
 
   public Arm() {
     tenTurnPot = new AnalogPotentiometer(kArmPotentiometer);
-    armFx = new WPI_TalonFX(kArmTalonFX);
+    motor = new WPI_TalonFX(kArmTalonFX);
     pid = new PIDController(armKp, armKi, armKd);
   }
 
   public static void setMotorPID(double distance){
     if(getSensor() >= kArmMaxHeight || getSensor() <= kArmMinHeight){
-      armFx.set(0);
+      motor.set(0);
     }
-    armFx.set(pid.calculate(getSensor(), distance));
+    motor.set(pid.calculate(getSensor(), distance));
   }
 
   public static void setMotor(double speed){
     if(getSensor() >= kArmMaxHeight || getSensor() <= kArmMinHeight){
-      armFx.set(0);
+      motor.set(0);
     }
-    armFx.set(speed);
+    motor.set(speed);
   } 
 
   public static double getSensor(){
-    return tenTurnPot.get();
+    // return tenTurnPot.get();
+    return motor.getSelectedSensorPosition() / (kArmDistancePerRotation * kArmGearRatio);
   }
 
   @Override
