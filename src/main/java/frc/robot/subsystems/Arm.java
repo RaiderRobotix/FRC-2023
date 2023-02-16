@@ -47,7 +47,7 @@ public class Arm extends SubsystemBase implements Constants{
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Arm Bore Through", getSensor());
+    SmartDashboard.putNumber("Arm Encoder", getSensor());
 
     // This method will be called once per scheduler run
   }

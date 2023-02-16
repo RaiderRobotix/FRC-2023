@@ -60,7 +60,7 @@ public class Elevator extends SubsystemBase implements Constants {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Elevator Bore Through", getSensor());
+    SmartDashboard.putNumber("Elevator Encoder", getSensor());
     // This method will be called once per scheduler run
   }
 }
