@@ -19,8 +19,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.auto.AutonCommands;
 import frc.robot.auto.AutonSelector;
+import frc.robot.commands.armToLength;
 import frc.robot.commands.drive;
 import frc.robot.commands.driveDistance;
+import frc.robot.commands.elevatorToHeight;
 import frc.robot.commands.motor;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
@@ -139,26 +141,16 @@ public class RobotContainer implements Constants {
       m_elevator));
 
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorLowerRowJoystickButton)
-    .whileTrue(new StartEndCommand(
-      () -> Elevator.setMotorPID(kUpperRowHeight),
-      () -> Elevator.setMotor(0),
-      m_elevator));
+    .whileTrue(new armToLength(kLowerRowLength))
+    .whileTrue(new elevatorToHeight(kLowerRowHeight));
 
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorMidRowJoystickButton)
-    .whileTrue(new StartEndCommand(
-      () -> Elevator.setMotorPID(kMidRowHeight),
-      () -> Elevator.setMotor(0),
-      m_elevator));
+    .whileTrue(new armToLength(kMidRowLength))
+    .whileTrue(new elevatorToHeight(kMidRowHeight));
 
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorUpperRowJoystickButton)
-    .whileTrue(new StartEndCommand(
-      () -> Elevator.setMotorPID(kUpperRowHeight),
-      () -> Elevator.setMotor(0),
-      m_elevator))
-    .whileTrue((new StartEndCommand(
-      () -> Arm.setMotorPID(kUpperRowLength),
-      () -> Arm.setMotor(0),
-      m_elevator)));
+    .whileTrue(new armToLength(kUpperRowLength))
+    .whileTrue(new elevatorToHeight(kUpperRowHeight));
 
 
 
