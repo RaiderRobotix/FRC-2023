@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.Map;
+
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
@@ -14,8 +16,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.autos.AutonSelector;
-import frc.robot.autos.autonCommands;
+import frc.robot.auto.AutonCommands;
+import frc.robot.auto.AutonSelector;
 import frc.robot.commands.drive;
 import frc.robot.commands.driveDistance;
 import frc.robot.commands.motor;
@@ -163,18 +165,21 @@ public class RobotContainer implements Constants {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    autonCommands autonCommand = autonSelector.getCommand(m_controller);
+    AutonCommands command = autonSelector.getCommand(m_controller);
+    Map<String, Command> eventMap = command.getEventMap();
+
     SwerveAutoBuilder autoBuilder =  new SwerveAutoBuilder(
-      SwerveWheelController::getPose, // Pose2d supplier
+      m_controller::getPose, // Pose2d supplier
       SwerveWheelController::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of autokDriveKinematics, // SwerveDriveKinematics
       kDriveKinematics,
       new PIDConstants(5.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
       new PIDConstants(0.5, 0.0, 0.0), // PID constants to correct for rotation error (used to create the rotation controller)
-      SwerveWheelController::setState, // Module states consumer used to output to the drive subsystemeventMap,
+      m_controller::setState, // Module states consumer used to output to the drive subsystemeventMap,
       eventMap,
       true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
       m_controller // The drive subsystem. Used to properly set the requirements of path following commands
     );
-    return autoBuilder.fullAuto(path);
+
+    return autoBuilder.fullAuto(command.getPath());
   }
 }
