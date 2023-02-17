@@ -36,20 +36,21 @@ public interface Constants {
     public final int popperJoystickButton = 4;
 
     public final int armInJoystickButton = 11;
-    public final int armOutJoystickButton = 12;
+    public final int armOutJoystickButton = 9;
 
     public final int elevatorUpJoystickButton = 5;
     public final int elevatorDownJoystickButton = 3;
-    public final int elevatorLowerRowJoystickButton = 9;
+    public final int elevatorLowerRowJoystickButton = 12;
     public final int elevatorMidRowJoystickButton = 10;
     public final int elevatorUpperRowJoystickButton = 8;
+    public final int elevatorHumanPlayerJoystickButton = 7;
 
     //Distance Sensor Constants
     public final int kGrabberDistanceSensorDIO = 9;
 
     //Time between the sensor allowing to trigger the grabber
     //in seconds
-    public final double kDistanceSensorDebounceTime = 30;
+    public final double kDistanceSensorDebounceTime = 1;
 
     // Falcon 500 constants
     public final int kUnitsPerRevoltion = 2048;
@@ -132,14 +133,15 @@ public interface Constants {
 
     //Present Height Values for rows
     public final double kUpperRowHeight = -16194.7265625;
-    public final double kMidRowHeight = 0.0;
-    public final double kLowerRowHeight = 0.0;
+    public final double kMidRowHeight = -13078.088;
+    public final double kHumanPlayerHeight = -14208;
+    public final double kLowerRowHeight = 416.16;
     public final double kFloorHeight = 0.0;
     public final double kElevatorMaxHeight = -18000.00;
     public final double kElevatorMinHeight = 0;
     //PID values for elevator
-    public final double elevatorKp = 0.5000;
-    public final double elevatorKi = 0.0000;
+    public final double elevatorKp = 0.0020;
+    public final double elevatorKi = 0.001;
     public final double elevatorKd = 0.0000;
 
 
@@ -151,19 +153,20 @@ public interface Constants {
 
     //Arm Length Values
     public final double kUpperRowLength = 5.5;
-    public final double kMidRowLength = 0.0;
-    public final double kLowerRowLength = 0.0;
+    public final double kMidRowLength = 0.582;
+    public final double kLowerRowLength = 5.029 ;
+    public final double kHumanPlayerLength = -0.35;
     public final double kFloorLength = 0.0;
     public final double kArmMaxLength = 4.5;
-    public final double kArmMinLength = 0;
+    public final double kArmMinLength = -0.35;
 
     //Speeds for Operator Arm
     public final double kArmInSpeed = 0.5;
     public final double kArmOutSpeed = 0.5;
     
      //PID values for Arm
-     public final double armKp = 0.050;
-     public final double armKi = 0.000;
+     public final double armKp = 0.4;
+     public final double armKi = 0.0000;
      public final double armKd = 0.0000;
 
 

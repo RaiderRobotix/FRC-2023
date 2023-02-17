@@ -116,13 +116,13 @@ public class RobotContainer implements Constants {
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), armInJoystickButton)
       .and(new Trigger(Arm::getSensorMax))
       .whileTrue(new StartEndCommand(
-        () -> Arm.setMotor(kArmInSpeed),
+        () -> Arm.setMotor(-kArmInSpeed),
         () -> Arm.setMotor(0)));
 
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), armOutJoystickButton)
       .and(new Trigger(Arm::getSensorLow))
       .whileTrue(new StartEndCommand(
-        () -> Arm.setMotor(-kArmOutSpeed),
+        () -> Arm.setMotor(kArmOutSpeed),
         () -> Arm.setMotor(0),
         m_arm));
 
@@ -152,11 +152,18 @@ public class RobotContainer implements Constants {
     .whileTrue(new armToLength(kUpperRowLength))
     .whileTrue(new elevatorToHeight(kUpperRowHeight));
 
+    new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorHumanPlayerJoystickButton)
+      .whileTrue(new armToLength(kHumanPlayerLength))
+      .whileTrue(new elevatorToHeight(kHumanPlayerHeight));
+
+
+
 
 
     //Button for Sensor trigger
     new Trigger(m_operatorInterface::getDistanceSensor)
-      .debounce(kDistanceSensorDebounceTime)
+      .and(new JoystickButton(m_operatorInterface.getOperatorJoystick(), grabberJoystickButton))
+      // .debounce(kDistanceSensorDebounceTime)
       .onTrue(new InstantCommand(() -> Pneumatics.toggleGrabberSolenoid()));
   }
 

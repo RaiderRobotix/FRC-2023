@@ -43,7 +43,7 @@ public class OperatorInterface extends SubsystemBase implements Constants {
   }
 
   public boolean getDistanceSensor(){
-    return sensor.get();
+    return !sensor.get();
   }
 
 

@@ -28,7 +28,6 @@ public class Arm extends SubsystemBase implements Constants{
 
   public static void setMotorPID(double distance){
     double pidValue = pid.calculate(getSensor(), distance);
-    SmartDashboard.putNumber("Arm PID", pidValue);
     motor.set(pidValue);
   }
 
