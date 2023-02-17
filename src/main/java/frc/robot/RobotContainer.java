@@ -114,13 +114,13 @@ public class RobotContainer implements Constants {
       .onTrue(new InstantCommand(() -> Pneumatics.togglePopperSolenoid()));
 
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), armInJoystickButton)
-      .and(new Trigger(Arm::getSensorMax))
+      // .and(new Trigger(Arm::getSensorLow))
       .whileTrue(new StartEndCommand(
         () -> Arm.setMotor(-kArmInSpeed),
         () -> Arm.setMotor(0)));
 
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), armOutJoystickButton)
-      .and(new Trigger(Arm::getSensorLow))
+      // .and(new Trigger(Arm::getSensorMax))
       .whileTrue(new StartEndCommand(
         () -> Arm.setMotor(kArmOutSpeed),
         () -> Arm.setMotor(0),
@@ -162,9 +162,15 @@ public class RobotContainer implements Constants {
 
     //Button for Sensor trigger
     new Trigger(m_operatorInterface::getDistanceSensor)
-      .and(new JoystickButton(m_operatorInterface.getOperatorJoystick(), grabberJoystickButton))
+      .and(new JoystickButton(m_operatorInterface.getOperatorJoystick(), autoGrabberJoystickButton))
       // .debounce(kDistanceSensorDebounceTime)
       .onTrue(new InstantCommand(() -> Pneumatics.toggleGrabberSolenoid()));
+    
+    // new Trigger(Pneumatics::getGrabberSolenoid)
+    // .and(new Trigger(Arm::isUpperRow))
+    // .onTrue(new InstantCommand(() -> Pneumatics.toggleGrabberSolenoid()))
+    // .onTrue(new armToLength(kHumanPlayerLength))
+    // .onTrue(new elevatorToHeight(kHumanPlayerHeight));
   }
 
   /**

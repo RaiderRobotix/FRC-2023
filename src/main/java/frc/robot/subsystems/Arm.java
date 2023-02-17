@@ -68,8 +68,21 @@ public class Arm extends SubsystemBase implements Constants{
     return (getSensor() >= kArmMinLength);
   }
 
+  public static boolean isUpperRow(){
+    return Math.abs(kUpperRowLength - getSensor()) < 0.5;
+  }
+
+  public static boolean isMidRow() {
+    return Math.abs(kMidRowLength - getSensor()) < 0.05;
+  }
+
+  public static boolean isLowRow() {
+    return Math.abs(kLowerRowLength - getSensor()) < 0.05;
+  }
+
   @Override
   public void periodic() {
+    SmartDashboard.putBoolean("isUpper", isUpperRow());
     SmartDashboard.putNumber("Arm Encoder", getSensor());
 
     // This method will be called once per scheduler run

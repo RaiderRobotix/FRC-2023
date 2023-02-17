@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -57,6 +58,11 @@ public class Robot extends TimedRobot {
     }
     led.setData(ledBuffer);
     led.start();
+
+    PWM ledthing = new PWM(9);
+
+    // ledthing.setRaw(255);
+    // ledthing.set
   }
 
   /**

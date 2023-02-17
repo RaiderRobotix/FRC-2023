@@ -33,6 +33,7 @@ public interface Constants {
     // Operator Constants
     public final int operatorStickPort = 1;
     public final int grabberJoystickButton = 1;
+    public final int autoGrabberJoystickButton = 2;
     public final int popperJoystickButton = 4;
 
     public final int armInJoystickButton = 11;
