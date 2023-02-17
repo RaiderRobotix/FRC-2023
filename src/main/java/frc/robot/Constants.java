@@ -147,7 +147,7 @@ public interface Constants {
     public final int kArmPotentiometer = 1;
     public final int kArmTalonFX = 2;
     public final double kArmDistancePerRotation = 2048;
-    public final double kArmGearRatio = 1;
+    public final double kArmGearRatio = 15;
 
     //Arm Length Values
     public final double kUpperRowLength = 0.0;
