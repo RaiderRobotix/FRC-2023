@@ -27,18 +27,35 @@ public class Arm extends SubsystemBase implements Constants{
   }
 
   public static void setMotorPID(double distance){
-    if(getSensor() >= kArmMaxHeight || getSensor() <= kArmMinHeight){
+    if(getSensor() >= kArmMaxLength || getSensor() <= kArmMinLength){
       motor.set(0);
     }
     motor.set(pid.calculate(getSensor(), distance));
   }
 
   public static void setMotor(double speed){
-    if(getSensor() >= kArmMaxHeight || getSensor() <= kArmMinHeight){
+    if(getSensor() >= kArmMaxLength || getSensor() <= kArmMinLength){
       motor.set(0);
     }
     motor.set(speed);
   } 
+
+  public static void setUpperRow(){
+    setMotorPID(kUpperRowLength);
+  }
+
+  public static void setMidRow(){
+    setMotorPID(kMidRowLength);
+  }
+
+  public static void setLowerRow(){
+    setMotorPID(kLowerRowLength);
+  }
+
+  public static void setFloor(){
+    setMotorPID(kFloorLength);
+  }
+
 
   public static double getSensor(){
     // return tenTurnPot.get();
