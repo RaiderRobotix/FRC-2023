@@ -31,7 +31,11 @@ public class AutonSelector implements Constants{
         ShuffleboardTab autoTab = Shuffleboard.getTab("Auto settings");
 
         autonomousModeChooser = new SendableChooser<>();
-        autonomousModeChooser.setDefaultOption("Test Auto", AutonomousMode.testAuto);
+        autonomousModeChooser.setDefaultOption("Test Straight Line", AutonomousMode.testAuto);
+        autonomousModeChooser.addOption("Test Straight Line with Actions", AutonomousMode.straightAutoActions);
+        autonomousModeChooser.addOption("Top", AutonomousMode.top);
+        autonomousModeChooser.addOption("Middle", AutonomousMode.middle);
+        autonomousModeChooser.addOption("Bottom", AutonomousMode.bottom);
 
         autoTab.add("autoMode", autonomousModeChooser);
     }
