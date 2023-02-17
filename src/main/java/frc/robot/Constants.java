@@ -123,7 +123,7 @@ public interface Constants {
     public final int kElevatorPotentiometer = 0;
     public final int kElevatorTalonFX = 0;
     public final double kElevatorDistancePerRotation = 2048;
-    public final double kEleveatorGearRatio = 5;
+    public final double kEleveatorGearRatio = 75;
 
 
     //Speeds for Operator Controller
@@ -134,6 +134,7 @@ public interface Constants {
     public final double kUpperRowHeight = 0.0;
     public final double kMidRowHeight = 0.0;
     public final double kLowerRowHeight = 0.0;
+    public final double kFloorHeight = 0.0;
     public final double kElevatorMaxHeight = -22.75;
     public final double kElevatorMinHeight = 8.25;
     //PID values for elevator
@@ -147,8 +148,14 @@ public interface Constants {
     public final int kArmTalonFX = 2;
     public final double kArmDistancePerRotation = 2048;
     public final double kArmGearRatio = 1;
-    public final double kArmMaxHeight = 0.0;
-    public final double kArmMinHeight = 0.0;
+
+    //Arm Length Values
+    public final double kUpperRowLength = 0.0;
+    public final double kMidRowLength = 0.0;
+    public final double kLowerRowLength = 0.0;
+    public final double kFloorLength = 0.0;
+    public final double kArmMaxLength = 0.0;
+    public final double kArmMinLength = 0.0;
 
     //Speeds for Operator Arm
     public final double kArmInSpeed = 0.1;
