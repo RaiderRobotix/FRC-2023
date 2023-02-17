@@ -4,15 +4,19 @@
 
 package frc.robot.autos;
 
+import com.pathplanner.lib.auto.PIDConstants;
+import com.pathplanner.lib.auto.SwerveAutoBuilder;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.drivebase.SwerveWheelController;
 
 /** Add your docs here. */
-public class AutonSelector {
+public class AutonSelector implements Constants{
     public AutonSelector(){
     }
 
@@ -27,12 +31,12 @@ public class AutonSelector {
         autoTab.add("autoMode", autonomousModeChooser);
     }
 
-    public Command getCommand(SwerveWheelController swerveController){
+    public autonCommands getCommand(SwerveWheelController swerveController){
         AutonomousMode mode = autonomousModeChooser.getSelected();
 
         switch (mode) {
             case testAuto:
-                return new testAuto(swerveController);            
+                return new testAuto2("testAuto2", swerveController);            
   
             default:
                 System.out.println("ERROR: unexpected auto mode: " + mode);
@@ -43,7 +47,7 @@ public class AutonSelector {
     }
 
     private enum AutonomousMode {
-        testAuto  
+        testAuto
     }
 
     public static Pose2d getStartingPose(){
