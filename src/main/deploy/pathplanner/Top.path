@@ -1,0 +1,303 @@
+{
+  "waypoints": [
+    {
+      "anchorPoint": {
+        "x": 1.9,
+        "y": 4.39632175593804
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.43907674912124,
+        "y": 4.408940817881636
+      },
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [
+          "Pop Game Piece",
+          "Elevator to Floor",
+          "Arm to Floor 1",
+          "Open Grabber 1"
+        ],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 4.132834072119757,
+        "y": 4.751571116045458
+      },
+      "prevControl": {
+        "x": 3.448353070998843,
+        "y": 4.729129116008706
+      },
+      "nextControl": {
+        "x": 4.9215302301572335,
+        "y": 4.777430006472916
+      },
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 6.311445590633117,
+        "y": 4.602882496087573
+      },
+      "prevControl": {
+        "x": 5.910632789007513,
+        "y": 4.5188411021983335
+      },
+      "nextControl": {
+        "x": 5.910632789007513,
+        "y": 4.5188411021983335
+      },
+      "holonomicAngle": 0.0,
+      "isReversal": true,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": true,
+      "stopEvent": {
+        "names": [
+          "Open Grabber",
+          "Check Grabber",
+          "Elevator to Game Piece Height",
+          "Arm to Game Piece Height"
+        ],
+        "executionBehavior": "sequential",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 4.1392987947266215,
+        "y": 4.751571116045458
+      },
+      "prevControl": {
+        "x": 4.758224891422285,
+        "y": 4.705724738512445
+      },
+      "nextControl": {
+        "x": 3.266561242799905,
+        "y": 4.816218342114104
+      },
+      "holonomicAngle": -180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 1.9283636631789391,
+        "y": 4.939048071644531
+      },
+      "prevControl": {
+        "x": 1.8960400501446162,
+        "y": 4.95197751685826
+      },
+      "nextControl": {
+        "x": 1.8960400501446162,
+        "y": 4.95197751685826
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": true,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": true,
+      "stopEvent": {
+        "names": [
+          "Open Grabber"
+        ],
+        "executionBehavior": "sequential",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 2.43907674912124,
+        "y": 3.484485485100003
+      },
+      "prevControl": {
+        "x": 2.1616095045139265,
+        "y": 4.108786785466459
+      },
+      "nextControl": {
+        "x": 2.490794529976157,
+        "y": 3.3681204781764404
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 5.406384425672077,
+        "y": 3.393979368603899
+      },
+      "prevControl": {
+        "x": 5.2803223348382184,
+        "y": 3.390747007300466
+      },
+      "nextControl": {
+        "x": 5.532446516505936,
+        "y": 3.3972117299073314
+      },
+      "holonomicAngle": -179.71352348972295,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 6.389022261915492,
+        "y": 3.393979368603899
+      },
+      "prevControl": {
+        "x": 6.169221693282097,
+        "y": 3.3551910329627117
+      },
+      "nextControl": {
+        "x": 6.169221693282097,
+        "y": 3.3551910329627117
+      },
+      "holonomicAngle": 0.0,
+      "isReversal": true,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": true,
+      "stopEvent": {
+        "names": [
+          "Close Grabber 2",
+          "Check Grabber 2",
+          "Elevator to Game Piece Height 2",
+          "Arm to Game Piece Height 2"
+        ],
+        "executionBehavior": "sequential",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 5.412849148278942,
+        "y": 3.4069088138176276
+      },
+      "prevControl": {
+        "x": 5.787615575870329,
+        "y": 3.4244510721304158
+      },
+      "nextControl": {
+        "x": 2.3744295230525942,
+        "y": 3.264684916466607
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 1.8960400501446162,
+        "y": 3.8594393962981477
+      },
+      "prevControl": {
+        "x": 2.0317992248887724,
+        "y": 3.781862725015773
+      },
+      "nextControl": {
+        "x": 2.0317992248887724,
+        "y": 3.781862725015773
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": true,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": true,
+      "stopEvent": {
+        "names": [
+          "Open Grabber"
+        ],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 3.9001040582726327,
+        "y": 3.3551910329627113
+      },
+      "prevControl": {
+        "x": 1.5016919711258776,
+        "y": 3.348726310355847
+      },
+      "nextControl": null,
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [
+          "Balance"
+        ],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    }
+  ],
+  "markers": [
+    {
+      "position": 5.454545454545459,
+      "names": [
+        "Elevator to Floor 2",
+        "Arm to Floor"
+      ]
+    }
+  ]
+}

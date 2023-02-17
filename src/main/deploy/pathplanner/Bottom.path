@@ -1,0 +1,169 @@
+{
+  "waypoints": [
+    {
+      "anchorPoint": {
+        "x": 1.8895753275377518,
+        "y": 1.0343556170983317
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.801101215105656,
+        "y": 0.5495014215834887
+      },
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [
+          "Popper",
+          "Arm to Floor 1",
+          "Elevator to Floor 1",
+          "Open Grabber 1"
+        ],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 6.350233926274304,
+        "y": 0.9503142232090913
+      },
+      "prevControl": {
+        "x": 5.716691110801576,
+        "y": 0.48485419551484293
+      },
+      "nextControl": {
+        "x": 5.716691110801576,
+        "y": 0.48485419551484293
+      },
+      "holonomicAngle": 0,
+      "isReversal": true,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": true,
+      "stopEvent": {
+        "names": [
+          "Closer Grabber 1",
+          "Check Grabber 1",
+          "Arm to Game Piece 1",
+          "Elevator to Game Piece 1"
+        ],
+        "executionBehavior": "sequential",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 1.8960400501446162,
+        "y": 0.5365719763697598
+      },
+      "prevControl": {
+        "x": 3.906568780879497,
+        "y": 1.2606209083385913
+      },
+      "nextControl": {
+        "x": 3.906568780879497,
+        "y": 1.2606209083385913
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": true,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": true,
+      "stopEvent": {
+        "names": [
+          "Open Grabber 1"
+        ],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 6.337304481060575,
+        "y": 2.1850762411202247
+      },
+      "prevControl": {
+        "x": 6.227404196743877,
+        "y": -0.0646472260686458
+      },
+      "nextControl": {
+        "x": 6.227404196743877,
+        "y": -0.0646472260686458
+      },
+      "holonomicAngle": 0,
+      "isReversal": true,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": true,
+      "stopEvent": {
+        "names": [
+          "Close Grabber 2",
+          "Check Grabber 1",
+          "Arm to Game Piece 1"
+        ],
+        "executionBehavior": "sequential",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 1.8960400501446162,
+        "y": 1.5903217612886837
+      },
+      "prevControl": {
+        "x": 1.8637164371102937,
+        "y": 0.7046547641482381
+      },
+      "nextControl": {
+        "x": 1.909010192701361,
+        "y": 1.9457036673434949
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": true,
+      "stopEvent": {
+        "names": [
+          "Open Grabber 2"
+        ],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 3.8871746130589035,
+        "y": 1.971740395093694
+      },
+      "prevControl": {
+        "x": 1.7990692110416477,
+        "y": 1.997599285521152
+      },
+      "nextControl": null,
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [
+          "Balance"
+        ],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    }
+  ],
+  "markers": []
+}
