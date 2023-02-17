@@ -17,8 +17,8 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "Pop Game Piece",
-          "Elevator to Floor",
+          "Popper",
+          "Elevator to Floor 1",
           "Arm to Floor 1",
           "Open Grabber 1"
         ],
@@ -72,10 +72,10 @@
       "isStopPoint": true,
       "stopEvent": {
         "names": [
-          "Open Grabber",
-          "Check Grabber",
-          "Elevator to Game Piece Height",
-          "Arm to Game Piece Height"
+          "Close Grabber 1",
+          "Check Grabber 1",
+          "Elevator to Game Piece 1",
+          "Arm to Game Piece 1"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "none",
@@ -127,7 +127,7 @@
       "isStopPoint": true,
       "stopEvent": {
         "names": [
-          "Open Grabber"
+          "Open Grabber 2"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "none",
@@ -206,8 +206,8 @@
         "names": [
           "Close Grabber 2",
           "Check Grabber 2",
-          "Elevator to Game Piece Height 2",
-          "Arm to Game Piece Height 2"
+          "Elevator to Game Piece  2",
+          "Arm to Game Piece  2"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "none",
@@ -259,7 +259,7 @@
       "isStopPoint": true,
       "stopEvent": {
         "names": [
-          "Open Grabber"
+          "Open Grabber 3"
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
@@ -296,7 +296,7 @@
       "position": 5.454545454545459,
       "names": [
         "Elevator to Floor 2",
-        "Arm to Floor"
+        "Arm to Floor 2"
       ]
     }
   ]
