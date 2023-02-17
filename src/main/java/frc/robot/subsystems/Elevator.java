@@ -37,6 +37,8 @@ public class Elevator extends SubsystemBase implements Constants {
   public static void setMotor(double speed){
     // if(getSensor() <= kElevatorMaxHeight || getSensor() >= kElevatorMinHeight){
     //   motor.set(0);
+    // } else {
+    //   motor.set(speed);
     // }
     motor.set(speed);
   }
@@ -60,6 +62,14 @@ public class Elevator extends SubsystemBase implements Constants {
   public static double getSensor(){
     // return tenTurnPot.get();
     return motor.getSelectedSensorPosition() / kElevatorDistancePerRotation * kEleveatorGearRatio;
+  }
+
+  public static boolean getSensorMax(){
+    return !(getSensor() <= kElevatorMaxHeight);
+  }
+
+  public static boolean getSensorLow() {
+    return (getSensor() <= kElevatorMinHeight);
   }
 
   @Override

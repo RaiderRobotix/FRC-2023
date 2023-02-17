@@ -27,16 +27,15 @@ public class Arm extends SubsystemBase implements Constants{
   }
 
   public static void setMotorPID(double distance){
-    if(getSensor() >= kArmMaxLength || getSensor() <= kArmMinLength){
-      motor.set(0);
-    }
-    motor.set(pid.calculate(getSensor(), distance));
+    double pidValue = pid.calculate(getSensor(), distance);
+    SmartDashboard.putNumber("Arm PID", pidValue);
+    motor.set(pidValue);
   }
 
   public static void setMotor(double speed){
-    if(getSensor() >= kArmMaxLength || getSensor() <= kArmMinLength){
-      motor.set(0);
-    }
+    // if(getSensor() >= kArmMaxLength || getSensor() <= kArmMinLength){
+    //   motor.set(0);
+    // }
     motor.set(speed);
   } 
 
@@ -60,6 +59,14 @@ public class Arm extends SubsystemBase implements Constants{
   public static double getSensor(){
     // return tenTurnPot.get();
     return motor.getSelectedSensorPosition() / (kArmDistancePerRotation * kArmGearRatio);
+  }
+
+  public static boolean getSensorMax() {
+    return (getSensor() <= kArmMaxLength);
+  }
+
+  public static boolean getSensorLow() {
+    return (getSensor() >= kArmMinLength);
   }
 
   @Override

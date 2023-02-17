@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
@@ -111,23 +112,27 @@ public class RobotContainer implements Constants {
       .onTrue(new InstantCommand(() -> Pneumatics.togglePopperSolenoid()));
 
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), armInJoystickButton)
+      .and(new Trigger(Arm::getSensorMax))
       .whileTrue(new StartEndCommand(
         () -> Arm.setMotor(kArmInSpeed),
         () -> Arm.setMotor(0)));
 
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), armOutJoystickButton)
+      .and(new Trigger(Arm::getSensorLow))
       .whileTrue(new StartEndCommand(
         () -> Arm.setMotor(-kArmOutSpeed),
         () -> Arm.setMotor(0),
         m_arm));
 
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorUpJoystickButton)
+    .and(new Trigger(Elevator::getSensorMax))
     .whileTrue(new StartEndCommand(
       () -> Elevator.setMotor(-kElevatorUpSpeed),
       () -> Elevator.setMotor(0),
       m_elevator));
       
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorDownJoystickButton)
+    .and(new Trigger(Elevator::getSensorLow))
     .whileTrue(new StartEndCommand(
       () -> Elevator.setMotor(kElevatorDownSpeed),
       () -> Elevator.setMotor(0),
@@ -147,9 +152,13 @@ public class RobotContainer implements Constants {
 
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorUpperRowJoystickButton)
     .whileTrue(new StartEndCommand(
-      () -> Elevator.setMotorPID(kLowerRowHeight),
+      () -> Elevator.setMotorPID(kUpperRowHeight),
       () -> Elevator.setMotor(0),
-      m_elevator));
+      m_elevator))
+    .whileTrue((new StartEndCommand(
+      () -> Arm.setMotorPID(kUpperRowLength),
+      () -> Arm.setMotor(0),
+      m_elevator)));
 
 
 
