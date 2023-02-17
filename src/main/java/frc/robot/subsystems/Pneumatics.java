@@ -81,24 +81,29 @@ public class Pneumatics extends SubsystemBase implements Constants {
   public static boolean getGrabberSolenoid(){
     return grabberSolenoidOn.get();
   }
+  
+  public static boolean getPopperSolenoid(){
+    return popperSolenoidOn.get();
+  }
 
   public static void toggleGrabberSolenoid(){
     grabberSolenoidOff.set(getGrabberSolenoid());
     grabberSolenoidOn.set(!getGrabberSolenoid());
+  }
+  
+  public static void togglePopperSolenoid(){
+    popperSolenoidOff.set(getGrabberSolenoid());
+    popperSolenoidOn.set(!getGrabberSolenoid());
   }
 
   public static void setGrabberSolenoid(boolean state){
     grabberSolenoidOn.set(state);
     grabberSolenoidOff.set(!state);
   }
-
-  public static boolean getPopperSolenoid(){
-    return popperSolenoidOn.get();
-  }
-
-  public static void togglePopperSolenoid(){
-    popperSolenoidOff.set(getPopperSolenoid());
-    popperSolenoidOn.set(!getPopperSolenoid());
+  
+  public static void setPopperSolenoid(boolean state){
+    popperSolenoidOn.set(state);
+    popperSolenoidOff.set(!state);
   }
 
 
