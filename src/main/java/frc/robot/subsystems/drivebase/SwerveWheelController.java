@@ -19,10 +19,12 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.subsystems.Gyro;
 
 public class SwerveWheelController extends SubsystemBase implements Constants {
@@ -47,9 +49,11 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
   private PIDController angleController = new PIDController(robotangleKd, robotangleKi,
       robotangleKd);
 
+  private final Field2d m_Field2d = new Field2d();
+
   /** Creates a new drivebase. */
   public SwerveWheelController() {
-
+    SmartDashboard.putData("Field", m_Field2d);
     // Location of modules relative to the centre of the robot
 
     this.frontLeftModule = new SwerveWheel(frontLeftDriveID, frontLeftSteerID, frontLeftEncoderID, "Front Left");
@@ -226,7 +230,9 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
   
   @Override
   public void periodic() {
-
+    if(Robot.isSimulation()){
+      m_Field2d.setRobotPose(getPose());
+    }
     
     odometry.update(
         getRotation2d(),
