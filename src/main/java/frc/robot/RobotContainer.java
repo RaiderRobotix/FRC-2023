@@ -78,10 +78,10 @@ public class RobotContainer implements Constants {
    */
   private void configureButtonBindings() {
     // Driver Controls
-    new Trigger(m_operatorInterface::getRightTrigger)
+    new Trigger(m_operatorInterface::getLeftTrigger)
       .onTrue(new drive(m_controller, m_operatorInterface, slowSpeed));
 
-    new Trigger(m_operatorInterface::getLeftTrigger)
+    new Trigger(m_operatorInterface::getRightTrigger)
       .onTrue(new drive(m_controller, m_operatorInterface, turboSpeed));
 
     new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kBack.value)
