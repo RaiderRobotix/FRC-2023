@@ -93,8 +93,8 @@ public class Pneumatics extends SubsystemBase implements Constants {
   
   public static void togglePopperSolenoid(){
     // System.out.println("passed");
-    popperSolenoidOff.set(getGrabberSolenoid());
-    popperSolenoidOn.set(!getGrabberSolenoid());
+    popperSolenoidOff.set(getPopperSolenoid());
+    popperSolenoidOn.set(!getPopperSolenoid());
   }
 
   public static void setGrabberSolenoid(boolean state){

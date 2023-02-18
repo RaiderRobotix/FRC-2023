@@ -147,6 +147,7 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   public void setDriveSpeed(double speed) {
     // this.driveMotor.set(driveController.calculate(getDriveSpeed(), speed));
     // System.out.println(speed);
+    SmartDashboard.putNumber("Desired Wheel Speed", speed);
     this.driveMotor.set(speed);
   }
   
