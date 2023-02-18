@@ -32,9 +32,9 @@ public class Arm extends SubsystemBase implements Constants{
   }
 
   public static void setMotor(double speed){
-    // if(getSensor() >= kArmMaxLength || getSensor() <= kArmMinLength){
-    //   motor.set(0);
-    // }
+    if(getSensor() >= kArmMaxLength || getSensor() >= kArmMinLength){
+      motor.set(0);
+    }
     motor.set(speed);
   } 
 

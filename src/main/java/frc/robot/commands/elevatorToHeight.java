@@ -25,14 +25,15 @@ public class elevatorToHeight extends PIDCommand implements Constants{
         // This should return the setpoint (can also be a constant)
         () -> height,
         // This uses the output
+        //Output is the opposite, negative is up and postive is down 
         output -> {
-          if(Elevator.getSensorLow() && output < 0){
+          if(Elevator.getSensorLow() && output > 0){
             output = 0;
-          } else if (Elevator.getSensorMax() && output > 0){
+          } else if (Elevator.getSensorMax() && output < 0){
             output = 0;
           }
           SmartDashboard.putNumber("output", output);
-          Elevator.setMotor(output);
+          Elevator.setMotor(-output);
         });
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.

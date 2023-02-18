@@ -59,8 +59,8 @@ public interface Constants {
     public final int kMaxRPM = 6380;
     public final double kWheelDiameter = Units.inchesToMeters(4);
 
-    public final double rightDeadband = 0.15;
-    public final double leftDeadband = 0.15;
+    public final double rightDeadband = 0.01;
+    public final double leftDeadband = 0.01;
     public final double rightTriggerThreshold = 0.70;
     public final double leftTriggerThreshold = 0.70;
 
@@ -129,21 +129,21 @@ public interface Constants {
 
 
     //Speeds for Operator Controller
-    public final double kElevatorUpSpeed = 1;
-    public final double kElevatorDownSpeed = 1;
+    public final double kElevatorUpSpeed = 0.25;
+    public final double kElevatorDownSpeed = 0.25;
 
     //Present Height Values for rows
-    public final double kUpperRowHeight = -16194.7265625;
-    public final double kMidRowHeight = -13078.088;
-    public final double kHumanPlayerHeight = -14208;
-    public final double kLowerRowHeight = 416.16;
-    public final double kFloorHeight = 0.0;
-    public final double kElevatorMaxHeight = -18000.00;
-    public final double kElevatorMinHeight = 0;
+    public final double kUpperRowHeight = .48;
+    public final double kMidRowHeight = 0.43;
+    public final double kHumanPlayerHeight = 0.44;
+    public final double kLowerRowHeight = .178;
+    public final double kFloorHeight = .178;
+    public final double kElevatorMaxHeight = .518;
+    public final double kElevatorMinHeight = .178;
     //PID values for elevator
-    public final double elevatorKp = 0.0020;
-    public final double elevatorKi = 0.001;
-    public final double elevatorKd = 0.0000;
+    public final double elevatorKp = 10.000;
+    public final double elevatorKi = 0.000;
+    public final double elevatorKd = 0.000;
 
 
     //Arm Variables
@@ -154,12 +154,12 @@ public interface Constants {
 
     //Arm Length Values
     public final double kUpperRowLength = 5.5;
-    public final double kMidRowLength = 0.582;
+    public final double kMidRowLength = 2.21;
     public final double kLowerRowLength = 5.029 ;
     public final double kHumanPlayerLength = -0.35;
     public final double kFloorLength = 0.0;
     public final double kArmMaxLength = 4.5;
-    public final double kArmMinLength = -0.35;
+    public final double kArmMinLength = -0.27;
 
     //Speeds for Operator Arm
     public final double kArmInSpeed = 0.5;

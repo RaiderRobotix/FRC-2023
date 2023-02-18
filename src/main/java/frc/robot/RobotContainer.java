@@ -78,11 +78,11 @@ public class RobotContainer implements Constants {
    */
   private void configureButtonBindings() {
     // Driver Controls
-    new Trigger(m_operatorInterface::getLeftTrigger)
-      .onTrue(new drive(m_controller, m_operatorInterface, slowSpeed));
+    // new Trigger(m_operatorInterface::getLeftTrigger)
+    //   .whileTrue(new drive(m_controller, m_operatorInterface, slowSpeed));
 
-    new Trigger(m_operatorInterface::getRightTrigger)
-      .onTrue(new drive(m_controller, m_operatorInterface, turboSpeed));
+    // new Trigger(m_operatorInterface::getRightTrigger)
+    //   .whileTrue(new drive(m_controller, m_operatorInterface, turboSpeed));
 
     new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kBack.value)
       .onTrue(new InstantCommand(() -> SwerveWheelController.toggleCoast()));
@@ -127,14 +127,14 @@ public class RobotContainer implements Constants {
         m_arm));
 
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorUpJoystickButton)
-    .and(new Trigger(Elevator::getSensorMax))
+    .and(new Trigger(Elevator::getSensorMax).negate())
     .whileTrue(new StartEndCommand(
       () -> Elevator.setMotor(-kElevatorUpSpeed),
       () -> Elevator.setMotor(0),
       m_elevator));
       
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorDownJoystickButton)
-    .and(new Trigger(Elevator::getSensorLow))
+    .and(new Trigger(Elevator::getSensorLow).negate())
     .whileTrue(new StartEndCommand(
       () -> Elevator.setMotor(kElevatorDownSpeed),
       () -> Elevator.setMotor(0),
@@ -166,9 +166,7 @@ public class RobotContainer implements Constants {
       // .debounce(kDistanceSensorDebounceTime)
       .onTrue(new InstantCommand(() -> Pneumatics.toggleGrabberSolenoid()));
     
-    // new Trigger(Pneumatics::getGrabberSolenoid)
-    // .and(new Trigger(Arm::isUpperRow))
-    // .onTrue(new InstantCommand(() -> Pneumatics.toggleGrabberSolenoid()))
+    // new Trigger(Arm::isUpperRow).negate()
     // .onTrue(new armToLength(kHumanPlayerLength))
     // .onTrue(new elevatorToHeight(kHumanPlayerHeight));
   }

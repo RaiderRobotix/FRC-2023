@@ -38,6 +38,12 @@ public class drive extends CommandBase implements Constants {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(oi.getLeftTrigger()){
+      maxSpeed = 0.2;
+    }
+    if(oi.getRightTrigger()){
+      maxSpeed = 1.0;
+    }
     swerveWheelController.setSpeed(
       oi.getLeftY() * maxSpeed,
       oi.getLeftX() * maxSpeed,

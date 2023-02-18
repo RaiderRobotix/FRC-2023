@@ -60,12 +60,12 @@ public class Elevator extends SubsystemBase implements Constants {
   }
 
   public static double getSensor(){
-    // return tenTurnPot.get();
-    return motor.getSelectedSensorPosition() / kElevatorDistancePerRotation * kEleveatorGearRatio;
+    return tenTurnPot.get();
+    // return motor.getSelectedbSensorPosition() / kElevatorDistancePerRotation * kEleveatorGearRatio;
   }
 
   public static boolean getSensorMax(){
-    return !(getSensor() <= kElevatorMaxHeight);
+    return (getSensor() >= kElevatorMaxHeight);
   }
 
   public static boolean getSensorLow() {
@@ -75,6 +75,8 @@ public class Elevator extends SubsystemBase implements Constants {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Elevator Encoder", getSensor());
+    SmartDashboard.putBoolean("getLow", getSensorLow());
+    SmartDashboard.putBoolean("getHigh", getSensorMax());
     // This method will be called once per scheduler run
   }
 }
