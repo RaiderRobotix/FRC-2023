@@ -61,11 +61,11 @@ public class Arm extends SubsystemBase implements Constants{
   }
 
   public static boolean getSensorMax() {
-    return (getSensor() <= kArmMaxLength);
+    return (getSensor() >= kArmMaxLength);
   }
 
   public static boolean getSensorLow() {
-    return (getSensor() >= kArmMinLength);
+    return (getSensor() <= kArmMinLength);
   }
 
   public static boolean isUpperRow(){

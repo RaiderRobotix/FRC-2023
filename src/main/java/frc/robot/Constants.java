@@ -141,7 +141,7 @@ public interface Constants {
     public final double kElevatorMaxHeight = .518;
     public final double kElevatorMinHeight = .178;
     //PID values for elevator
-    public final double elevatorKp = 10.000;
+    public final double elevatorKp = 12.500;
     public final double elevatorKi = 0.000;
     public final double elevatorKd = 0.000;
 
@@ -153,20 +153,20 @@ public interface Constants {
     public final double kArmGearRatio = 15;
 
     //Arm Length Values
-    public final double kUpperRowLength = 5.5;
+    public final double kUpperRowLength = 6;
     public final double kMidRowLength = 2.21;
     public final double kLowerRowLength = 5.029 ;
     public final double kHumanPlayerLength = -0.35;
     public final double kFloorLength = 0.0;
-    public final double kArmMaxLength = 4.5;
-    public final double kArmMinLength = -0.27;
+    public final double kArmMaxLength = 6.7;
+    public final double kArmMinLength = 0.0;
 
     //Speeds for Operator Arm
     public final double kArmInSpeed = 0.5;
     public final double kArmOutSpeed = 0.5;
     
      //PID values for Arm
-     public final double armKp = 0.4;
+     public final double armKp = 0.775;
      public final double armKi = 0.0000;
      public final double armKd = 0.0000;
 
@@ -176,9 +176,9 @@ public interface Constants {
     
     //PID values for motors
     //PID values for steering angle
-    public final double angleKp = 0.01120; // Speed Default 0.01100
+    public final double angleKp = 0.01120; // Speed Default 0.01120
     public final double angleKi = 0.0000001; // Amount to react Default 0.00001
-    public final double angleKd = 0.00023; // Dampens system Default 0.00037
+    public final double angleKd = 0.00023; // Dampens system Default 0.00023
 
     //PID values for driving speed
     public final double driveKp = 500;
