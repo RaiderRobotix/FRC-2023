@@ -24,6 +24,7 @@ import frc.robot.commands.drive;
 import frc.robot.commands.driveDistance;
 import frc.robot.commands.elevatorToHeight;
 import frc.robot.commands.motor;
+import frc.robot.commands.pickdown;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Gyro;
@@ -108,7 +109,7 @@ public class RobotContainer implements Constants {
         
       // Operator Controls
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), grabberJoystickButton)
-      .onTrue(new InstantCommand(() -> Pneumatics.toggleGrabberSolenoid()));
+      .onTrue(new pickdown());
 
       new JoystickButton(m_operatorInterface.getOperatorJoystick(), popperJoystickButton)
       .onTrue(new InstantCommand(() -> Pneumatics.togglePopperSolenoid()));
@@ -141,7 +142,7 @@ public class RobotContainer implements Constants {
       m_elevator));
 
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorLowerRowJoystickButton)
-    .whileTrue(new armToLength(kLowerRowLength))
+    .whileTrue(new armToLength(kFloorLength))
     .whileTrue(new elevatorToHeight(kLowerRowHeight));
 
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorMidRowJoystickButton)
@@ -164,7 +165,7 @@ public class RobotContainer implements Constants {
     new Trigger(m_operatorInterface::getDistanceSensor)
       .and(new JoystickButton(m_operatorInterface.getOperatorJoystick(), autoGrabberJoystickButton))
       // .debounce(kDistanceSensorDebounceTime)
-      .onTrue(new InstantCommand(() -> Pneumatics.toggleGrabberSolenoid()));
+      .onTrue(new pickdown());
     
     // new Trigger(Arm::isUpperRow).negate()
     // .onTrue(new armToLength(kHumanPlayerLength))

@@ -59,8 +59,8 @@ public interface Constants {
     public final int kMaxRPM = 6380;
     public final double kWheelDiameter = Units.inchesToMeters(4);
 
-    public final double rightDeadband = 0.01;
-    public final double leftDeadband = 0.01;
+    public final double rightDeadband = 0.15;
+    public final double leftDeadband = 0.15;
     public final double rightTriggerThreshold = 0.70;
     public final double leftTriggerThreshold = 0.70;
 
@@ -93,7 +93,7 @@ public interface Constants {
 
 
     //Drivebase movement constraints units are in metres
-    public final double maxAttainableSpeed = 18.0;
+    public final double maxAttainableSpeed = Units.feetToMeters(18);
     //Units in percentage of maxAttainableSpeed
     public final double turboSpeed = 1;
     public final double slowSpeed = 0.2;
@@ -135,7 +135,7 @@ public interface Constants {
     //Present Height Values for rows
     public final double kUpperRowHeight = .48;
     public final double kMidRowHeight = 0.43;
-    public final double kHumanPlayerHeight = 0.44;
+    public final double kHumanPlayerHeight = 0.45;
     public final double kLowerRowHeight = .178;
     public final double kFloorHeight = .178;
     public final double kElevatorMaxHeight = .518;
@@ -155,9 +155,8 @@ public interface Constants {
     //Arm Length Values
     public final double kUpperRowLength = 6;
     public final double kMidRowLength = 2.21;
-    public final double kLowerRowLength = 5.029 ;
     public final double kHumanPlayerLength = -0.35;
-    public final double kFloorLength = 0.0;
+    public final double kFloorLength = 2.0;
     public final double kArmMaxLength = 6.7;
     public final double kArmMinLength = 0.0;
 
@@ -176,9 +175,9 @@ public interface Constants {
     
     //PID values for motors
     //PID values for steering angle
-    public final double angleKp = 0.01120; // Speed Default 0.01120
-    public final double angleKi = 0.0000001; // Amount to react Default 0.00001
-    public final double angleKd = 0.00023; // Dampens system Default 0.00023
+    public final double angleKp = 0.00900; // Speed Default 0.01120
+    public final double angleKi = 0.0; // Amount to react Default 0.00001
+    public final double angleKd = 0.0; // Dampens system Default 0.00023
 
     //PID values for driving speed
     public final double driveKp = 500;

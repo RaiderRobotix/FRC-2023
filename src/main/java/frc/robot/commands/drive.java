@@ -7,6 +7,7 @@ package frc.robot.commands;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Gyro;
@@ -39,16 +40,17 @@ public class drive extends CommandBase implements Constants {
   @Override
   public void execute() {
     if(oi.getLeftTrigger()){
-      maxSpeed = 0.2;
+      maxSpeed = 0.05;
     } else if(oi.getRightTrigger()){
       maxSpeed = 1.0;
     } else {
       maxSpeed = 0.6;
     }
+    SmartDashboard.putNumber("maxSpeed", maxSpeed); 
     swerveWheelController.setSpeed(
       oi.getLeftY() * maxSpeed * maxAttainableSpeed,
       oi.getLeftX() * maxSpeed * maxAttainableSpeed,
-      -oi.getRightX() * maxSpeed * Math.PI*4);
+      -oi.getRightX() * 10);
   }
 
   // Called once the command ends or is interrupted.

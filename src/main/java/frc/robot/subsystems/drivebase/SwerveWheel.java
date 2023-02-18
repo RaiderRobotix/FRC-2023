@@ -163,7 +163,7 @@ public class SwerveWheel extends SubsystemBase implements Constants {
 
 
   public void setDesiredState(SwerveModuleState state) {
-    // state = SwerveModuleState.optimize(state, getSteerAngle());
+    state = SwerveModuleState.optimize(state, getSteerAngle());
     setDriveSpeed(state.speedMetersPerSecond);
     setSteerAngle(state.angle.getDegrees());
   }

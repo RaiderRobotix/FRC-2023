@@ -197,6 +197,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
   public void setSpeed(double x, double y, double delta) {
     SmartDashboard.putNumber("DesiredXSpeed", x);
     SmartDashboard.putNumber("DesiredYSpeed", y);
+    SmartDashboard.putNumber("DesiredDelta", delta);
     if (fieldCentric) {
       this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(x, y, delta, getRotation2d());
     } else {

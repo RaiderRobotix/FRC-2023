@@ -47,7 +47,7 @@ public class Arm extends SubsystemBase implements Constants{
   }
 
   public static void setLowerRow(){
-    setMotorPID(kLowerRowLength);
+    setMotorPID(kFloorLength);
   }
 
   public static void setFloor(){
@@ -77,7 +77,7 @@ public class Arm extends SubsystemBase implements Constants{
   }
 
   public static boolean isLowRow() {
-    return Math.abs(kLowerRowLength - getSensor()) < 0.05;
+    return Math.abs(kFloorLength - getSensor()) < 0.05;
   }
 
   @Override
