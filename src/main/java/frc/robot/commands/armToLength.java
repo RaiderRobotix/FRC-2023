@@ -24,6 +24,11 @@ public class armToLength extends PIDCommand implements Constants {
         () -> length,
         // This uses the output
         output -> {
+          if(Arm.getSensorLow() && output < 0){
+            output = 0;
+          } else if (Arm.getSensorMax() && output > 0){
+            output = 0;
+          }
           Arm.setMotor(output);
         });
     // Use addRequirements() here to declare subsystem dependencies.

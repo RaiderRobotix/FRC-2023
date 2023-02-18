@@ -5,8 +5,10 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -24,6 +26,12 @@ public class elevatorToHeight extends PIDCommand implements Constants{
         () -> height,
         // This uses the output
         output -> {
+          if(Elevator.getSensorLow() && output < 0){
+            output = 0;
+          } else if (Elevator.getSensorMax() && output > 0){
+            output = 0;
+          }
+          SmartDashboard.putNumber("output", output);
           Elevator.setMotor(output);
         });
     // Use addRequirements() here to declare subsystem dependencies.
