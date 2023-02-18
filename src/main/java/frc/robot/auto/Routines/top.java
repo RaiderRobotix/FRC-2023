@@ -6,7 +6,9 @@ package frc.robot.auto.Routines;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.auto.AutonCommands;
+import frc.robot.commands.armToLength;
 import frc.robot.commands.balance;
+import frc.robot.commands.elevatorToHeight;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Pneumatics;
@@ -22,33 +24,33 @@ public class top extends AutonCommands {
         super.setMap("Popper", 
         new InstantCommand(() -> Pneumatics.setPopperSolenoid(true)));
         super.setMap("Elevator to Floor 1", 
-        new InstantCommand(() -> Elevator.setFloor()));
+        new elevatorToHeight(kFloorLength));
         super.setMap("Arm to Floor 1", 
-        new InstantCommand(() -> Arm.setFloor()));
+        new armToLength(kFloorLength));
         super.setMap("Open Grabber 1", 
         new InstantCommand(() -> Pneumatics.setGrabberSolenoid(true)));
 
         super.setMap("Close Grabber 1", 
         new InstantCommand(() -> Pneumatics.setGrabberSolenoid(false)));
         super.setMap("Elevator to Game Piece 1", 
-        new InstantCommand(() -> Elevator.setUpperRow()));
+        new elevatorToHeight(kUpperRowHeight));
         super.setMap("Arm to Game Piece 1", 
-        new InstantCommand(() -> Arm.setUpperRow()));
+        new armToLength(kUpperRowLength));
 
         super.setMap("Open Grabber 2", 
         new InstantCommand(() -> Pneumatics.setGrabberSolenoid(true)));
 
         super.setMap("Elevator to Floor 2", 
-        new InstantCommand(() -> Elevator.setFloor()));
+        new elevatorToHeight(kFloorLength));
         super.setMap("Arm to Floor 2", 
-        new InstantCommand(() -> Arm.setFloor()));
+        new armToLength(kFloorLength));
 
         super.setMap("Close Grabber 2", 
         new InstantCommand(() -> Pneumatics.setGrabberSolenoid(false)));
         super.setMap("Elevator to Game Piece 2", 
-        new InstantCommand(() -> Elevator.setUpperRow()));
+        new elevatorToHeight(kUpperRowHeight));
         super.setMap("Arm to Game Piece 2", 
-        new InstantCommand(() -> Arm.setUpperRow()));
+        new armToLength(kUpperRowLength));
 
         super.setMap("Open Grabber 3", 
         new InstantCommand(() -> Pneumatics.setGrabberSolenoid(true)));
