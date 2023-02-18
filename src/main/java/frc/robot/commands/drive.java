@@ -40,14 +40,15 @@ public class drive extends CommandBase implements Constants {
   public void execute() {
     if(oi.getLeftTrigger()){
       maxSpeed = 0.2;
-    }
-    if(oi.getRightTrigger()){
+    } else if(oi.getRightTrigger()){
       maxSpeed = 1.0;
+    } else {
+      maxSpeed = 0.6;
     }
     swerveWheelController.setSpeed(
-      oi.getLeftY() * maxSpeed,
-      oi.getLeftX() * maxSpeed,
-      oi.getRightX() * 1);
+      oi.getLeftY() * maxSpeed * maxAttainableSpeed,
+      oi.getLeftX() * maxSpeed * maxAttainableSpeed,
+      -oi.getRightX() * maxSpeed * Math.PI*4);
   }
 
   // Called once the command ends or is interrupted.
@@ -58,12 +59,13 @@ public class drive extends CommandBase implements Constants {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(maxSpeed == turboSpeed){
-      return !oi.getLeftTrigger();
-    } else if (maxSpeed == slowSpeed){
-      return !oi.getRightTrigger();
-    } else {
-      return Math.abs(oi.getLeftX()) < 0.05 && Math.abs(oi.getLeftY()) < 0.05 && Math.abs(oi.getRightX()) < 0.05;
-    }
+    return false;
+    // if(maxSpeed == turboSpeed){
+    //   return !oi.getLeftTrigger();
+    // } else if (maxSpeed == slowSpeed){
+    //   return !oi.getRightTrigger();
+    // } else {
+    //   return Math.abs(oi.getLeftX()) < 0.05 && Math.abs(oi.getLeftY()) < 0.05 && Math.abs(oi.getRightX()) < 0.05;
+    // }
   }
 }
