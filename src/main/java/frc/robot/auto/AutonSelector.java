@@ -45,7 +45,11 @@ public class AutonSelector implements Constants{
 
         switch (mode) {
             case testAuto:
-                return new straightLine("Straight Line", swerveController);            
+                return new straightLine("Straight Line", swerveController);
+            case testAutoW90:
+                return new straightLine("Straight Line w 90", swerveController);
+            case testAutoW180:
+                return new straightLine("Straight Line w 180", swerveController);            
             case straightAutoActions:
                 return new straightLineActions("Straight Line with Actions", swerveController);
             case top:
@@ -64,6 +68,8 @@ public class AutonSelector implements Constants{
 
     private enum AutonomousMode {
         testAuto,
+        testAutoW90,
+        testAutoW180,
         straightAutoActions,
         top,
         middle,
