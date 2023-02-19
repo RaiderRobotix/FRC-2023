@@ -177,8 +177,8 @@ public class RobotContainer implements Constants {
     Map<String, Command> eventMap = command.getEventMap();
 
     SwerveAutoBuilder autoBuilder =  new SwerveAutoBuilder(
-      m_controller::getPose, // Pose2d supplier
-      SwerveWheelController::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of autokDriveKinematics, // SwerveDriveKinematics
+      () -> m_controller.getOdometry().getPoseMeters(), // Pose2d supplier
+      m_controller::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of autokDriveKinematics, // SwerveDriveKinematics
       kDriveKinematics,
       new PIDConstants(5.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
       new PIDConstants(0.5, 0.0, 0.0), // PID constants to correct for rotation error (used to create the rotation controller)
