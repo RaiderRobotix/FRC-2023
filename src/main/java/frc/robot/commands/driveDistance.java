@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
@@ -16,14 +17,16 @@ import frc.robot.subsystems.drivebase.SwerveWheelController;
 public class driveDistance extends PIDCommand implements Constants {
   /** Creates a new driveDistance. */
   //Distance is measured in 
-  public driveDistance(double distance, SwerveWheelController swerveController) {
+  public driveDistance(Translation2d newPose, SwerveWheelController swerveController) {
     super(
         // The controller that the command will use
+        new PIDController(robotDriveDistanceKp, robotDriveDistanceKi, robotDriveDistanceKd),
+        
         new PIDController(robotDriveDistanceKp, robotDriveDistanceKi, robotDriveDistanceKd),
         // This should return the measurement
         () -> swerveController.getDistance(),
         // This should return the setpoint (can also be a constant)
-        distance + swerveController.getDistance(),
+        distance + swerveController.odometry,
         // This uses the outputs
         output -> swerveController.setSpeed(output, 0, 0, true));
     // Use addRequirements() here to declare subsystem dependencies.

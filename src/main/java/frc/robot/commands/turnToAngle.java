@@ -5,6 +5,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Gyro;
@@ -24,7 +26,9 @@ public class turnToAngle extends PIDCommand implements Constants {
         // This should return the setpoint (can also be a constant)
         () -> angle,
         // This uses the output
-        output -> swerveController.setSpeed(0,0, output));
+        output -> swerveController.drive(
+          ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, output,
+            swerveController.getRotation2d())));
           // Use the output here
         addRequirements(swerveController);
         getController().setTolerance(robotAngleTolerance);
