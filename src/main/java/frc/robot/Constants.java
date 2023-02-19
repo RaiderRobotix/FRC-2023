@@ -236,7 +236,7 @@ public interface Constants {
     public final int backLeftDriveID = 22;
     public final int backLeftSteerID = 12;
     public final int backLeftEncoderID = 2;
-    public final double backleftEncoderOffset = 280.9;
+    public final double backLeftEncoderOffset = 280.9;
 
     public final int backRightDriveID = 23;
     public final int backRightSteerID = 13;

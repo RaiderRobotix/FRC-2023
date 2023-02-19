@@ -6,19 +6,31 @@ package frc.robot.subsystems.drivebase;
 
 import java.util.HashMap;
 
+import com.ctre.phoenix.sensors.CANCoder;
+import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+import com.swervedrivespecialties.swervelib.MkSwerveModuleBuilder;
+import com.swervedrivespecialties.swervelib.MotorType;
+import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
+import com.swervedrivespecialties.swervelib.SwerveModule;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.wpilibj.SPI.Port;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
@@ -28,223 +40,160 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Gyro;
 
 public class SwerveWheelController extends SubsystemBase implements Constants {
+  private ChassisSpeeds speeds = new ChassisSpeeds();
+  private SwerveModuleState[] m_desiredStates;
 
-  private ChassisSpeeds speeds;
+  private static Pose2d robotPose;
 
   // private Gyro gyro = new Gyro();
 
-  private static SwerveWheel frontLeftModule;
-  private static SwerveWheel frontRightModule;
-  private static SwerveWheel backLeftModule;
-  private static SwerveWheel backRightModule;
+  private static SwerveModule frontLeftModule;
+  private static SwerveModule frontRightModule;
+  private static SwerveModule backLeftModule;
+  private static SwerveModule backRightModule;
   private static boolean fieldCentric = true;
   private static boolean coast = false;
 
-  private static SwerveWheel[] modules = new SwerveWheel[4];
+  Translation2d frontLeftLocation;
+  Translation2d frontRightLocation;
+  Translation2d backLeftLocation;
+  Translation2d backRightLocation;
 
   private static SwerveDriveOdometry odometry;
 
-  // private SwerveModulePositions[] locations;
+  public static final double MAX_VOLTAGE = 12.0;
 
-  private PIDController angleController = new PIDController(robotangleKd, robotangleKi,
-      robotangleKd);
+  public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
+      SdsModuleConfigurations.MK4_L2.getDriveReduction() *
+      SdsModuleConfigurations.MK4_L2.getWheelDiameter() * Math.PI;
 
-  private final Field2d m_Field2d = new Field2d();
+  private static CANCoder frontLeftEncoder = new CANCoder(frontLeftEncoderID);
+  private static CANCoder frontRightEncoder = new CANCoder(frontRightEncoderID);
+  private static CANCoder backLeftEncoder = new CANCoder(backLeftEncoderID);
+  private static CANCoder backRightEncoder = new CANCoder(backRightEncoderID);
+
+  private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
   /** Creates a new drivebase. */
   public SwerveWheelController() {
-    SmartDashboard.putData("Field", m_Field2d);
+
+    ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+
     // Location of modules relative to the centre of the robot
+    this.frontLeftLocation = new Translation2d(width / 2, length / 2);
+    this.frontRightLocation = new Translation2d(width / 2, -length / 2);
+    this.backLeftLocation = new Translation2d(-width / 2, length / 2);
+    this.backRightLocation = new Translation2d(-width / 2, -length / 2);
+      
+    frontLeftModule = new MkSwerveModuleBuilder()
+    .withLayout(tab.getLayout("Front Left Module", BuiltInLayouts.kList)
+            .withSize(2, 4)
+            .withPosition(0, 0))
+    .withGearRatio(SdsModuleConfigurations.MK4_L3)
+    .withDriveMotor(MotorType.FALCON, frontLeftDriveID)
+    .withSteerMotor(MotorType.FALCON, frontLeftSteerID)
+    .withSteerEncoderPort(frontLeftEncoderID)
+    .withSteerOffset(frontLeftEncoderOffset)
+    .build();
 
-    this.frontLeftModule = new SwerveWheel(frontLeftDriveID, frontLeftSteerID, frontLeftEncoderID, "Front Left");
-    this.frontRightModule = new SwerveWheel(frontRightDriveID, frontRightSteerID, frontRightEncoderID,
-        "Front Right");
-    this.backLeftModule = new SwerveWheel(backLeftDriveID, backLeftSteerID, backLeftEncoderID, "Back Left");
-    this.backRightModule = new SwerveWheel(backRightDriveID, backRightSteerID, backRightEncoderID, "Back Right");
+    frontRightModule = new MkSwerveModuleBuilder()
+    .withLayout(tab.getLayout("Front Right Module", BuiltInLayouts.kList)
+            .withSize(2, 4)
+            .withPosition(0, 0))
+    .withGearRatio(SdsModuleConfigurations.MK4_L3)
+    .withDriveMotor(MotorType.FALCON, frontRightDriveID)
+    .withSteerMotor(MotorType.FALCON, frontRightSteerID)
+    .withSteerEncoderPort(frontRightEncoderID)
+    .withSteerOffset(frontRightEncoderOffset)
+    .build();
 
-    this.modules[0] = this.frontLeftModule;
-    this.modules[1] = this.frontRightModule;
-    this.modules[2] = this.backLeftModule;
-    this.modules[3] = this.backRightModule;
+    backLeftModule = new MkSwerveModuleBuilder()
+    .withLayout(tab.getLayout("Back Left Module", BuiltInLayouts.kList)
+            .withSize(2, 4)
+            .withPosition(0, 0))
+    .withGearRatio(SdsModuleConfigurations.MK4_L3)
+    .withDriveMotor(MotorType.FALCON, backLeftDriveID)
+    .withSteerMotor(MotorType.FALCON, backLeftSteerID)
+    .withSteerEncoderPort(backLeftEncoderID)
+    .withSteerOffset(backLeftEncoderOffset)
+    .build();
+
+    backRightModule = new MkSwerveModuleBuilder()
+    .withLayout(tab.getLayout("Back Right Module", BuiltInLayouts.kList)
+            .withSize(2, 4)
+            .withPosition(0, 0))
+    .withGearRatio(SdsModuleConfigurations.MK4_L3)
+    .withDriveMotor(MotorType.FALCON, backRightDriveID)
+    .withSteerMotor(MotorType.FALCON, backRightSteerID)
+    .withSteerEncoderPort(backRightEncoderID)
+    .withSteerOffset(backRightEncoderOffset)
+    .build();
+
     
-    // Creates kinematics object using the above module location
-    // TODO fill out missing variables
 
-    this.odometry = new SwerveDriveOdometry(kDriveKinematics,
-    getRotation2d(),
-    getModulePositions());
+    m_desiredStates = kDriveKinematics.toSwerveModuleStates(speeds);
 
-    angleController.enableContinuousInput(0, 360);
-    resetMotors();
-    resetEncoders();
+    odometry = new SwerveDriveOdometry(
+                kDriveKinematics,
+                Rotation2d.fromDegrees(Gyro.gyro().getFusedHeading()),
+                new SwerveModulePosition[]{ frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition() }
+        );
+
+  }
+
+  public void drive(ChassisSpeeds chassisSpeeds) {
+    speeds = chassisSpeeds;
+    m_desiredStates = kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+  }
+
+  public void setState(SwerveModuleState[] states){
+    frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
+    frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
+    backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
+    backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
   }
   
-  //Toggles between field centric and robot centric
-  public static void toggleField() {
-    fieldCentric ^= true;
+  public static void zeroGyroscope() {
+    odometry.resetPosition(
+            Rotation2d.fromDegrees(Gyro.gyro().getFusedHeading()),
+            new SwerveModulePosition[]{ frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition() },
+            new Pose2d(odometry.getPoseMeters().getTranslation(), Rotation2d.fromDegrees(0.0))
+    );
   }
 
-  //Toggles drive motors between coast and brake
-  public static void toggleCoast() {
-    coast ^= true;
-    for(SwerveWheel module : modules){
-      module.setNeutralMode(coast);
-    }
+  public Rotation2d getRotation2d(){
+    return odometry.getPoseMeters().getRotation();
   }
 
-  public static void reset(){
-    resetMotors();
-    resetEncoders();
-    resetOdometry(new Pose2d());
-    Gyro.gyro().reset();
-    Gyro.gyro().calibrate();
+  public SwerveDriveOdometry getOdometry(){
+    return odometry;
   }
 
-  //Sets Steer angle to 0
-  public static void resetMotors() {
-    for(SwerveWheel module : modules){
-      module.resetMotors();
-    }
+  public void resetOdometry(Pose2d newPose){
+    odometry.resetPosition(
+      getRotation2d(),
+      new SwerveModulePosition[]{ frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition()},
+      newPose);
   }
 
-  //Sets encoders to 0
-  public static void resetEncoders(){
-    for(SwerveWheel module : modules){
-      module.resetEncoder();
-    }
-  }
-
-   //Resets the robot's odometry to any position
-   public static void resetOdometry(Pose2d pose) {
-    odometry.resetPosition(getRotation2d(), getModulePositions(), pose);
-  }
-
-  //Sets both steer and drive motors to zero speed
-  public static void stopMotors() {
-    for(SwerveWheel module : modules){
-      module.stop();
-    }
-  }
-
-  //Gets the current robot's position
-  public Pose2d getPose() {
-    return odometry.getPoseMeters();
-  }
-
-  public Pose2d resetPose(){
-    return new Pose2d(0,0,new Rotation2d());
-  }
-
-  //Gets the current X speed of the robot
-  public double getXSpeed() {
-    if (this.speeds != null) {
-      return this.speeds.vxMetersPerSecond;
-    } else {
-      return 0;
-    }
-  }
-
-  
-  //Gets the current Y speed of the robot
-  public double getYSpeed() {
-    if (this.speeds != null) {
-      return this.speeds.vyMetersPerSecond;
-    } else {
-      return 0;
-    }
-  }
-
-  //Gets the current rotational speed of the robot
-  public double getAngularSpeed() {
-    if (this.speeds != null) {
-      return this.speeds.omegaRadiansPerSecond;
-
-    }
-    return 0;
-  }
-
-  public double getDistance() {
-    return frontLeftModule.getDistance();
-  }
-
-  //Returns the current gyro heading as a rotation2d
-  //if no gyro is detected returns 0 degrees
-  public static Rotation2d getRotation2d() {
-    if (Gyro.gyro() == null) {
-      return new Rotation2d().fromDegrees(0);
-    } else {
-      return new Rotation2d().fromDegrees(Gyro.getHeading());
-    }
-  }
-
-  //Gets the swervemodule positions
-  public static SwerveModulePosition[] getModulePositions(){
-    return new SwerveModulePosition[] {
-      frontLeftModule.getPosition(),
-      frontRightModule.getPosition(),
-      backLeftModule.getPosition(),
-      backRightModule.getPosition()};
-  }
-
-  // Sets the angle of all the wheel to angle
-  public static void setAngle(double angle) {
-    for(SwerveWheel module : modules){
-      module.setSteerAngle(angle);
-    }
-  }
-  
-  //Sets the robot's speed with a given X speed, Y Speed and rotation speed
-  public void setSpeed(double x, double y, double delta) {
-    SmartDashboard.putNumber("DesiredXSpeed", x);
-    SmartDashboard.putNumber("DesiredYSpeed", y);
-    SmartDashboard.putNumber("DesiredDelta", delta);
-    if (fieldCentric) {
-      this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(x, y, delta, getRotation2d());
-    } else {
-      this.speeds = new ChassisSpeeds(x, y, delta);
-    }
-    SwerveModuleState[] moduleStates = kDriveKinematics.toSwerveModuleStates(speeds);
-    setState(moduleStates);
-  }
-  
-  //Sets the robot's speed with a given X speed, Y Speed and rotation speed
-  //and a field centric override
-  public void setSpeed(double x, double y, double delta, boolean fieldCentric) {
-    SmartDashboard.putNumber("DesiredXSpeed", x);
-    SmartDashboard.putNumber("DesiredYSpeed", y);
-    if (fieldCentric) {
-      this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(x, y, delta, getRotation2d());
-    } else {
-      this.speeds = new ChassisSpeeds(x, y, delta);
-    }
-    SwerveModuleState[] moduleStates = kDriveKinematics.toSwerveModuleStates(speeds);
-    setState(moduleStates);
-  }
-  //Sets the state of an array of SwerveModuleStates, with a max speed
-  public void setState(SwerveModuleState[] moduleStates) {
-    SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, maxAttainableSpeed);
-    frontLeftModule.setDesiredState(moduleStates[0]);
-    frontRightModule.setDesiredState(moduleStates[1]);
-    backLeftModule.setDesiredState(moduleStates[2]);
-    backRightModule.setDesiredState(moduleStates[3]);
-  }
-  
   @Override
   public void periodic() {
-    if(Robot.isSimulation()){
-      m_Field2d.setRobotPose(getPose());
-    }
-    
     odometry.update(
-        getRotation2d(),
-        getModulePositions());
+          Rotation2d.fromDegrees(Gyro.gyro().getFusedHeading()),
+          new SwerveModulePosition[]{ frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition() });
 
-    SmartDashboard.putNumber("X Speed", getXSpeed());
-    SmartDashboard.putNumber("Y Speed", getYSpeed());
-    SmartDashboard.putNumber("Angular Speed", getAngularSpeed());
+    SwerveModuleState[] states = kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+
+    frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
+    frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
+    backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
+    backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
+
+    SmartDashboard.putNumber("X Speed", chassisSpeeds.vxMetersPerSecond);
+    SmartDashboard.putNumber("Y Speed", chassisSpeeds.vyMetersPerSecond);
+    SmartDashboard.putNumber("Angular Speed", chassisSpeeds.omegaRadiansPerSecond);
     SmartDashboard.putBoolean("Field Centric", fieldCentric);
     SmartDashboard.putBoolean("is Coast Mode", coast);
-
-    SmartDashboard.updateValues();
+    // This method will be called once per scheduler run
   }
 }

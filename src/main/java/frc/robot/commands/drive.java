@@ -6,13 +6,14 @@ package frc.robot.commands;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.OperatorInterface;
-import frc.robot.subsystems.drivebase.SwerveWheel;
 import frc.robot.subsystems.drivebase.SwerveWheelController;
 
 public class drive extends CommandBase implements Constants {
@@ -37,6 +38,9 @@ public class drive extends CommandBase implements Constants {
   }
 
   // Called every time the scheduler runs while the command is scheduled.
+  /* (non-Javadoc)
+   * @see edu.wpi.first.wpilibj2.command.Command#execute()
+   */
   @Override
   public void execute() {
     if(oi.getLeftTrigger()){
@@ -47,10 +51,13 @@ public class drive extends CommandBase implements Constants {
       maxSpeed = 0.6;
     }
     SmartDashboard.putNumber("maxSpeed", maxSpeed); 
-    swerveWheelController.setSpeed(
-      oi.getLeftY() * maxSpeed * maxAttainableSpeed,
-      oi.getLeftX() * maxSpeed * maxAttainableSpeed,
-      -oi.getRightX() * 10);
+
+    swerveWheelController.drive(ChassisSpeeds
+          .fromFieldRelativeSpeeds(
+            oi.getLeftY() * maxSpeed * maxAttainableSpeed,
+            oi.getLeftX() * maxSpeed * maxAttainableSpeed,
+            -oi.getRightX() * 10,
+            swerveWheelController.getRotation2d()));
   }
 
   // Called once the command ends or is interrupted.

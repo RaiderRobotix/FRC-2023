@@ -21,10 +21,9 @@ import frc.robot.auto.AutonCommands;
 import frc.robot.auto.AutonSelector;
 import frc.robot.commands.armToLength;
 import frc.robot.commands.drive;
-import frc.robot.commands.driveDistance;
 import frc.robot.commands.elevatorToHeight;
 import frc.robot.commands.motor;
-import frc.robot.commands.pickdown;
+// import frc.robot.commands.pickdown;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Gyro;
@@ -50,8 +49,6 @@ public class RobotContainer implements Constants {
   private final Elevator m_elevator = new Elevator();
   private final Arm m_arm = new Arm();
   private final AutonSelector autonSelector = new AutonSelector();
-
-  private final driveDistance m_autoCommand = new driveDistance(1,m_controller);
 
   private final drive m_Drive = new drive( m_controller, m_operatorInterface, 0.6);
 
@@ -85,35 +82,29 @@ public class RobotContainer implements Constants {
     // new Trigger(m_operatorInterface::getRightTrigger)
     //   .whileTrue(new drive(m_controller, m_operatorInterface, turboSpeed));
 
-    new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kBack.value)
-      .onTrue(new InstantCommand(() -> SwerveWheelController.toggleCoast()));
-
-    new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kStart.value)
-      .onTrue(new InstantCommand(() -> SwerveWheelController.toggleField()));
-
     new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kY.value)
-      .onTrue(new InstantCommand(() -> SwerveWheelController.reset()));
+      .onTrue(new InstantCommand(() -> SwerveWheelController.zeroGyroscope()));
 
-    new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kA.value)
-      .and(new Trigger(m_operatorInterface::isPOV))
-      .whileTrue(new StartEndCommand(
-        () -> m_controller.setAngle(m_operatorInterface.getXboxController().getPOV()),
-        () -> m_controller.setAngle(0)));
+    // new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kA.value)
+    //   .and(new Trigger(m_operatorInterface::isPOV))
+    //   .whileTrue(new StartEndCommand(
+    //     () -> m_controller.setAngle(m_operatorInterface.getXboxController().getPOV()),
+    //     () -> m_controller.setAngle(0)));
       
-    new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kB.value)
-      .and(new Trigger(m_operatorInterface::isPOV)
-      .whileTrue(new StartEndCommand(
-        () -> m_controller.setSpeed(Math.cos(m_operatorInterface.getXboxController().getPOV()), Math.sin(m_operatorInterface.getXboxController().getPOV()), 0),
-        () -> m_controller.stopMotors(),
-        m_controller)));
+    // new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kB.value)
+    //   .and(new Trigger(m_operatorInterface::isPOV)
+    //   .whileTrue(new StartEndCommand(
+    //     () -> m_controller.setSpeed(Math.cos(m_operatorInterface.getXboxController().getPOV()), Math.sin(m_operatorInterface.getXboxController().getPOV()), 0),
+    //     () -> m_controller.stopMotors(),
+    //     m_controller)));
         
       // Operator Controls
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), grabberJoystickButton)
       .and(new Trigger(Arm::isUpperRow).negate())
       .onTrue(new InstantCommand(() -> Pneumatics.toggleGrabberSolenoid()));
 
-    new JoystickButton(m_operatorInterface.getOperatorJoystick(), grabberJoystickButton)
-    .onTrue(new pickdown());
+    // new JoystickButton(m_operatorInterface.getOperatorJoystick(), grabberJoystickButton)
+    // .onTrue(new pickdown());
 
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), popperJoystickButton)
     .onTrue(new InstantCommand(() -> Pneumatics.togglePopperSolenoid()));
@@ -166,10 +157,10 @@ public class RobotContainer implements Constants {
 
 
     //Button for Sensor trigger
-    new Trigger(m_operatorInterface::getDistanceSensor)
-      .and(new JoystickButton(m_operatorInterface.getOperatorJoystick(), autoGrabberJoystickButton))
-      // .debounce(kDistanceSensorDebounceTime)
-      .onTrue(new pickdown());
+    // new Trigger(m_operatorInterface::getDistanceSensor)
+    //   .and(new JoystickButton(m_operatorInterface.getOperatorJoystick(), autoGrabberJoystickButton))
+    //   // .debounce(kDistanceSensorDebounceTime)
+    //   .onTrue(new pickdown());
     
     // new Trigger(Arm::isUpperRow).negate()
     // .onTrue(new armToLength(kHumanPlayerLength))
@@ -186,8 +177,8 @@ public class RobotContainer implements Constants {
     Map<String, Command> eventMap = command.getEventMap();
 
     SwerveAutoBuilder autoBuilder =  new SwerveAutoBuilder(
-      m_controller::getPose, // Pose2d supplier
-      SwerveWheelController::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of autokDriveKinematics, // SwerveDriveKinematics
+      () -> m_controller.getOdometry().getPoseMeters(), // Pose2d supplier
+      m_controller::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of autokDriveKinematics, // SwerveDriveKinematics
       kDriveKinematics,
       new PIDConstants(5.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
       new PIDConstants(0.5, 0.0, 0.0), // PID constants to correct for rotation error (used to create the rotation controller)
