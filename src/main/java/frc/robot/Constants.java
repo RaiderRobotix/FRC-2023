@@ -131,6 +131,10 @@ public interface Constants {
     //Speeds for Operator Controller
     public final double kElevatorUpSpeed = 0.25;
     public final double kElevatorDownSpeed = 0.25;
+    
+    //Speeds for auto
+    public final double kAutoElevatorSpeedUp = 0.5;
+    public final double kAutoElevatorSpeedDown = 0.5;
 
     //Present Height Values for rows
     public final double kUpperRowHeight = .48;
