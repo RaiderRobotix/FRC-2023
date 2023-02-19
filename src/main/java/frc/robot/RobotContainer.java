@@ -85,18 +85,18 @@ public class RobotContainer implements Constants {
     new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kY.value)
       .onTrue(new InstantCommand(() -> SwerveWheelController.zeroGyroscope()));
 
-    new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kA.value)
-      .and(new Trigger(m_operatorInterface::isPOV))
-      .whileTrue(new StartEndCommand(
-        () -> m_controller.setAngle(m_operatorInterface.getXboxController().getPOV()),
-        () -> m_controller.setAngle(0)));
+    // new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kA.value)
+    //   .and(new Trigger(m_operatorInterface::isPOV))
+    //   .whileTrue(new StartEndCommand(
+    //     () -> m_controller.setAngle(m_operatorInterface.getXboxController().getPOV()),
+    //     () -> m_controller.setAngle(0)));
       
-    new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kB.value)
-      .and(new Trigger(m_operatorInterface::isPOV)
-      .whileTrue(new StartEndCommand(
-        () -> m_controller.setSpeed(Math.cos(m_operatorInterface.getXboxController().getPOV()), Math.sin(m_operatorInterface.getXboxController().getPOV()), 0),
-        () -> m_controller.stopMotors(),
-        m_controller)));
+    // new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kB.value)
+    //   .and(new Trigger(m_operatorInterface::isPOV)
+    //   .whileTrue(new StartEndCommand(
+    //     () -> m_controller.setSpeed(Math.cos(m_operatorInterface.getXboxController().getPOV()), Math.sin(m_operatorInterface.getXboxController().getPOV()), 0),
+    //     () -> m_controller.stopMotors(),
+    //     m_controller)));
         
       // Operator Controls
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), grabberJoystickButton)

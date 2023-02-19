@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.OperatorInterface;
 import frc.robot.subsystems.Pneumatics;
-import frc.robot.subsystems.drivebase.SwerveWheel;
 import frc.robot.subsystems.drivebase.SwerveWheelController;
 
 /**
@@ -92,12 +91,10 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    SwerveWheelController.setAngle(0);
   }
 
   @Override
   public void disabledPeriodic() {
-    SwerveWheelController.setAngle(0);
   }
 
   /**
@@ -106,7 +103,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    SwerveWheelController.reset();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
