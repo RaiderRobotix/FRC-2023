@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Gyro extends SubsystemBase {
   /** Creates a new Gyro. */
 
-  private static AHRS ahrs;
+  public static AHRS ahrs;
 
   public Gyro() {
     Gyro.ahrs = new AHRS(Port.kMXP);
@@ -33,10 +33,10 @@ public class Gyro extends SubsystemBase {
 
   public static AHRS gyro() {
     return ahrs;
-  }
+  }  
 
   public static double getHeading() {
-    return -gyro().getYaw();
+    return -gyro().getFusedHeading();
     // return 0.0;
     // return Math.abs();
     // return Math.IEEEremainder(Math.abs(gyro().getAngle()), 360);

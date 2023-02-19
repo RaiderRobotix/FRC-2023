@@ -226,22 +226,22 @@ public interface Constants {
     public final int frontLeftDriveID = 20;
     public final int frontLeftSteerID = 10;
     public final int frontLeftEncoderID = 0;
-    public final double frontLeftEncoderOffset = -18;
+    public final double frontLeftEncoderOffset = -247.0605468749999 - 90;
 
     public final int frontRightDriveID = 21;
     public final int frontRightSteerID = 11;
     public final int frontRightEncoderID = 1;
-    public final double frontRightEncoderOffset = -10.61;
+    public final double frontRightEncoderOffset = -302.08007812499994;
 
     public final int backLeftDriveID = 22;
     public final int backLeftSteerID = 12;
     public final int backLeftEncoderID = 2;
-    public final double backLeftEncoderOffset = 280.9;
+    public final double backLeftEncoderOffset = -153.28125000000003;
 
     public final int backRightDriveID = 23;
     public final int backRightSteerID = 13;
     public final int backRightEncoderID = 3;
-    public final double backRightEncoderOffset = 2.59;
+    public final double backRightEncoderOffset = -146.16210937500006;
 
     // Constraint for the motion profiled robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraint = new TrapezoidProfile.Constraints(

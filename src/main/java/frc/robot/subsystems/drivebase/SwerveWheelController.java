@@ -45,6 +45,8 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
 
   private static Pose2d robotPose;
 
+  private static AHRS ahrs;
+
   // private Gyro gyro = new Gyro();
 
   private static SwerveModule frontLeftModule;
@@ -64,8 +66,8 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
   public static final double MAX_VOLTAGE = 12.0;
 
   public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
-      SdsModuleConfigurations.MK4_L2.getDriveReduction() *
-      SdsModuleConfigurations.MK4_L2.getWheelDiameter() * Math.PI;
+      SdsModuleConfigurations.MK4_L3.getDriveReduction() *
+      SdsModuleConfigurations.MK4_L3.getWheelDiameter() * Math.PI;
 
   private static CANCoder frontLeftEncoder = new CANCoder(frontLeftEncoderID);
   private static CANCoder frontRightEncoder = new CANCoder(frontRightEncoderID);
@@ -76,6 +78,8 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
 
   /** Creates a new drivebase. */
   public SwerveWheelController() {
+    Gyro.ahrs = new AHRS(Port.kMXP);
+    Gyro.gyro().reset();
 
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
@@ -87,7 +91,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
       
     frontLeftModule = new MkSwerveModuleBuilder()
     .withLayout(tab.getLayout("Front Left Module", BuiltInLayouts.kList)
-            .withSize(2, 4)
+            .withSize(5, 6)
             .withPosition(0, 0))
     .withGearRatio(SdsModuleConfigurations.MK4_L3)
     .withDriveMotor(MotorType.FALCON, frontLeftDriveID)
@@ -98,7 +102,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
 
     frontRightModule = new MkSwerveModuleBuilder()
     .withLayout(tab.getLayout("Front Right Module", BuiltInLayouts.kList)
-            .withSize(2, 4)
+            .withSize(5, 6)
             .withPosition(0, 0))
     .withGearRatio(SdsModuleConfigurations.MK4_L3)
     .withDriveMotor(MotorType.FALCON, frontRightDriveID)
@@ -109,7 +113,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
 
     backLeftModule = new MkSwerveModuleBuilder()
     .withLayout(tab.getLayout("Back Left Module", BuiltInLayouts.kList)
-            .withSize(2, 4)
+            .withSize(5, 7)
             .withPosition(0, 0))
     .withGearRatio(SdsModuleConfigurations.MK4_L3)
     .withDriveMotor(MotorType.FALCON, backLeftDriveID)
@@ -120,7 +124,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
 
     backRightModule = new MkSwerveModuleBuilder()
     .withLayout(tab.getLayout("Back Right Module", BuiltInLayouts.kList)
-            .withSize(2, 4)
+            .withSize(5, 6)
             .withPosition(0, 0))
     .withGearRatio(SdsModuleConfigurations.MK4_L3)
     .withDriveMotor(MotorType.FALCON, backRightDriveID)
@@ -135,7 +139,8 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
 
     odometry = new SwerveDriveOdometry(
                 kDriveKinematics,
-                Rotation2d.fromDegrees(Gyro.gyro().getFusedHeading()),
+                Rotation2d.fromDegrees(frc.robot.subsystems.Gyro
+            .getHeading()),
                 new SwerveModulePosition[]{ frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition() }
         );
 
@@ -155,15 +160,21 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
   
   public static void zeroGyroscope() {
     odometry.resetPosition(
-            Rotation2d.fromDegrees(Gyro.gyro().getFusedHeading()),
+            Rotation2d.fromDegrees(frc.robot.subsystems.Gyro.getHeading()),
             new SwerveModulePosition[]{ frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition() },
             new Pose2d(odometry.getPoseMeters().getTranslation(), Rotation2d.fromDegrees(0.0))
     );
+    // Gyro.gyro().reset();
   }
 
   public Rotation2d getRotation2d(){
     return odometry.getPoseMeters().getRotation();
   }
+
+  // public static double Gyro.getHeading(){
+    // return ahrs.Gyro.getHeading();
+  //   return 0;
+  // }
 
   public SwerveDriveOdometry getOdometry(){
     return odometry;
@@ -179,15 +190,16 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
   @Override
   public void periodic() {
     odometry.update(
-          Rotation2d.fromDegrees(Gyro.gyro().getFusedHeading()),
+          Rotation2d.fromDegrees(frc.robot.subsystems.Gyro
+            .getHeading()),
           new SwerveModulePosition[]{ frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition() });
 
-    SwerveModuleState[] states = kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+    SwerveModuleState[] states = m_desiredStates;
 
-    frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
-    frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
-    backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
-    backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
+    frontLeftModule.set(states[0].speedMetersPerSecond, states[0].angle.getRadians());
+    frontRightModule.set(states[1].speedMetersPerSecond, states[1].angle.getRadians());
+    backLeftModule.set(states[2].speedMetersPerSecond, states[2].angle.getRadians());
+    backRightModule.set(states[3].speedMetersPerSecond, states[3].angle.getRadians());
 
     SmartDashboard.putNumber("X Speed", chassisSpeeds.vxMetersPerSecond);
     SmartDashboard.putNumber("Y Speed", chassisSpeeds.vyMetersPerSecond);

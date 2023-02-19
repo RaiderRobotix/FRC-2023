@@ -77,7 +77,7 @@ public class SwerveWheel extends SubsystemBase implements Constants {
       encoder.configMagnetOffset(frontRightEncoderOffset);
     }
     if (encoder.getDeviceID() == 2) {
-      encoder.configMagnetOffset(backleftEncoderOffset);
+      encoder.configMagnetOffset(backLeftEncoderOffset);
     }
     if (encoder.getDeviceID() == 3) {
       encoder.configMagnetOffset(backRightEncoderOffset);

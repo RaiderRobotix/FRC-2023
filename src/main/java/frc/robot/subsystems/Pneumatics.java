@@ -56,7 +56,7 @@ public class Pneumatics extends SubsystemBase implements Constants {
     pneumatics = new Compressor(1, PneumaticsModuleType.REVPH);
     // pneumatics.enableHybrid(minPSI, maxPSI);
     // pneumatics.enableAnalog(minPSI, maxPSI);
-    this.pneumatics.enableDigital();
+    // this.pneumatics.enableDigital();
     // pneumatics.disable();
 
     grabberSolenoidOn = new Solenoid(PneumaticsModuleType.REVPH, grabberSolenoidOnChannel); 

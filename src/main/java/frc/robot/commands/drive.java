@@ -52,11 +52,18 @@ public class drive extends CommandBase implements Constants {
     }
     SmartDashboard.putNumber("maxSpeed", maxSpeed); 
 
+    // swerveWheelController.drive(ChassisSpeeds
+    //       .fromFieldRelativeSpeeds(
+    //         oi.getLeftY(),
+    //         oi.getLeftX(),
+    //         -oi.getRightX() * 10,
+    //         swerveWheelController.getRotation2d()));
+
     swerveWheelController.drive(ChassisSpeeds
-          .fromFieldRelativeSpeeds(
-            oi.getLeftY() * maxSpeed * maxAttainableSpeed,
-            oi.getLeftX() * maxSpeed * maxAttainableSpeed,
-            -oi.getRightX() * 10,
+        .fromFieldRelativeSpeeds(
+            0,
+            1,
+            0,
             swerveWheelController.getRotation2d()));
   }
 
