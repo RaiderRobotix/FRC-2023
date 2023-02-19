@@ -109,10 +109,14 @@ public class RobotContainer implements Constants {
         
       // Operator Controls
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), grabberJoystickButton)
-      .onTrue(new pickdown());
+      .and(new Trigger(Arm::isUpperRow).negate())
+      .onTrue(new InstantCommand(() -> Pneumatics.toggleGrabberSolenoid()));
 
-      new JoystickButton(m_operatorInterface.getOperatorJoystick(), popperJoystickButton)
-      .onTrue(new InstantCommand(() -> Pneumatics.togglePopperSolenoid()));
+    new JoystickButton(m_operatorInterface.getOperatorJoystick(), grabberJoystickButton)
+    .onTrue(new pickdown());
+
+    new JoystickButton(m_operatorInterface.getOperatorJoystick(), popperJoystickButton)
+    .onTrue(new InstantCommand(() -> Pneumatics.togglePopperSolenoid()));
 
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), armInJoystickButton)
       .and(new Trigger(Arm::getSensorLow).negate())
