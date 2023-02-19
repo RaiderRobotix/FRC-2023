@@ -21,7 +21,7 @@ import frc.robot.auto.AutonCommands;
 import frc.robot.auto.AutonSelector;
 import frc.robot.commands.armToLength;
 import frc.robot.commands.drive;
-import frc.robot.commands.driveDistance;
+import frc.robot.commands.WIPdriveDistance;
 import frc.robot.commands.elevatorToHeight;
 import frc.robot.commands.motor;
 import frc.robot.commands.pickdown;
@@ -51,7 +51,7 @@ public class RobotContainer implements Constants {
   private final Arm m_arm = new Arm();
   private final AutonSelector autonSelector = new AutonSelector();
 
-  private final driveDistance m_autoCommand = new driveDistance(1,m_controller);
+  private final WIPdriveDistance m_autoCommand = new WIPdriveDistance(1,m_controller);
 
   private final drive m_Drive = new drive( m_controller, m_operatorInterface, 0.6);
 

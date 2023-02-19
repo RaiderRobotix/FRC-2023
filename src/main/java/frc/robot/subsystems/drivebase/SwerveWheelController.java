@@ -145,14 +145,6 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     speeds = chassisSpeeds;
     m_desiredStates = kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
   }
-
-  public static void toggleField() {
-    fieldCentric ^= true;
-  }
-
-  public static void toggleCoast() {
-    coast ^= true;
-  }
   
   public void zeroGyroscope() {
     odometry.resetPosition(
@@ -164,6 +156,10 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
 
   public Rotation2d getRotation2d(){
     return odometry.getPoseMeters().getRotation();
+  }
+
+  public SwerveDriveOdometry getOdometry(){
+    return odometry;
   }
 
   @Override
