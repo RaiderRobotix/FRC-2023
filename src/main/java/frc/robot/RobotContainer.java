@@ -21,7 +21,6 @@ import frc.robot.auto.AutonCommands;
 import frc.robot.auto.AutonSelector;
 import frc.robot.commands.armToLength;
 import frc.robot.commands.drive;
-import frc.robot.commands.WIPdriveDistance;
 import frc.robot.commands.elevatorToHeight;
 import frc.robot.commands.motor;
 import frc.robot.commands.pickdown;
@@ -50,8 +49,6 @@ public class RobotContainer implements Constants {
   private final Elevator m_elevator = new Elevator();
   private final Arm m_arm = new Arm();
   private final AutonSelector autonSelector = new AutonSelector();
-
-  private final WIPdriveDistance m_autoCommand = new WIPdriveDistance(1,m_controller);
 
   private final drive m_Drive = new drive( m_controller, m_operatorInterface, 0.6);
 
@@ -85,14 +82,8 @@ public class RobotContainer implements Constants {
     // new Trigger(m_operatorInterface::getRightTrigger)
     //   .whileTrue(new drive(m_controller, m_operatorInterface, turboSpeed));
 
-    new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kBack.value)
-      .onTrue(new InstantCommand(() -> SwerveWheelController.toggleCoast()));
-
-    new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kStart.value)
-      .onTrue(new InstantCommand(() -> SwerveWheelController.toggleField()));
-
     new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kY.value)
-      .onTrue(new InstantCommand(() -> SwerveWheelController.reset()));
+      .onTrue(new InstantCommand(() -> SwerveWheelController.zeroGyroscope()));
 
     new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kA.value)
       .and(new Trigger(m_operatorInterface::isPOV))
