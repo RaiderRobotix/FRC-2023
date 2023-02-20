@@ -52,18 +52,11 @@ public class drive extends CommandBase implements Constants {
     }
     SmartDashboard.putNumber("maxSpeed", maxSpeed); 
 
-    // swerveWheelController.drive(ChassisSpeeds
-    //       .fromFieldRelativeSpeeds(
-    //         oi.getLeftY(),
-    //         oi.getLeftX(),
-    //         -oi.getRightX() * 10,
-    //         swerveWheelController.getRotation2d()));
-
     swerveWheelController.drive(ChassisSpeeds
-        .fromFieldRelativeSpeeds(
-            0,
-            1,
-            0,
+          .fromFieldRelativeSpeeds(
+            oi.getLeftY() * maxAttainableSpeed * maxSpeed,
+            oi.getLeftX() * maxAttainableSpeed * maxSpeed,
+            -oi.getRightX() * 10,
             swerveWheelController.getRotation2d()));
   }
 
@@ -76,12 +69,5 @@ public class drive extends CommandBase implements Constants {
   @Override
   public boolean isFinished() {
     return false;
-    // if(maxSpeed == turboSpeed){
-    //   return !oi.getLeftTrigger();
-    // } else if (maxSpeed == slowSpeed){
-    //   return !oi.getRightTrigger();
-    // } else {
-    //   return Math.abs(oi.getLeftX()) < 0.05 && Math.abs(oi.getLeftY()) < 0.05 && Math.abs(oi.getRightX()) < 0.05;
-    // }
   }
 }

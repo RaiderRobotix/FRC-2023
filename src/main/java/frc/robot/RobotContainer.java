@@ -10,6 +10,7 @@ import java.util.function.BooleanSupplier;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,8 +23,7 @@ import frc.robot.auto.AutonSelector;
 import frc.robot.commands.armToLength;
 import frc.robot.commands.drive;
 import frc.robot.commands.elevatorToHeight;
-import frc.robot.commands.motor;
-// import frc.robot.commands.pickdown;
+import frc.robot.commands.pickdown;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Gyro;
@@ -51,9 +51,6 @@ public class RobotContainer implements Constants {
   private final AutonSelector autonSelector = new AutonSelector();
 
   private final drive m_Drive = new drive( m_controller, m_operatorInterface, 0.6);
-
-  private motor m_motor = new motor(m_operatorInterface);
-
   // private DigitalInput sensor;
 
   /**
@@ -85,11 +82,11 @@ public class RobotContainer implements Constants {
     new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kY.value)
       .onTrue(new InstantCommand(() -> SwerveWheelController.zeroGyroscope()));
 
-    // new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kA.value)
-    //   .and(new Trigger(m_operatorInterface::isPOV))
-    //   .whileTrue(new StartEndCommand(
-    //     () -> m_controller.setAngle(m_operatorInterface.getXboxController().getPOV()),
-    //     () -> m_controller.setAngle(0)));
+    new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kA.value)
+      .and(new Trigger(m_operatorInterface::isPOV))
+      .whileTrue(new StartEndCommand(
+        () -> m_controller.drive(ChassisSpeeds.fromFieldRelativeSpeeds(Math.asin(m_operatorInterface.getXboxController().getPOV()), Math.acos(m_operatorInterface.getXboxController().getPOV()), 0, m_controller.getRotation2d())),
+        () -> m_controller.drive(ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, m_controller.getRotation2d()))));
       
     // new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kB.value)
     //   .and(new Trigger(m_operatorInterface::isPOV)
@@ -180,7 +177,7 @@ public class RobotContainer implements Constants {
       () -> m_controller.getOdometry().getPoseMeters(), // Pose2d supplier
       m_controller::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of autokDriveKinematics, // SwerveDriveKinematics
       kDriveKinematics,
-      new PIDConstants(5.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
+      new PIDConstants(1.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
       new PIDConstants(0.5, 0.0, 0.0), // PID constants to correct for rotation error (used to create the rotation controller)
       m_controller::setState, // Module states consumer used to output to the drive subsystemeventMap,
       eventMap,

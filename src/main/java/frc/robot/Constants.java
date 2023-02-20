@@ -167,6 +167,8 @@ public interface Constants {
     //Speeds for Operator Arm
     public final double kArmInSpeed = 0.5;
     public final double kArmOutSpeed = 0.5;
+    public final double kAutoArmSpeedIn = 0.5;
+    public final double kAutoArmSpeedOut = 0.5;
     
      //PID values for Arm
      public final double armKp = 0.775;
@@ -226,22 +228,22 @@ public interface Constants {
     public final int frontLeftDriveID = 20;
     public final int frontLeftSteerID = 10;
     public final int frontLeftEncoderID = 0;
-    public final double frontLeftEncoderOffset = -247.0605468749999 - 90;
+    public final double frontLeftEncoderOffset = 0;
 
     public final int frontRightDriveID = 21;
     public final int frontRightSteerID = 11;
     public final int frontRightEncoderID = 1;
-    public final double frontRightEncoderOffset = -302.08007812499994;
+    public final double frontRightEncoderOffset = 90-26;
 
     public final int backLeftDriveID = 22;
     public final int backLeftSteerID = 12;
     public final int backLeftEncoderID = 2;
-    public final double backLeftEncoderOffset = -153.28125000000003;
+    public final double backLeftEncoderOffset = 0;
 
     public final int backRightDriveID = 23;
     public final int backRightSteerID = 13;
     public final int backRightEncoderID = 3;
-    public final double backRightEncoderOffset = -146.16210937500006;
+    public final double backRightEncoderOffset = 96;
 
     // Constraint for the motion profiled robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraint = new TrapezoidProfile.Constraints(

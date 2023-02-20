@@ -7,7 +7,7 @@ package frc.robot.auto.Routines;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.auto.AutonCommands;
 import frc.robot.commands.armToLength;
-// import frc.robot.commands.balance;
+import frc.robot.commands.balance;
 import frc.robot.commands.elevatorToHeight;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
@@ -56,7 +56,7 @@ public class bottom extends AutonCommands {
         super.setMap("Open Grabber 3", 
         new InstantCommand(() -> Pneumatics.setGrabberSolenoid(true)));
 
-        // super.setMap("Balance", new balance(swerveController));
+        super.setMap("Balance", new balance(swerveController));
 
     }
 }

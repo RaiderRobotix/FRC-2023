@@ -5,32 +5,31 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
-import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.OperatorInterface;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import frc.robot.Constants;
+import frc.robot.subsystems.drivebase.SwerveWheelController;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class motor extends PIDCommand {
-  /** Creates a new motor. */
-  OperatorInterface oi;
-  public motor(OperatorInterface oi) {
+public class driveDistance extends PIDCommand implements Constants {
+  /** Creates a new driveDistance. */
+  //Distance is measured in 
+  public driveDistance(double distance, SwerveWheelController swerveController) {
     super(
         // The controller that the command will use
-        new PIDController(1, 0.1, 0),
+        new PIDController(robotDriveDistanceKp, robotDriveDistanceKi, robotDriveDistanceKd),
         // This should return the measurement
-        () -> Elevator.getSensor(),
+        () -> swerveController.getOdometry().getPoseMeters().getX(),
         // This should return the setpoint (can also be a constant)
-        () -> 1,
-        // This uses the output
-        output -> {
-          Elevator.setMotor(output);
-        });
-        addRequirements(oi);
-        getController().enableContinuousInput(0, 1);
-        getController().setTolerance(0.01);
+        distance + swerveController.getOdometry().getPoseMeters().getX(),
+        // This uses the outputs
+        output -> swerveController.drive(ChassisSpeeds.fromFieldRelativeSpeeds(output, 0, 0, swerveController.getRotation2d())));
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(swerveController);
+    getController().setTolerance(robotDistanceTolerance);
     // Configure additional PID options by calling `getController` here.
   }
 
@@ -39,4 +38,4 @@ public class motor extends PIDCommand {
   public boolean isFinished() {
     return getController().atSetpoint();
   }
-}
+} 
