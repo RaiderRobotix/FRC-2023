@@ -27,9 +27,9 @@ public class elevatorToHeight extends PIDCommand implements Constants{
         // This uses the output
         //Output is the opposite, negative is up and postive is down 
         output -> {
-          if(Elevator.getSensorLow() && output > 0){
+          if(Elevator.getSensorLow() && output < 0){
             output = 0;
-          } else if (Elevator.getSensorMax() && output < 0){
+          } else if (Elevator.getSensorMax() && output > 0){
             output = 0;
           }
           SmartDashboard.putNumber("output", output);
