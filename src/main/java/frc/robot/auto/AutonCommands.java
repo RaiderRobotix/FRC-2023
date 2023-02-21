@@ -15,7 +15,7 @@ import frc.robot.Constants;
 /** Add your docs here. */
 public class AutonCommands implements Constants{
     PathPlannerTrajectory path;
-    HashMap<String, Command> eventMap;
+    HashMap<String, Command> eventMap = new HashMap<>();
 
     public AutonCommands(String pathName){
         this.path = PathPlanner.loadPath(pathName,

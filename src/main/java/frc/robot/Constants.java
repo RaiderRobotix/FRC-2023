@@ -103,9 +103,8 @@ public interface Constants {
 
 
     //Drivebase movement constraints for auton
-    public final double kPhysicalDriveMaxSpeed = 1;
-    public final double kPhysicalSteerMaxSpeed = 5;
-    public final double kMaxAccelerationMetersPerSecondSquared = 0.5;
+    public final double kPhysicalDriveMaxSpeed = 0.005;
+    public final double kMaxAccelerationMetersPerSecondSquared = 0.01;
 
     //Pneumatics Constansts
     public final double maxPSI = 80.0;
@@ -145,9 +144,9 @@ public interface Constants {
     public final double kElevatorMaxHeight = .518;
     public final double kElevatorMinHeight = .178;
     //PID values for elevator
-    public final double elevatorKp = 12.500;
-    public final double elevatorKi = 0.000;
-    public final double elevatorKd = 0.000;
+    public final double elevatorKp = 12.750;
+    public final double elevatorKi =  0.000;
+    public final double elevatorKd =  0.100;
 
 
     //Arm Variables
@@ -233,7 +232,7 @@ public interface Constants {
     public final int frontRightDriveID = 21;
     public final int frontRightSteerID = 11;
     public final int frontRightEncoderID = 1;
-    public final double frontRightEncoderOffset = 90-26;
+    public final double frontRightEncoderOffset = 90;
 
     public final int backLeftDriveID = 22;
     public final int backLeftSteerID = 12;
@@ -243,11 +242,5 @@ public interface Constants {
     public final int backRightDriveID = 23;
     public final int backRightSteerID = 13;
     public final int backRightEncoderID = 3;
-    public final double backRightEncoderOffset = 96;
-
-    // Constraint for the motion profiled robot angle controller
-    public static final TrapezoidProfile.Constraints kThetaControllerConstraint = new TrapezoidProfile.Constraints(
-        kPhysicalDriveMaxSpeed, kPhysicalSteerMaxSpeed);
-
-
+    public final double backRightEncoderOffset = 0;
 }

@@ -24,7 +24,7 @@ public class top extends AutonCommands {
         super.setMap("Popper", 
         new InstantCommand(() -> Pneumatics.setPopperSolenoid(true)));
         super.setMap("Elevator to Floor 1", 
-        new elevatorToHeight(kFloorLength));
+        new elevatorToHeight(kFloorHeight));
         super.setMap("Arm to Floor 1", 
         new armToLength(kFloorLength));
         super.setMap("Open Grabber 1", 

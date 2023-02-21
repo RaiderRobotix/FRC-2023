@@ -25,6 +25,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -80,6 +81,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
   public SwerveWheelController() {
     Gyro.ahrs = new AHRS(Port.kMXP);
     Gyro.gyro().reset();
+
 
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
@@ -144,24 +146,28 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
                 new SwerveModulePosition[]{ frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition() }
         );
 
+    odometry.resetPosition(
+      getRotation2d(),
+      new SwerveModulePosition[]{ frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition() },
+      new Pose2d(0, 0, getRotation2d()));
   }
 
   public void drive(ChassisSpeeds chassisSpeeds) {
     speeds = chassisSpeeds;
     m_desiredStates = kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
-    // if(Math.abs(m_desiredStates[0].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[0].angle.getDegrees()) > 10
-    // || Math.abs(m_desiredStates[1].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[1].angle.getDegrees()) > 10
-    // || Math.abs(m_desiredStates[2].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[2].angle.getDegrees()) > 10
-    // || Math.abs(m_desiredStates[3].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[3].angle.getDegrees()) > 10){
-    //   m_desiredStates = kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
-    // }
+    if(Math.abs(m_desiredStates[0].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[0].angle.getDegrees()) > 0.5
+    || Math.abs(m_desiredStates[1].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[1].angle.getDegrees()) > 0.5
+    || Math.abs(m_desiredStates[2].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[2].angle.getDegrees()) > 0.5
+    || Math.abs(m_desiredStates[3].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[3].angle.getDegrees()) > 0.5){
+      m_desiredStates = kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+    }
   }
 
   public void setState(SwerveModuleState[] states){
-    frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
-    frontRightModule.set(-states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
-    backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
-    backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
+    frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians() + Units.degreesToRadians(frontLeftEncoderOffset));
+    frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians() + Units.degreesToRadians(frontRightEncoderOffset));
+    backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians() + Units.degreesToRadians(backLeftEncoderOffset));
+    backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians() + Units.degreesToRadians(backRightEncoderOffset));
   }
   
   public static void zeroGyroscope() {
@@ -196,7 +202,10 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
           new SwerveModulePosition[]{ frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition() });
 
     setState(m_desiredStates);
-
+    
+    Shuffleboard.selectTab("Drivetrain");
+    SmartDashboard.putNumber("X Point", odometry.getPoseMeters().getX());
+    SmartDashboard.putNumber("Y Point", odometry.getPoseMeters().getY());
     SmartDashboard.putNumber("X Speed", chassisSpeeds.vxMetersPerSecond);
     SmartDashboard.putNumber("Y Speed", chassisSpeeds.vyMetersPerSecond);
     SmartDashboard.putNumber("Angular Speed", chassisSpeeds.omegaRadiansPerSecond);

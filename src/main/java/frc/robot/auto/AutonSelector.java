@@ -17,6 +17,7 @@ import frc.robot.auto.Routines.bottom;
 import frc.robot.auto.Routines.middle;
 import frc.robot.auto.Routines.straightLine;
 import frc.robot.auto.Routines.straightLineActions;
+import frc.robot.auto.Routines.straightLineLeft;
 import frc.robot.auto.Routines.top;
 import frc.robot.subsystems.drivebase.SwerveWheelController;
 
@@ -32,6 +33,9 @@ public class AutonSelector implements Constants{
 
         autonomousModeChooser = new SendableChooser<>();
         autonomousModeChooser.setDefaultOption("Test Straight Line", AutonomousMode.testAuto);
+        autonomousModeChooser.addOption("Test Straight Line Left", AutonomousMode.testAutoLeft);
+        autonomousModeChooser.addOption("Test Straight Line w 90", AutonomousMode.testAutoW90);
+        autonomousModeChooser.addOption("Test Straight Line w 180", AutonomousMode.testAutoW180);
         autonomousModeChooser.addOption("Test Straight Line with Actions", AutonomousMode.straightAutoActions);
         autonomousModeChooser.addOption("Top", AutonomousMode.top);
         autonomousModeChooser.addOption("Middle", AutonomousMode.middle);
@@ -46,6 +50,8 @@ public class AutonSelector implements Constants{
         switch (mode) {
             case testAuto:
                 return new straightLine("Straight Line", swerveController);
+            case testAutoLeft:
+                return new straightLineLeft("Straight Line Left", swerveController);
             case testAutoW90:
                 return new straightLine("Straight Line w 90", swerveController);
             case testAutoW180:
@@ -68,6 +74,7 @@ public class AutonSelector implements Constants{
 
     private enum AutonomousMode {
         testAuto,
+        testAutoLeft,
         testAutoW90,
         testAutoW180,
         straightAutoActions,
