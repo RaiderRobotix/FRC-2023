@@ -56,8 +56,8 @@ public class Arm extends SubsystemBase implements Constants{
 
 
   public static double getSensor(){
-    // return tenTurnPot.get();
-    return motor.getSelectedSensorPosition() / (kArmDistancePerRotation * kArmGearRatio);
+    return tenTurnPot.get();
+    // return motor.getSelectedSensorPosition() / (kArmDistancePerRotation * kArmGearRatio);
   }
 
   public static boolean getSensorMax() {

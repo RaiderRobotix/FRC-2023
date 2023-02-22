@@ -128,8 +128,8 @@ public interface Constants {
 
 
     //Speeds for Operator Controller
-    public final double kElevatorUpSpeed = 0.25;
-    public final double kElevatorDownSpeed = 0.25;
+    public final double kElevatorUpSpeed = 0.6;
+    public final double kElevatorDownSpeed = 0.4;
     
     //Speeds for auto
     public final double kAutoElevatorSpeedUp = 0.5;
@@ -156,12 +156,12 @@ public interface Constants {
     public final double kArmGearRatio = 15;
 
     //Arm Length Values
-    public final double kUpperRowLength = 5.56;
+    public final double kUpperRowLength = 0.60;
     public final double kMidRowLength = 0.0;
     public final double kHumanPlayerLength = -0.0;
     public final double kFloorLength = 0.0;
-    public final double kArmMaxLength = 6.0;
-    public final double kArmMinLength = -0.60;    
+    public final double kArmMaxLength = 0.60;
+    public final double kArmMinLength = 0.07;    
 
     //Speeds for Operator Arm
     public final double kArmInSpeed = 0.5;
