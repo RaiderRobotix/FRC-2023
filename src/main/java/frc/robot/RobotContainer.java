@@ -128,7 +128,7 @@ public class RobotContainer implements Constants {
       m_elevator));
       
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorDownJoystickButton)
-    .and(new Trigger(Elevator::getSensorLow).negate())
+    // .and(new Trigger(Elevator::getSensorLow).negate())
     .whileTrue(new StartEndCommand(
       () -> Elevator.setMotor(kElevatorDownSpeed),
       () -> Elevator.setMotor(0),

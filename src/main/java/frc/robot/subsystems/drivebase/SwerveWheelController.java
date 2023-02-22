@@ -176,7 +176,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
             new SwerveModulePosition[]{ frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition() },
             new Pose2d(odometry.getPoseMeters().getTranslation(), Rotation2d.fromDegrees(0.0))
     );
-    // Gyro.gyro().reset();
+    Gyro.gyro().reset();
   }
 
   public Rotation2d getRotation2d(){

@@ -44,7 +44,7 @@ public class drive extends CommandBase implements Constants {
   @Override
   public void execute() {
     if(oi.getLeftTrigger()){
-      maxSpeed = 0.05;
+      maxSpeed = 0.2;
     } else if(oi.getRightTrigger()){
       maxSpeed = 1.0;
     } else {
@@ -54,10 +54,10 @@ public class drive extends CommandBase implements Constants {
 
     swerveWheelController.drive(ChassisSpeeds
           .fromFieldRelativeSpeeds(
-            oi.getLeftY() * maxAttainableSpeed * maxSpeed,
-            oi.getLeftX() * maxAttainableSpeed * maxSpeed,
-            -oi.getRightX() * 10,
-            swerveWheelController.getRotation2d()));
+            oi.getLeftY() * maxAttainableSpeed/2 * maxSpeed,
+            oi.getLeftX() * maxAttainableSpeed/2 * maxSpeed,
+            -oi.getRightX() * 5,
+            Rotation2d.fromDegrees(Gyro.getHeading())));
   }
 
   // Called once the command ends or is interrupted.

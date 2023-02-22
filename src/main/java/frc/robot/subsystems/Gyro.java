@@ -36,7 +36,7 @@ public class Gyro extends SubsystemBase {
   }  
 
   public static double getHeading() {
-    return gyro().getFusedHeading();
+    return gyro().getYaw();
     // return 0.0;
     // return Math.abs();
     // return Math.IEEEremainder(Math.abs(gyro().getAngle()), 360);
