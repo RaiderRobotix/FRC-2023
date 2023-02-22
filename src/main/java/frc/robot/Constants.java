@@ -66,8 +66,8 @@ public interface Constants {
 
 
     // Robots measurements in metres
-    public final double width = Units.inchesToMeters(24);
-    public final double length = Units.inchesToMeters(32);
+    public final double width = Units.inchesToMeters(18);
+    public final double length = Units.inchesToMeters(24.5);
 
 
     //Robot's kinematics
