@@ -34,12 +34,17 @@ public class Arm extends SubsystemBase {
         this.setMotor(-speed);
     }
 
+    public void stop()
+    {
+        this.setMotor(0);
+    }
+
     /**
      * Positive speed = extending
      * Negative speed = retracting
      * @param speed
      */
-    public void setMotor(double speed)
+    private void setMotor(double speed)
     {
         if (getPotValue() <= Constants.Arm.lowerSafety && speed < 0)
         {

@@ -34,12 +34,17 @@ public class Elevator extends SubsystemBase {
         this.setMotor(speed);
     }
 
+    public void stop()
+    {
+        this.setMotor(0);
+    }
+
     /**
      * Negative speed = going up
      * Positive speed = going down
      * @param speed
      */
-    public void setMotor(double speed)
+    private void setMotor(double speed)
     {
         if (getPotValue() <= Constants.Elevator.lowerSafety && speed > 0)
         {
