@@ -4,6 +4,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Timer;
 
 import frc.lib.math.Conversions;
 import frc.lib.util.CTREModuleState;
@@ -18,6 +19,8 @@ public class SwerveModule {
     public int moduleNumber;
     private Rotation2d angleOffset;
     private Rotation2d lastAngle;
+
+    public double CANcoderInitTime = 0.0;
 
     private TalonFX mAngleMotor;
     private TalonFX mDriveMotor;
@@ -78,6 +81,8 @@ public class SwerveModule {
     }
 
     public void resetToAbsolute(){
+        waitForCANCoder();
+        
         double absolutePosition = Conversions.degreesToFalcon(getCanCoder().getDegrees() - angleOffset.getDegrees(), Constants.Swerve.angleGearRatio);
         mAngleMotor.setSelectedSensorPosition(absolutePosition);
     }
@@ -92,6 +97,7 @@ public class SwerveModule {
         mAngleMotor.configAllSettings(Robot.ctreConfigs.swerveAngleFXConfig);
         mAngleMotor.setInverted(Constants.Swerve.angleMotorInvert);
         mAngleMotor.setNeutralMode(Constants.Swerve.angleNeutralMode);
+        Timer.delay(0.1);
         resetToAbsolute();
     }
 
@@ -101,6 +107,25 @@ public class SwerveModule {
         mDriveMotor.setInverted(Constants.Swerve.driveMotorInvert);
         mDriveMotor.setNeutralMode(Constants.Swerve.driveNeutralMode);
         mDriveMotor.setSelectedSensorPosition(0);
+    }
+
+    /**
+     * Wait for CANCoder. (up to 1000ms)
+     * 
+     * Prevents a race condition during program startup
+     */
+    private void waitForCANCoder()
+    {    
+        for (int i = 0; i < 100; ++i) 
+        {
+            angleEncoder.getAbsolutePosition();
+            if (angleEncoder.getLastError() == ErrorCode.OK) {
+                break;
+            }
+
+            Timer.delay(0.010);            
+            CANcoderInitTime += 10;
+        }
     }
 
     public SwerveModuleState getState(){

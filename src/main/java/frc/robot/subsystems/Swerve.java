@@ -31,6 +31,10 @@ public class Swerve extends SubsystemBase {
         // gyro.configFactoryDefault();
         zeroGyro();
 
+        /* By pausing init for a second before setting module offsets, we avoid a bug with inverting motors.
+         * See https://github.com/Team364/BaseFalconSwerve/issues/8 for more info.
+         */
+        Timer.delay(1.0);
 
         mSwerveMods = new SwerveModule[] {
             new SwerveModule(0, Constants.Swerve.Mod0.constants),
@@ -39,13 +43,11 @@ public class Swerve extends SubsystemBase {
             new SwerveModule(3, Constants.Swerve.Mod3.constants)
         };
 
-        /* By pausing init for a second before setting module offsets, we avoid a bug with inverting motors.
-         * See https://github.com/Team364/BaseFalconSwerve/issues/8 for more info.
-         */
-        Timer.delay(1.0);
-        resetModulesToAbsolute();
-
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getYaw(), getModulePositions());
+
+        for(SwerveModule mod : mSwerveMods){
+            System.out.println("CANcoder on Module " + mod.moduleNumber + " took " + mod.CANcoderInitTime + " ms to be ready.");
+        }
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
