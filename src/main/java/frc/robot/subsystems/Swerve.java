@@ -31,6 +31,7 @@ public class Swerve extends SubsystemBase {
         // gyro.configFactoryDefault();
         zeroGyro();
 
+
         mSwerveMods = new SwerveModule[] {
             new SwerveModule(0, Constants.Swerve.Mod0.constants),
             new SwerveModule(1, Constants.Swerve.Mod1.constants),
@@ -103,6 +104,7 @@ public class Swerve extends SubsystemBase {
 
     public void zeroGyro(){
         gyro.reset();
+        gyro.zeroYaw();
     }
 
     public Rotation2d getYaw() {
@@ -124,5 +126,8 @@ public class Swerve extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
         }
+
+        SmartDashboard.putNumber("Gyro Yaw", gyro.getYaw());
+        SmartDashboard.putNumber("360 - Yaw", 360 - gyro.getYaw());
     }
 }
