@@ -110,7 +110,8 @@ public class Swerve extends SubsystemBase {
     }
 
     private float getGyroYawAdjusted() {
-        return gyro.getYaw() + 180;
+        // return gyro.getYaw() + 180;
+        return gyro.getYaw();
     }
 
     public Rotation2d getYaw() {
@@ -134,7 +135,6 @@ public class Swerve extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
         }
 
-        SmartDashboard.putNumber("Gyro Yaw", getGyroYawAdjusted());
-        SmartDashboard.putNumber("360 - Yaw", 360 - getGyroYawAdjusted());
+        SmartDashboard.putNumber("Gyro Yaw", getYaw().getDegrees());
     }
 }
