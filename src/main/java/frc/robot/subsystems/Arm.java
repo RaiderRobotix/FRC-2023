@@ -8,15 +8,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Elevator extends SubsystemBase {
+public class Arm extends SubsystemBase {
 
     private WPI_TalonFX motor;
     private AnalogPotentiometer pot;
 
-    public Elevator()
+    public Arm()
     {
-        this.motor = new WPI_TalonFX(Constants.Elevator.talonDeviceNumber);
-        this.pot = new AnalogPotentiometer(Constants.Elevator.potentiometerChannel);
+        this.motor = new WPI_TalonFX(Constants.Arm.talonDeviceNumber);
+        this.pot = new AnalogPotentiometer(Constants.Arm.potentiometerChannel);
     }
 
     public double getPotValue()
@@ -24,28 +24,28 @@ public class Elevator extends SubsystemBase {
         return this.pot.get();
     }
 
-    public void moveUp(double speed)
-    {
-        this.setMotor(-speed);
-    }
-
-    public void moveDown(double speed)
+    public void extend(double speed)
     {
         this.setMotor(speed);
     }
 
+    public void retract(double speed)
+    {
+        this.setMotor(-speed);
+    }
+
     /**
-     * Negative speed = going up
-     * Positive speed = going down
+     * Positive speed = extending
+     * Negative speed = retracting
      * @param speed
      */
     public void setMotor(double speed)
     {
-        if (getPotValue() <= Constants.Elevator.lowerSafety && speed > 0)
+        if (getPotValue() <= Constants.Arm.lowerSafety && speed < 0)
         {
             motor.set(0);
         } 
-        else if (getPotValue() >= Constants.Elevator.upperSafety && speed < 0) 
+        else if (getPotValue() >= Constants.Arm.upperSafety && speed > 0) 
         {
             motor.set(0);
         } 
@@ -58,6 +58,6 @@ public class Elevator extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        SmartDashboard.putNumber("Elevator Pot", getPotValue());
+        SmartDashboard.putNumber("Arm Pot", getPotValue());
     }
 }

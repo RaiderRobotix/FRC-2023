@@ -13,6 +13,19 @@ import frc.lib.util.SwerveModuleConstants;
 public final class Constants {
     public static final double stickDeadband = 0.1;
 
+    public static final class Arm {
+        public static int potentiometerChannel = 1;
+        public static int talonDeviceNumber = 2;
+
+        public static double upperSafety = 0.51; // TODO
+        public static double lowerSafety = 0.22; // TODO
+
+        public static double topRowLength      = 0.45; // TODO
+        public static double middleRowLength   = 0.40; // TODO
+        public static double humanPlayerLength = 0.43; // TODO
+        public static double lowRowLength      = 0.30; // TODO
+    }
+
     public static final class Elevator {
         public static int potentiometerChannel = 0;
         public static int talonDeviceNumber = 0;
