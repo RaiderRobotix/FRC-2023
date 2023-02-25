@@ -86,8 +86,8 @@ public interface Constants {
     public final SwerveDriveKinematics kDriveKinematics = 
         new SwerveDriveKinematics(
             new Translation2d(width / 2, length / 2),
-            new Translation2d(width / 2, -length / 2),
             new Translation2d(-width / 2, length / 2),
+            new Translation2d(width / 2, -length / 2),
             new Translation2d(-width / 2, -length / 2)
         );
 
