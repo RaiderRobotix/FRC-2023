@@ -46,18 +46,18 @@ public class Arm extends SubsystemBase {
      */
     private void setMotor(double speed)
     {
-        if (lowerLimitHit() && speed < 0)
-        {
-            motor.set(0);
-        } 
-        else if (upperLimitHit() && speed > 0) 
-        {
-            motor.set(0);
-        } 
-        else 
-        {
+        // if (lowerLimitHit() && speed < 0)
+        // {
+        //     motor.set(0);
+        // } 
+        // else if (upperLimitHit() && speed > 0) 
+        // {
+        //     motor.set(0);
+        // } 
+        // else 
+        // {
             motor.set(speed);
-        }
+        // }
     }
 
     public boolean upperLimitHit()

@@ -83,8 +83,8 @@ public class RobotContainer {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> m_swerve.zeroGyro()));
         resetCancoders.onTrue(new InstantCommand(() -> m_swerve.resetModulesToAbsolute()));
+        
         /* Operator Buttons */
-        //grabberButton.onTrue(new InstantCommand(() -> m_grabber.toggleGrabber()));
         hpGrabSequenceButton.and(new Trigger(m_grabber::grabberIsOpen)).onTrue(new HPGrabCone(m_arm, m_elevator, m_grabber));
         toggleGrabberButton.onTrue(new InstantCommand(() -> m_grabber.toggleGrabber()));
 
@@ -120,8 +120,7 @@ public class RobotContainer {
 
         autoHPButton.onTrue(
                     new ElevatorToHeight(m_elevator, Constants.Elevator.humanPlayerHeight))
-            .onTrue(new ArmToPosition(m_arm, Constants.Arm.humanPlayerLength))
-            .onTrue(new InstantCommand(() -> m_grabber.openGrabber()));
+            .onTrue(new ArmToPosition(m_arm, Constants.Arm.humanPlayerLength));
 
         autoLowButton.onTrue(
                     new ElevatorToHeight(m_elevator, Constants.Elevator.lowRowHeight))
