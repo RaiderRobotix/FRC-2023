@@ -47,12 +47,14 @@ public class RobotContainer {
     private final JoystickButton grabberButton = new JoystickButton(operator, 1);
     private final JoystickButton autoGrabberButton = new JoystickButton(operator, 2);
 
+    private final JoystickButton popperButton = new JoystickButton(operator, 4);
+
     /* Subsystems */
     private final Swerve m_swerve = new Swerve();
     // private final Arm m_arm = new Arm();
     // private final Elevator m_elevator = new Elevator();
     // private final Pneumatics m_pneumatics = new Pneumatics();
-    private final Grabber m_grabber = new Grabber();
+    // private final Grabber m_grabber = new Grabber();
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -82,6 +84,8 @@ public class RobotContainer {
 
         /* Operator Buttons */
         // grabberButton.onTrue(new InstantCommand(() -> m_grabber.toggleGrabber()));
+
+        // popperButton.onTrue(new InstantCommand(() -> m_pneumatics.togglePopper()));
         
         // armOutButton.whileTrue(
         //     new StartEndCommand(
