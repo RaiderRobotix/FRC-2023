@@ -9,6 +9,7 @@ import java.util.function.BooleanSupplier;
 
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -171,21 +172,25 @@ public class RobotContainer implements Constants {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    AutonCommands command = autonSelector.getCommand(m_controller);
-    Map<String, Command> eventMap = command.getEventMap();
-
-    SwerveAutoBuilder autoBuilder =  new SwerveAutoBuilder(
-      () -> m_controller.getOdometry().getPoseMeters(), // Pose2d supplier
-      m_controller::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of autokDriveKinematics, // SwerveDriveKinematics
-      kDriveKinematics,
-      new PIDConstants(0.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
-      new PIDConstants(0.0, 0.0, 0.0), // PID constants to correct for rotation error (used to create the rotation controller)
-      m_controller::setState, // Module states consumer used to output to the drive subsystemeventMap,
-      eventMap,
-      true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-      m_controller // The drive subsystem. Used to properly set the requirements of path following commands
-    );
-
-    return autoBuilder.fullAuto(command.getPath());
+    if(onTheFly){
+      AutonCommands command = autonSelector.getCommand(m_controller);
+      Map<String, Command> eventMap = command.getEventMap();
+  
+      SwerveAutoBuilder autoBuilder =  new SwerveAutoBuilder(
+        () -> m_controller.getOdometry().getPoseMeters(), // Pose2d supplier
+        m_controller::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of autokDriveKinematics, // SwerveDriveKinematics
+        kDriveKinematics,
+        new PIDConstants(0.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
+        new PIDConstants(0.0, 0.0, 0.0), // PID constants to correct for rotation error (used to create the rotation controller)
+        m_controller::setState, // Module states consumer used to output to the drive subsystemeventMap,
+        eventMap,
+        true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+        m_controller // The drive subsystem. Used to properly set the requirements of path following commands
+      );
+  
+      return autoBuilder.fullAuto(command.getPath());
+    } else {
+      return new FollowPathWithEvents(m_Drive, null, null)
+    }
   }
 }
