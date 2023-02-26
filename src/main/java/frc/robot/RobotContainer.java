@@ -35,6 +35,7 @@ public class RobotContainer {
     // private final Arm m_arm = new Arm();
     // private final Elevator m_elevator = new Elevator();
     // private final Pneumatics m_pneumatics = new Pneumatics();
+    // private final Grabber m_grabber = new Grabber();
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {

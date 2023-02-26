@@ -36,9 +36,9 @@ public class ArmToPosition extends CommandBase {
             end(true);
         }
   
-        if(initialPosition < targetLength)
+        if (initialPosition < targetLength)
         {
-            if(m_arm.getPotValue() < targetLength) 
+            if (m_arm.getPotValue() < targetLength) 
             {
                 m_arm.extend(Constants.Arm.autoSpeed);
             } 
@@ -50,7 +50,7 @@ public class ArmToPosition extends CommandBase {
         } 
         else if (initialPosition > targetLength) 
         {
-            if(m_arm.getPotValue() > targetLength) 
+            if (m_arm.getPotValue() > targetLength) 
             {
                 m_arm.retract(Constants.Arm.autoSpeed);
             } 

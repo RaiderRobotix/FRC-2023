@@ -10,11 +10,6 @@ import frc.robot.Constants;
 public class Pneumatics extends SubsystemBase {
     
     private Compressor compressor;
-    
-    private Solenoid grabberSolenoidOn;
-    private Solenoid grabberSolenoidOff;
-
-    private boolean grabberIsOpen = true;
 
     private Solenoid popperSolenoidOn;
     private Solenoid popperSolenoidOff;
@@ -25,9 +20,6 @@ public class Pneumatics extends SubsystemBase {
         compressor = new Compressor(Constants.Pneumatics.compressorModule, PneumaticsModuleType.REVPH);
         compressor.enableDigital();
 
-        grabberSolenoidOn = new Solenoid(PneumaticsModuleType.REVPH, Constants.Pneumatics.grabberOnChannel);
-        grabberSolenoidOff = new Solenoid(PneumaticsModuleType.REVPH, Constants.Pneumatics.grabberOffChannel);
-    
         popperSolenoidOn = new Solenoid(PneumaticsModuleType.REVPH, Constants.Pneumatics.popperOnChannel);
         popperSolenoidOff = new Solenoid(PneumaticsModuleType.REVPH, Constants.Pneumatics.popperOffChannel);
     }
@@ -40,33 +32,6 @@ public class Pneumatics extends SubsystemBase {
     public boolean isCompressorEnabled()
     {
         return compressor.isEnabled();
-    }
-
-    public void openGrabber()
-    {
-        // TODO: Check values.
-        grabberSolenoidOff.set(true);
-        grabberSolenoidOn.set(false);
-
-        grabberIsOpen = true;
-    }
-
-    public void closeGrabber()
-    {
-        // TODO: Check values
-        grabberSolenoidOff.set(false);
-        grabberSolenoidOn.set(true);
-
-        grabberIsOpen = false;
-    }
-
-    public void toggleGrabber()
-    {
-        if (grabberIsOpen)  {
-            closeGrabber();
-        } else {
-            openGrabber();
-        }
     }
 
     public void popPopper()
@@ -100,7 +65,6 @@ public class Pneumatics extends SubsystemBase {
     public void periodic()
     {
         SmartDashboard.putNumber("Pressure:", getPressure());
-        SmartDashboard.putString("Grabber", grabberIsOpen ? "Open" : "Closed");
         SmartDashboard.putString("Popper", popperIsPopped ? "Popped" : "Ready");
     }
 }

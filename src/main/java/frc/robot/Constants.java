@@ -45,11 +45,15 @@ public final class Constants {
         public static double manualSpeed = 0.5;
     }
 
-    public static final class Pneumatics {
-        public static int compressorModule = 1;
+    public static final class Grabber {
+        public static int distanceSensorChannel = 9;
 
         public static int grabberOnChannel = 15;
         public static int grabberOffChannel = 0;
+    }
+
+    public static final class Pneumatics {
+        public static int compressorModule = 1;
 
         public static int popperOnChannel = 13;
         public static int popperOffChannel = 2;
