@@ -45,6 +45,16 @@ public final class Constants {
         public static double manualSpeed = 0.5;
     }
 
+    public static final class Pneumatics {
+        public static int compressorModule = 1;
+
+        public static int grabberOnChannel = 15;
+        public static int grabberOffChannel = 0;
+
+        public static int popperOnChannel = 13;
+        public static int popperOffChannel = 2;
+    }
+
     public static final class Swerve {
         public static final int pigeonID = 1;
         public static final boolean invertGyro = true; // Always ensure Gyro is CCW+ CW-
