@@ -21,7 +21,7 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
-    private final Joystick operator = new Joystick(1);
+   // private final Joystick operator = new Joystick(1);
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -31,23 +31,24 @@ public class RobotContainer {
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+    private final JoystickButton resetCancoders = new JoystickButton(driver, XboxController.Button.kX.value);
 
     /* Operator Buttons */
-    private final JoystickButton elevatorUpButton = new JoystickButton(operator, 5);
-    private final JoystickButton elevatorDownButton = new JoystickButton(operator, 3);
+    // private final JoystickButton elevatorUpButton = new JoystickButton(operator, 5);
+    // private final JoystickButton elevatorDownButton = new JoystickButton(operator, 3);
 
-    private final JoystickButton autoScoreHighButton = new JoystickButton(operator, 8);
-    private final JoystickButton autoScoreMidButton = new JoystickButton(operator, 10);
-    private final JoystickButton autoLowButton = new JoystickButton(operator, 12);
-    private final JoystickButton autoHPButton = new JoystickButton(operator, 7);
+    // private final JoystickButton autoScoreHighButton = new JoystickButton(operator, 8);
+    // private final JoystickButton autoScoreMidButton = new JoystickButton(operator, 10);
+    // private final JoystickButton autoLowButton = new JoystickButton(operator, 12);
+    // private final JoystickButton autoHPButton = new JoystickButton(operator, 7);
     
-    private final JoystickButton armOutButton = new JoystickButton(operator, 9);
-    private final JoystickButton armInButton = new JoystickButton(operator, 11);
+    // private final JoystickButton armOutButton = new JoystickButton(operator, 9);
+    // private final JoystickButton armInButton = new JoystickButton(operator, 11);
 
-    private final JoystickButton grabberButton = new JoystickButton(operator, 1);
-    private final JoystickButton autoGrabberButton = new JoystickButton(operator, 2);
+    // private final JoystickButton grabberButton = new JoystickButton(operator, 1);
+    // private final JoystickButton autoGrabberButton = new JoystickButton(operator, 2);
 
-    private final JoystickButton popperButton = new JoystickButton(operator, 4);
+    // private final JoystickButton popperButton = new JoystickButton(operator, 4);
 
     /* Subsystems */
     private final Swerve m_swerve = new Swerve();
@@ -81,7 +82,7 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> m_swerve.zeroGyro()));
-
+        resetCancoders.onTrue(new InstantCommand(() -> m_swerve.resetModulesToAbsolute()));
         /* Operator Buttons */
         // grabberButton.onTrue(new InstantCommand(() -> m_grabber.toggleGrabber()));
 
