@@ -57,7 +57,7 @@ public class Arm extends SubsystemBase {
         else 
         {
             motor.set(speed);
-        };
+        }
     }
 
     @Override

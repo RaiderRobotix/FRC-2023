@@ -57,7 +57,7 @@ public class Elevator extends SubsystemBase {
         else 
         {
             motor.set(speed);
-        };
+        }
     }
 
     @Override
