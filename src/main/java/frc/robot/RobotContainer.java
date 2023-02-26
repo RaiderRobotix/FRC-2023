@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.autos.*;
@@ -20,6 +21,7 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
+    private final Joystick operator = new Joystick(1);
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -29,6 +31,18 @@ public class RobotContainer {
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+
+    /* Operator Buttons */
+    private final JoystickButton elevatorUpButton = new JoystickButton(operator, 5);
+    private final JoystickButton elevatorDownButton = new JoystickButton(operator, 3);
+
+    private final JoystickButton autoScoreHighButton = new JoystickButton(operator, 8);
+    private final JoystickButton autoScoreMidButton = new JoystickButton(operator, 10);
+    private final JoystickButton autoLowButton = new JoystickButton(operator, 12);
+    private final JoystickButton autoHPButton = new JoystickButton(operator, 7);
+    
+    private final JoystickButton armOutButton = new JoystickButton(operator, 9);
+    private final JoystickButton armInButton = new JoystickButton(operator, 11);
 
     /* Subsystems */
     private final Swerve m_swerve = new Swerve();
@@ -62,6 +76,35 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> m_swerve.zeroGyro()));
+
+        /* Operator Buttons */
+        // armOutButton.whileTrue(
+        //     new StartEndCommand(
+        //         () -> m_arm.extend(Constants.Arm.manualSpeed),
+        //         () -> m_arm.stop(),
+        //         m_arm)
+        // );
+
+        // armInButton.whileTrue(
+        //     new StartEndCommand(
+        //         () -> m_arm.retract(Constants.Arm.manualSpeed),
+        //         () -> m_arm.stop(),
+        //         m_arm)
+        // );
+
+        // elevatorUpButton.whileTrue(
+        //     new StartEndCommand(
+        //         () -> m_elevator.moveUp(Constants.Elevator.manualSpeed),
+        //         () -> m_elevator.stop(),
+        //         m_elevator)
+        // );
+
+        // elevatorDownButton.whileTrue(
+        //     new StartEndCommand(
+        //         () -> m_elevator.moveDown(Constants.Elevator.manualSpeed),
+        //         () -> m_elevator.stop(),
+        //         m_elevator)
+        // );
     }
 
     /**
