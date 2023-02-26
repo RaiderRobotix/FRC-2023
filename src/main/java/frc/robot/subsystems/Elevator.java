@@ -46,11 +46,11 @@ public class Elevator extends SubsystemBase {
      */
     private void setMotor(double speed)
     {
-        if (getPotValue() <= Constants.Elevator.lowerSafety && speed > 0)
+        if (lowerLimitHit() && speed > 0)
         {
             motor.set(0);
         } 
-        else if (getPotValue() >= Constants.Elevator.upperSafety && speed < 0) 
+        else if (upperLimitHit() && speed < 0) 
         {
             motor.set(0);
         } 
@@ -60,9 +60,20 @@ public class Elevator extends SubsystemBase {
         }
     }
 
+    public boolean upperLimitHit()
+    {
+        return getPotValue() >= Constants.Elevator.upperSafety;
+    }
+
+    public boolean lowerLimitHit()
+    {
+        return getPotValue() <= Constants.Elevator.lowerSafety;
+    }
+
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
         SmartDashboard.putNumber("Elevator Pot", getPotValue());
+        SmartDashboard.putBoolean("Elevator Safety Hit", upperLimitHit() || lowerLimitHit());
     }
 }

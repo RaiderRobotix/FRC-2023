@@ -46,11 +46,11 @@ public class Arm extends SubsystemBase {
      */
     private void setMotor(double speed)
     {
-        if (getPotValue() <= Constants.Arm.lowerSafety && speed < 0)
+        if (lowerLimitHit() && speed < 0)
         {
             motor.set(0);
         } 
-        else if (getPotValue() >= Constants.Arm.upperSafety && speed > 0) 
+        else if (upperLimitHit() && speed > 0) 
         {
             motor.set(0);
         } 
@@ -60,9 +60,20 @@ public class Arm extends SubsystemBase {
         }
     }
 
+    public boolean upperLimitHit()
+    {
+        return getPotValue() >= Constants.Arm.upperSafety;
+    }
+
+    public boolean lowerLimitHit()
+    {
+        return getPotValue() <= Constants.Arm.lowerSafety;
+    }
+
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
         SmartDashboard.putNumber("Arm Pot", getPotValue());
+        SmartDashboard.putBoolean("Arm Safety Hit", upperLimitHit() || lowerLimitHit());
     }
 }

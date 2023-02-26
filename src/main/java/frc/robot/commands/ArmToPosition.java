@@ -24,6 +24,7 @@ public class ArmToPosition extends CommandBase {
     @Override
     public void initialize() 
     {
+        this.isDone = false;
         this.initialPosition = m_arm.getPotValue();
     }
 
@@ -31,10 +32,10 @@ public class ArmToPosition extends CommandBase {
     @Override
     public void execute() 
     {
-        if (targetLength > Constants.Arm.upperSafety || targetLength < Constants.Arm.lowerSafety) 
-        {
-            end(true);
-        }
+        // if (targetLength > Constants.Arm.upperSafety || targetLength < Constants.Arm.lowerSafety) 
+        // {
+        //     end(true);
+        // }
   
         if (initialPosition < targetLength)
         {

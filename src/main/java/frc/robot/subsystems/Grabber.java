@@ -15,6 +15,7 @@ public class Grabber extends SubsystemBase {
     private boolean grabberIsOpen = true;
 
     private DigitalInput distanceSensor;
+    private DigitalInput hpTouchSensor;
 
     public Grabber()
     {
@@ -22,6 +23,7 @@ public class Grabber extends SubsystemBase {
         grabberSolenoidOff = new Solenoid(PneumaticsModuleType.REVPH, Constants.Grabber.grabberOffChannel);
     
         distanceSensor = new DigitalInput(Constants.Grabber.distanceSensorChannel);
+        hpTouchSensor = new DigitalInput(Constants.Grabber.hpTouchSensorChannel);
     }
 
     public void openGrabber()
@@ -51,9 +53,18 @@ public class Grabber extends SubsystemBase {
         }
     }
 
+    public boolean grabberIsOpen() {
+        return grabberIsOpen;
+    }
+
     public boolean getDistanceSensor() 
     {
         return !distanceSensor.get();
+    }
+
+    public boolean getHpTouchSensor() 
+    {
+        return hpTouchSensor.get();
     }
 
     @Override
@@ -61,5 +72,6 @@ public class Grabber extends SubsystemBase {
     {
         SmartDashboard.putString("Grabber", grabberIsOpen ? "Open" : "Closed");
         SmartDashboard.putBoolean("Infrared", getDistanceSensor());
+        SmartDashboard.putBoolean("HP Touch Sensor", getHpTouchSensor());
     }
 }

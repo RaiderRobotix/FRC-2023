@@ -24,6 +24,7 @@ public class ElevatorToHeight extends CommandBase{
     public void initialize() 
     {
         this.initialHeight = m_elevator.getPotValue();
+        this.isDone = false;
     }
 
     // Called every time the scheduler runs while the command is scheduled.
