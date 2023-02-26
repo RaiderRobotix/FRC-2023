@@ -61,7 +61,7 @@ public class Elevator extends SubsystemBase implements Constants {
 
   public static double getSensor(){
     return tenTurnPot.get();
-    // return motor.getSelectedbSensorPosition() / kElevatorDistancePerRotation * kEleveatorGearRatio;
+    // return -motor.getSelectedSensorPosition() / kEleveatorGearRatio;
   }
 
   public static boolean getSensorMax(){

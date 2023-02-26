@@ -66,8 +66,8 @@ public interface Constants {
 
 
     // Robots measurements in metres
-    public final double width = Units.inchesToMeters(24);
-    public final double length = Units.inchesToMeters(32);
+    public final double width = Units.inchesToMeters(18);
+    public final double length = Units.inchesToMeters(26);
 
 
     //Robot's kinematics
@@ -86,8 +86,8 @@ public interface Constants {
     public final SwerveDriveKinematics kDriveKinematics = 
         new SwerveDriveKinematics(
             new Translation2d(width / 2, length / 2),
-            new Translation2d(width / 2, -length / 2),
             new Translation2d(-width / 2, length / 2),
+            new Translation2d(width / 2, -length / 2),
             new Translation2d(-width / 2, -length / 2)
         );
 
@@ -128,25 +128,25 @@ public interface Constants {
 
 
     //Speeds for Operator Controller
-    public final double kElevatorUpSpeed = 0.25;
-    public final double kElevatorDownSpeed = 0.25;
+    public final double kElevatorUpSpeed = 0.6;
+    public final double kElevatorDownSpeed = 0.4;
     
     //Speeds for auto
     public final double kAutoElevatorSpeedUp = 0.5;
     public final double kAutoElevatorSpeedDown = 0.5;
 
     //Present Height Values for rows
-    public final double kUpperRowHeight = .48;
+    public final double kUpperRowHeight = 0.489;
     public final double kMidRowHeight = 0.43;
     public final double kHumanPlayerHeight = 0.45;
     public final double kLowerRowHeight = .178;
     public final double kFloorHeight = .178;
-    public final double kElevatorMaxHeight = .518;
-    public final double kElevatorMinHeight = .178;
+    public final double kElevatorMaxHeight = 0.51;
+    public final double kElevatorMinHeight = 0.22;
     //PID values for elevator
-    public final double elevatorKp = 12.750;
+    public final double elevatorKp =  5.000;
     public final double elevatorKi =  0.000;
-    public final double elevatorKd =  0.100;
+    public final double elevatorKd =  0.000;
 
 
     //Arm Variables
@@ -156,12 +156,12 @@ public interface Constants {
     public final double kArmGearRatio = 15;
 
     //Arm Length Values
-    public final double kUpperRowLength = 6;
-    public final double kMidRowLength = 2.21;
-    public final double kHumanPlayerLength = -0.35;
-    public final double kFloorLength = 2.0;
-    public final double kArmMaxLength = 6.7;
-    public final double kArmMinLength = 0.0;
+    public final double kUpperRowLength = 0.60;
+    public final double kMidRowLength = 0.0;
+    public final double kHumanPlayerLength = -0.0;
+    public final double kFloorLength = 0.0;
+    public final double kArmMaxLength = 0.60;
+    public final double kArmMinLength = 0.07;    
 
     //Speeds for Operator Arm
     public final double kArmInSpeed = 0.5;
@@ -227,20 +227,20 @@ public interface Constants {
     public final int frontLeftDriveID = 20;
     public final int frontLeftSteerID = 10;
     public final int frontLeftEncoderID = 0;
-    public final double frontLeftEncoderOffset = 0;
+    public final double frontLeftEncoderOffset = -3;
 
     public final int frontRightDriveID = 21;
     public final int frontRightSteerID = 11;
     public final int frontRightEncoderID = 1;
-    public final double frontRightEncoderOffset = 90;
+    public final double frontRightEncoderOffset = 90-12;
 
     public final int backLeftDriveID = 22;
     public final int backLeftSteerID = 12;
     public final int backLeftEncoderID = 2;
-    public final double backLeftEncoderOffset = 0;
+    public final double backLeftEncoderOffset = 11;
 
     public final int backRightDriveID = 23;
     public final int backRightSteerID = 13;
     public final int backRightEncoderID = 3;
-    public final double backRightEncoderOffset = 0;
+    public final double backRightEncoderOffset = 17.7;
 }
