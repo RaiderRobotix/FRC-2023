@@ -12,6 +12,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+import com.swervedrivespecialties.swervelib.Mk4SwerveModuleBuilder;
 import com.swervedrivespecialties.swervelib.MkSwerveModuleBuilder;
 import com.swervedrivespecialties.swervelib.MotorType;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
@@ -205,6 +206,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     Shuffleboard.selectTab("Drivetrain");
     SmartDashboard.putNumber("X Point", odometry.getPoseMeters().getX());
     SmartDashboard.putNumber("Y Point", odometry.getPoseMeters().getY());
+    SmartDashboard.putNumber("Rotation Heading", odometry.getPoseMeters().getRotation().getDegrees());
     SmartDashboard.putNumber("X Speed", chassisSpeeds.vxMetersPerSecond);
     SmartDashboard.putNumber("Y Speed", chassisSpeeds.vyMetersPerSecond);
     SmartDashboard.putNumber("Angular Speed", chassisSpeeds.omegaRadiansPerSecond);
