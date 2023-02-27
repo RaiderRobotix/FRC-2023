@@ -44,13 +44,13 @@ import frc.robot.subsystems.drivebase.SwerveWheelController;
  */
 public class RobotContainer implements Constants {
   // The robot's subsystems and commands are defined here...
-  private final SwerveWheelController m_controller = new SwerveWheelController();
+  private final static SwerveWheelController m_controller = new SwerveWheelController();
   private final OperatorInterface m_operatorInterface = new OperatorInterface();
   private final Pneumatics mPneumatics = new Pneumatics(m_operatorInterface);
   private final Gyro m_gyro = new Gyro();
   private final Elevator m_elevator = new Elevator();
   private final Arm m_arm = new Arm();
-  private final AutonSelector autonSelector = new AutonSelector();
+  private final static AutonSelector autonSelector = new AutonSelector();
 
   private final drive m_Drive = new drive( m_controller, m_operatorInterface, 0.6);
   // private DigitalInput sensor;
@@ -166,14 +166,18 @@ public class RobotContainer implements Constants {
     // .onTrue(new elevatorToHeight(kHumanPlayerHeight));
   }
 
+  public static AutonCommands getAutonCommands(){
+    return autonSelector.getCommand(m_controller);
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    if(onTheFly){
-      AutonCommands command = autonSelector.getCommand(m_controller);
+    if(true){
+      AutonCommands command = getAutonCommands();
       Map<String, Command> eventMap = command.getEventMap();
   
       SwerveAutoBuilder autoBuilder =  new SwerveAutoBuilder(
@@ -190,7 +194,7 @@ public class RobotContainer implements Constants {
   
       return autoBuilder.fullAuto(command.getPath());
     } else {
-      return new FollowPathWithEvents(m_Drive, null, null)
+      return new FollowPathWithEvents(m_Drive, null, null);
     }
   }
 }
