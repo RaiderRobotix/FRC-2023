@@ -9,6 +9,7 @@ import java.util.function.BooleanSupplier;
 
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -43,13 +44,13 @@ import frc.robot.subsystems.drivebase.SwerveWheelController;
  */
 public class RobotContainer implements Constants {
   // The robot's subsystems and commands are defined here...
-  private final SwerveWheelController m_controller = new SwerveWheelController();
+  private final static SwerveWheelController m_controller = new SwerveWheelController();
   private final OperatorInterface m_operatorInterface = new OperatorInterface();
   private final Pneumatics mPneumatics = new Pneumatics(m_operatorInterface);
   private final Gyro m_gyro = new Gyro();
   private final Elevator m_elevator = new Elevator();
   private final Arm m_arm = new Arm();
-  private final AutonSelector autonSelector = new AutonSelector();
+  private final static AutonSelector autonSelector = new AutonSelector();
 
   private final drive m_Drive = new drive( m_controller, m_operatorInterface, 0.6);
   // private DigitalInput sensor;
@@ -134,9 +135,9 @@ public class RobotContainer implements Constants {
       () -> Elevator.setMotor(0),
       m_elevator));
 
-    new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorLowerRowJoystickButton)
+    new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorFloorJoystickButton)
     .whileTrue(new armToLength(kFloorLength))
-    .whileTrue(new elevatorToHeight(kLowerRowHeight));
+    .whileTrue(new elevatorToHeight(kFloorHeight));
 
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorMidRowJoystickButton)
     .whileTrue(new armToLength(kMidRowLength))
@@ -165,27 +166,35 @@ public class RobotContainer implements Constants {
     // .onTrue(new elevatorToHeight(kHumanPlayerHeight));
   }
 
+  public static AutonCommands getAutonCommands(){
+    return autonSelector.getCommand(m_controller);
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    AutonCommands command = autonSelector.getCommand(m_controller);
-    Map<String, Command> eventMap = command.getEventMap();
-
-    SwerveAutoBuilder autoBuilder =  new SwerveAutoBuilder(
-      () -> m_controller.getOdometry().getPoseMeters(), // Pose2d supplier
-      m_controller::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of autokDriveKinematics, // SwerveDriveKinematics
-      kDriveKinematics,
-      new PIDConstants(0.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
-      new PIDConstants(0.0, 0.0, 0.0), // PID constants to correct for rotation error (used to create the rotation controller)
-      m_controller::setState, // Module states consumer used to output to the drive subsystemeventMap,
-      eventMap,
-      true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-      m_controller // The drive subsystem. Used to properly set the requirements of path following commands
-    );
-
-    return autoBuilder.fullAuto(command.getPath());
+    if(true){
+      AutonCommands command = getAutonCommands();
+      Map<String, Command> eventMap = command.getEventMap();
+  
+      SwerveAutoBuilder autoBuilder =  new SwerveAutoBuilder(
+        () -> m_controller.getOdometry().getPoseMeters(), // Pose2d supplier
+        m_controller::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of autokDriveKinematics, // SwerveDriveKinematics
+        kDriveKinematics,
+        new PIDConstants(0.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
+        new PIDConstants(0.0, 0.0, 0.0), // PID constants to correct for rotation error (used to create the rotation controller)
+        m_controller::setState, // Module states consumer used to output to the drive subsystemeventMap,
+        eventMap,
+        true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+        m_controller // The drive subsystem. Used to properly set the requirements of path following commands
+      );
+  
+      return autoBuilder.fullAuto(command.getPath());
+    } else {
+      return new FollowPathWithEvents(m_Drive, null, null);
+    }
   }
 }

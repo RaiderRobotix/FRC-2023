@@ -51,10 +51,6 @@ public class Elevator extends SubsystemBase implements Constants {
     setMotorPID(kMidRowHeight);
   }
 
-  public static void setLowerRow(){
-    setMotorPID(kLowerRowHeight);
-  }
-
   public static void setFloor(){
     setMotorPID(kFloorHeight);
   }

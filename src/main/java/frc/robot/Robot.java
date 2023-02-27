@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -21,6 +22,7 @@ import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.OperatorInterface;
 import frc.robot.subsystems.Pneumatics;
 // import frc.robot.subsystems.drivebase.SwerveWheel;
+import frc.robot.auto.AutonSelector;
 import frc.robot.subsystems.drivebase.SwerveWheelController;
 
 /**
@@ -38,6 +40,8 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   private AddressableLED led;
   private AddressableLEDBuffer ledBuffer;
+
+  public Field2d m_field;
   // private AnalogInput sonic;
 
   /**
@@ -53,19 +57,20 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     PathPlannerServer.startServer(5811);
     CameraServer.startAutomaticCapture();
-    
+    m_field = new Field2d();
+    SmartDashboard.putData(m_field);
 
-    led = new AddressableLED(0);
-    ledBuffer = new AddressableLEDBuffer(60);
-    led.setLength(ledBuffer.getLength());
+    // led = new AddressableLED(0);
+    // ledBuffer = new AddressableLEDBuffer(60);
+    // led.setLength(ledBuffer.getLength());
     
-    for(int i = 0; i < ledBuffer.getLength(); i++){
-      ledBuffer.setRGB(i, 255, 255, 0);
-    }
-    led.setData(ledBuffer);
-    led.start();
+    // for(int i = 0; i < ledBuffer.getLength(); i++){
+    //   ledBuffer.setRGB(i, 255, 255, 0);
+    // }
+    // led.setData(ledBuffer);
+    // led.start();
 
-    PWM ledthing = new PWM(9);
+    // PWM ledthing = new PWM(9);
 
     // ledthing.setRaw(255);
     // ledthing.set
@@ -93,6 +98,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     SmartDashboard.updateValues();
+    m_field.setRobotPose(SwerveWheelController.getOdometry().getPoseMeters());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -119,6 +125,9 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
+
+    m_field.getObject("traj").setTrajectory(RobotContainer.getAutonCommands().getPath());
   }
 
   /** This function is called periodically during autonomous. */
