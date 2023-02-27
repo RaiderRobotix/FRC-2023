@@ -6,8 +6,6 @@ package frc.robot;
 
 import java.util.ArrayList;
 
-import com.pathplanner.lib.PathPlannerTrajectory;
-
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -41,7 +39,7 @@ public interface Constants {
 
     public final int elevatorUpJoystickButton = 5;
     public final int elevatorDownJoystickButton = 3;
-    public final int elevatorLowerRowJoystickButton = 12;
+    public final int elevatorFloorJoystickButton = 12;
     public final int elevatorMidRowJoystickButton = 10;
     public final int elevatorUpperRowJoystickButton = 8;
     public final int elevatorHumanPlayerJoystickButton = 7;
@@ -136,13 +134,12 @@ public interface Constants {
     public final double kAutoElevatorSpeedDown = 0.5;
 
     //Present Height Values for rows
-    public final double kUpperRowHeight = 0.489;
-    public final double kMidRowHeight = 0.43;
-    public final double kHumanPlayerHeight = 0.45;
-    public final double kLowerRowHeight = .178;
-    public final double kFloorHeight = .178;
-    public final double kElevatorMaxHeight = 0.51;
-    public final double kElevatorMinHeight = 0.22;
+    public final double kUpperRowHeight = 0.345;
+    public final double kHumanPlayerHeight = 0.318;
+    public final double kMidRowHeight = 0.30;
+    public final double kFloorHeight = 0.06;
+    public final double kElevatorMaxHeight = 0.36;
+    public final double kElevatorMinHeight = 0.05;
     //PID values for elevator
     public final double elevatorKp =  5.000;
     public final double elevatorKi =  0.000;

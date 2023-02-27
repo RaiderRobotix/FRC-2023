@@ -135,9 +135,9 @@ public class RobotContainer implements Constants {
       () -> Elevator.setMotor(0),
       m_elevator));
 
-    new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorLowerRowJoystickButton)
+    new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorFloorJoystickButton)
     .whileTrue(new armToLength(kFloorLength))
-    .whileTrue(new elevatorToHeight(kLowerRowHeight));
+    .whileTrue(new elevatorToHeight(kFloorHeight));
 
     new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorMidRowJoystickButton)
     .whileTrue(new armToLength(kMidRowLength))
@@ -172,7 +172,7 @@ public class RobotContainer implements Constants {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    if(onTheFly){
+    if(true){
       AutonCommands command = autonSelector.getCommand(m_controller);
       Map<String, Command> eventMap = command.getEventMap();
   
@@ -190,7 +190,7 @@ public class RobotContainer implements Constants {
   
       return autoBuilder.fullAuto(command.getPath());
     } else {
-      return new FollowPathWithEvents(m_Drive, null, null)
+      return new FollowPathWithEvents(m_Drive, null, null);
     }
   }
 }
