@@ -154,12 +154,12 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
   public void drive(ChassisSpeeds chassisSpeeds) {
     speeds = chassisSpeeds;
     m_desiredStates = kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
-    if(Math.abs(m_desiredStates[0].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[0].angle.getDegrees()) > 0.5
-    || Math.abs(m_desiredStates[1].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[1].angle.getDegrees()) > 0.5
-    || Math.abs(m_desiredStates[2].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[2].angle.getDegrees()) > 0.5
-    || Math.abs(m_desiredStates[3].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[3].angle.getDegrees()) > 0.5){
-      m_desiredStates = kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
-    }
+    // if(Math.abs(m_desiredStates[0].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[0].angle.getDegrees()) > 0.5
+    // || Math.abs(m_desiredStates[1].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[1].angle.getDegrees()) > 0.5
+    // || Math.abs(m_desiredStates[2].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[2].angle.getDegrees()) > 0.5
+    // || Math.abs(m_desiredStates[3].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[3].angle.getDegrees()) > 0.5){
+    //   m_desiredStates = kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+    // }
   }
 
   public void setState(SwerveModuleState[] states){
