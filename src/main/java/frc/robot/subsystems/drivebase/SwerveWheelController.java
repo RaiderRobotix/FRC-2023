@@ -99,7 +99,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     .withDriveMotor(MotorType.FALCON, frontLeftDriveID)
     .withSteerMotor(MotorType.FALCON, frontLeftSteerID)
     .withSteerEncoderPort(frontLeftEncoderID)
-    // .withSteerOffset(frontLeftEncoderOffset)
+    .withSteerOffset(frontLeftEncoderOffset)
     .build();
 
     frontRightModule = new MkSwerveModuleBuilder()
@@ -110,7 +110,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     .withDriveMotor(MotorType.FALCON, frontRightDriveID)
     .withSteerMotor(MotorType.FALCON, frontRightSteerID)
     .withSteerEncoderPort(frontRightEncoderID)
-    // .withSteerOffset(frontRightEncoderOffset)
+    .withSteerOffset(frontRightEncoderOffset)
     .build();
 
     backLeftModule = new MkSwerveModuleBuilder()
@@ -121,7 +121,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     .withDriveMotor(MotorType.FALCON, backLeftDriveID)
     .withSteerMotor(MotorType.FALCON, backLeftSteerID)
     .withSteerEncoderPort(backLeftEncoderID)
-    // .withSteerOffset(backLeftEncoderOffset)
+    .withSteerOffset(backLeftEncoderOffset)
     .build();
 
     backRightModule = new MkSwerveModuleBuilder()
@@ -132,7 +132,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     .withDriveMotor(MotorType.FALCON, backRightDriveID)
     .withSteerMotor(MotorType.FALCON, backRightSteerID)
     .withSteerEncoderPort(backRightEncoderID)
-    // .withSteerOffset(backRightEncoderOffset)
+    .withSteerOffset(backRightEncoderOffset)
     .build();
 
     
@@ -154,19 +154,23 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
   public void drive(ChassisSpeeds chassisSpeeds) {
     speeds = chassisSpeeds;
     m_desiredStates = kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
-    // if(Math.abs(m_desiredStates[0].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[0].angle.getDegrees()) > 0.5
-    // || Math.abs(m_desiredStates[1].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[1].angle.getDegrees()) > 0.5
-    // || Math.abs(m_desiredStates[2].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[2].angle.getDegrees()) > 0.5
-    // || Math.abs(m_desiredStates[3].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[3].angle.getDegrees()) > 0.5){
-    //   m_desiredStates = kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
-    // }
+    if(Math.abs(m_desiredStates[0].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[0].angle.getDegrees()) > 0.5
+    || Math.abs(m_desiredStates[1].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[1].angle.getDegrees()) > 0.5
+    || Math.abs(m_desiredStates[2].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[2].angle.getDegrees()) > 0.5
+    || Math.abs(m_desiredStates[3].angle.getDegrees() - kDriveKinematics.toSwerveModuleStates(chassisSpeeds)[3].angle.getDegrees()) > 0.5){
+      m_desiredStates = kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+    }
   }
 
   public void setState(SwerveModuleState[] states){
-    frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians() + Units.degreesToRadians(frontLeftEncoderOffset));
-    frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians() + Units.degreesToRadians(frontRightEncoderOffset));
-    backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians() + Units.degreesToRadians(backLeftEncoderOffset));
-    backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians() + Units.degreesToRadians(backRightEncoderOffset));
+    // frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians() + Units.degreesToRadians(frontLeftEncoderOffset));
+    // frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians() + Units.degreesToRadians(frontRightEncoderOffset));
+    // backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians() + Units.degreesToRadians(backLeftEncoderOffset));
+    // backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians() + Units.degreesToRadians(backRightEncoderOffset));
+    frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
+    frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
+    backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
+    backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
   }
   
   public static void zeroGyroscope() {
