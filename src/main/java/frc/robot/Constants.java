@@ -26,7 +26,7 @@ import edu.wpi.first.math.util.Units;
 public interface Constants {
 
     // Driver constants
-    public final int xboxControllerPort = 4;
+    public final int xboxControllerPort = 0;
 
     // Operator Constants
     public final int operatorStickPort = 1;
@@ -64,8 +64,8 @@ public interface Constants {
 
 
     // Robots measurements in metres
-    public final double width = Units.inchesToMeters(18);
-    public final double length = Units.inchesToMeters(26);
+    public final double width = Units.inchesToMeters(24);
+    public final double length = Units.inchesToMeters(32);
 
 
     //Robot's kinematics
@@ -84,8 +84,8 @@ public interface Constants {
     public final SwerveDriveKinematics kDriveKinematics = 
         new SwerveDriveKinematics(
             new Translation2d(width / 2, length / 2),
-            new Translation2d(-width / 2, length / 2),
             new Translation2d(width / 2, -length / 2),
+            new Translation2d(-width / 2, length / 2),
             new Translation2d(-width / 2, -length / 2)
         );
 

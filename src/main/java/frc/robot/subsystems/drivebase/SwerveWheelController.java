@@ -141,8 +141,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
 
     odometry = new SwerveDriveOdometry(
                 kDriveKinematics,
-                Rotation2d.fromDegrees(frc.robot.subsystems.Gyro
-            .getHeading()),
+                Rotation2d.fromDegrees(Gyro.getHeading()),
                 new SwerveModulePosition[]{ frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition() }
         );
 
@@ -172,7 +171,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
   
   public static void zeroGyroscope() {
     odometry.resetPosition(
-            Rotation2d.fromDegrees(frc.robot.subsystems.Gyro.getHeading()),
+            Rotation2d.fromDegrees(Gyro.getHeading()),
             new SwerveModulePosition[]{ frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition() },
             new Pose2d(odometry.getPoseMeters().getTranslation(), Rotation2d.fromDegrees(0.0))
     );

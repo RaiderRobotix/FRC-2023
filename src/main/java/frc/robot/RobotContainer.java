@@ -83,7 +83,6 @@ public class RobotContainer implements Constants {
 
     new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kY.value)
       .onTrue(new InstantCommand(() -> SwerveWheelController.zeroGyroscope()));
-
     new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kA.value)
       .and(new Trigger(m_operatorInterface::isPOV))
       .whileTrue(new StartEndCommand(
