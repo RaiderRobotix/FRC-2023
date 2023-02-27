@@ -86,10 +86,6 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
     // Location of modules relative to the centre of the robot
-    this.frontLeftLocation = new Translation2d(width / 2, length / 2);
-    this.frontRightLocation = new Translation2d(width / 2, -length / 2);
-    this.backLeftLocation = new Translation2d(-width / 2, length / 2);
-    this.backRightLocation = new Translation2d(-width / 2, -length / 2);
       
     frontLeftModule = new MkSwerveModuleBuilder()
     .withLayout(tab.getLayout("Front Left Module", BuiltInLayouts.kList)
@@ -99,7 +95,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     .withDriveMotor(MotorType.FALCON, frontLeftDriveID)
     .withSteerMotor(MotorType.FALCON, frontLeftSteerID)
     .withSteerEncoderPort(frontLeftEncoderID)
-    .withSteerOffset(frontLeftEncoderOffset)
+    // .withSteerOffset(frontLeftEncoderOffset)
     .build();
 
     frontRightModule = new MkSwerveModuleBuilder()
@@ -110,7 +106,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     .withDriveMotor(MotorType.FALCON, frontRightDriveID)
     .withSteerMotor(MotorType.FALCON, frontRightSteerID)
     .withSteerEncoderPort(frontRightEncoderID)
-    .withSteerOffset(frontRightEncoderOffset)
+    // .withSteerOffset(frontRightEncoderOffset)
     .build();
 
     backLeftModule = new MkSwerveModuleBuilder()
@@ -121,7 +117,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     .withDriveMotor(MotorType.FALCON, backLeftDriveID)
     .withSteerMotor(MotorType.FALCON, backLeftSteerID)
     .withSteerEncoderPort(backLeftEncoderID)
-    .withSteerOffset(backLeftEncoderOffset)
+    // .withSteerOffset(backLeftEncoderOffset)
     .build();
 
     backRightModule = new MkSwerveModuleBuilder()
@@ -132,7 +128,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     .withDriveMotor(MotorType.FALCON, backRightDriveID)
     .withSteerMotor(MotorType.FALCON, backRightSteerID)
     .withSteerEncoderPort(backRightEncoderID)
-    .withSteerOffset(backRightEncoderOffset)
+    // .withSteerOffset(backRightEncoderOffset)
     .build();
 
     
@@ -163,14 +159,14 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
   }
 
   public void setState(SwerveModuleState[] states){
-    // frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians() + Units.degreesToRadians(frontLeftEncoderOffset));
-    // frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians() + Units.degreesToRadians(frontRightEncoderOffset));
-    // backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians() + Units.degreesToRadians(backLeftEncoderOffset));
-    // backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians() + Units.degreesToRadians(backRightEncoderOffset));
-    frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
-    frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
-    backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
-    backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
+    frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians() + Units.degreesToRadians(frontLeftEncoderOffset));
+    frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians() + Units.degreesToRadians(frontRightEncoderOffset));
+    backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians() + Units.degreesToRadians(backLeftEncoderOffset));
+    backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians() + Units.degreesToRadians(backRightEncoderOffset));
+    // frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
+    // frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
+    // backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
+    // backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
   }
   
   public static void zeroGyroscope() {
