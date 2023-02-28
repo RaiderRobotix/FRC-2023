@@ -51,10 +51,10 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
 
   // private Gyro gyro = new Gyro();
 
-  private static SwerveModule frontLeftModule;
-  private static SwerveModule frontRightModule;
-  private static SwerveModule backLeftModule;
-  private static SwerveModule backRightModule;
+  private static SwerveWheel frontLeftModule;
+  private static SwerveWheel frontRightModule;
+  private static SwerveWheel backLeftModule;
+  private static SwerveWheel backRightModule;
   private static boolean fieldCentric = true;
   private static boolean coast = false;
 
@@ -76,63 +76,12 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
   private static CANCoder backLeftEncoder = new CANCoder(backLeftEncoderID);
   private static CANCoder backRightEncoder = new CANCoder(backRightEncoderID);
 
-  private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
-
   /** Creates a new drivebase. */
   public SwerveWheelController() {
-    Gyro.ahrs = new AHRS(Port.kMXP);
-    Gyro.gyro().reset();
-
-
-    ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
-
-    // Location of modules relative to the centre of the robot
-      
-    frontLeftModule = new MkSwerveModuleBuilder()
-    .withLayout(tab.getLayout("Front Left Module", BuiltInLayouts.kList)
-            .withSize(5, 6)
-            .withPosition(0, 0))
-    .withGearRatio(SdsModuleConfigurations.MK4_L3)
-    .withDriveMotor(MotorType.FALCON, frontLeftDriveID)
-    .withSteerMotor(MotorType.FALCON, frontLeftSteerID)
-    .withSteerEncoderPort(frontLeftEncoderID)
-    // .withSteerOffset(frontLeftEncoderOffset)
-    .build();
-
-    frontRightModule = new MkSwerveModuleBuilder()
-    .withLayout(tab.getLayout("Front Right Module", BuiltInLayouts.kList)
-            .withSize(5, 6)
-            .withPosition(0, 0))
-    .withGearRatio(SdsModuleConfigurations.MK4_L3)
-    .withDriveMotor(MotorType.FALCON, frontRightDriveID)
-    .withSteerMotor(MotorType.FALCON, frontRightSteerID)
-    .withSteerEncoderPort(frontRightEncoderID)
-    // .withSteerOffset(frontRightEncoderOffset)
-    .build();
-
-    backLeftModule = new MkSwerveModuleBuilder()
-    .withLayout(tab.getLayout("Back Left Module", BuiltInLayouts.kList)
-            .withSize(5, 7)
-            .withPosition(0, 0))
-    .withGearRatio(SdsModuleConfigurations.MK4_L3)
-    .withDriveMotor(MotorType.FALCON, backLeftDriveID)
-    .withSteerMotor(MotorType.FALCON, backLeftSteerID)
-    .withSteerEncoderPort(backLeftEncoderID)
-    // .withSteerOffset(backLeftEncoderOffset)
-    .build();
-
-    backRightModule = new MkSwerveModuleBuilder()
-    .withLayout(tab.getLayout("Back Right Module", BuiltInLayouts.kList)
-            .withSize(5, 6)
-            .withPosition(0, 0))
-    .withGearRatio(SdsModuleConfigurations.MK4_L3)
-    .withDriveMotor(MotorType.FALCON, backRightDriveID)
-    .withSteerMotor(MotorType.FALCON, backRightSteerID)
-    .withSteerEncoderPort(backRightEncoderID)
-    // .withSteerOffset(backRightEncoderOffset)
-    .build();
-
-    
+    frontLeftModule = new SwerveWheel(frontLeftDriveID, frontLeftSteerID, frontLeftEncoderID, "Front Left");
+    frontRightModule = new SwerveWheel(frontRightDriveID, frontRightSteerID, frontRightEncoderID,"Front Right");
+    backLeftModule = new SwerveWheel(backLeftDriveID, backLeftSteerID, backLeftEncoderID, "Back Left");
+    backRightModule = new SwerveWheel(backRightDriveID, backRightSteerID, backRightEncoderID, "Back Right");
 
     m_desiredStates = kDriveKinematics.toSwerveModuleStates(speeds);
 
