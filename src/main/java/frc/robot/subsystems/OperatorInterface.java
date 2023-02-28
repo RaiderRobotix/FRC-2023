@@ -49,7 +49,7 @@ public class OperatorInterface extends SubsystemBase implements Constants {
 
   public double getLeftY() {
     if (Math.abs(xboxcontroller.getLeftY()) > leftDeadband) {
-      return -1 * xboxcontroller.getLeftY();
+      return Math.pow(-xboxcontroller.getLeftY(), 3);
     } else {
       return 0;
     }
@@ -57,7 +57,7 @@ public class OperatorInterface extends SubsystemBase implements Constants {
 
   public double getLeftX() {
     if (Math.abs(xboxcontroller.getLeftX()) > leftDeadband) {
-      return -1 * xboxcontroller.getLeftX();
+      return Math.pow(-xboxcontroller.getLeftX(), 3);
     } else {
       return 0;
     }
@@ -65,7 +65,7 @@ public class OperatorInterface extends SubsystemBase implements Constants {
 
   public double getRightY() {
     if (Math.abs(xboxcontroller.getRightY()) > rightDeadband) {
-      return xboxcontroller.getRightY();
+      return Math.pow(xboxcontroller.getRightY(), 3);
     } else {
       return 0;
     }
@@ -73,7 +73,7 @@ public class OperatorInterface extends SubsystemBase implements Constants {
 
   public double getRightX() {
     if (Math.abs(xboxcontroller.getRightX()) > rightDeadband) {
-      return xboxcontroller.getRightX();
+      return Math.pow(xboxcontroller.getRightX(), 3);
     } else {
       return 0;
     }
