@@ -95,10 +95,6 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     Gyro.ahrs = new AHRS(Port.kMXP);
     Gyro.gyro().reset();
 
-
-    
-    // Location of modules relative to the centre of the robot
-      
     frontLeftModule = new MkSwerveModuleBuilder()
     .withLayout(tab.getLayout("Front Left Module", BuiltInLayouts.kList)
             .withSize(5, 6)
