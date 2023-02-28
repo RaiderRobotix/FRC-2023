@@ -50,12 +50,10 @@ public class drive extends CommandBase implements Constants {
     } else {
       maxSpeed = 0.6;
     }
-    SmartDashboard.putNumber("maxSpeed", maxSpeed); 
-
     swerveWheelController.drive(ChassisSpeeds
           .fromFieldRelativeSpeeds(
-            oi.getLeftY() * maxAttainableSpeed/2 * maxSpeed,
-            oi.getLeftX() * maxAttainableSpeed/2 * maxSpeed,
+            oi.getLeftY() * maxAttainableSpeed * maxSpeed,
+            oi.getLeftX() * maxAttainableSpeed * maxSpeed,
             -oi.getRightX() * 5,
             Rotation2d.fromDegrees(Gyro.getHeading())));
   }
