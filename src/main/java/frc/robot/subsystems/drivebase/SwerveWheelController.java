@@ -27,6 +27,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -47,10 +49,20 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
 
   private static Pose2d robotPose;
 
-  private static AHRS ahrs;
+  // private static AHRS ahrs;
 
   // private Gyro gyro = new Gyro();
 
+  ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+
+  private GenericEntry xCoord = tab.add("X", 0).withSize(2, 3).getEntry();
+  private GenericEntry yCoord = tab.add("Y", 0).withSize(2, 3).getEntry();
+  private GenericEntry rotationHeading = tab.add("Rotation Heading", 0).withSize(2, 3).getEntry();
+
+  private GenericEntry xSpeed = tab.add("X Speed", 0).withSize(2, 3).getEntry();
+  private GenericEntry ySpeed = tab.add("Y Speed", 0).withSize(2, 3).getEntry();
+  private GenericEntry rotationSpeed = tab.add("Rotation Speed", 0).withSize(2, 3).getEntry();
+    
   private static SwerveModule frontLeftModule;
   private static SwerveModule frontRightModule;
   private static SwerveModule backLeftModule;
@@ -84,8 +96,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     Gyro.gyro().reset();
 
 
-    ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
-
+    
     // Location of modules relative to the centre of the robot
       
     frontLeftModule = new MkSwerveModuleBuilder()
@@ -102,7 +113,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     frontRightModule = new MkSwerveModuleBuilder()
     .withLayout(tab.getLayout("Front Right Module", BuiltInLayouts.kList)
             .withSize(5, 6)
-            .withPosition(0, 0))
+            .withPosition(5, 0))
     .withGearRatio(SdsModuleConfigurations.MK4_L3)
     .withDriveMotor(MotorType.FALCON, frontRightDriveID)
     .withSteerMotor(MotorType.FALCON, frontRightSteerID)
@@ -113,7 +124,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     backLeftModule = new MkSwerveModuleBuilder()
     .withLayout(tab.getLayout("Back Left Module", BuiltInLayouts.kList)
             .withSize(5, 7)
-            .withPosition(0, 0))
+            .withPosition(10, 0))
     .withGearRatio(SdsModuleConfigurations.MK4_L3)
     .withDriveMotor(MotorType.FALCON, backLeftDriveID)
     .withSteerMotor(MotorType.FALCON, backLeftSteerID)
@@ -124,15 +135,13 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
     backRightModule = new MkSwerveModuleBuilder()
     .withLayout(tab.getLayout("Back Right Module", BuiltInLayouts.kList)
             .withSize(5, 6)
-            .withPosition(0, 0))
+            .withPosition(15, 0))
     .withGearRatio(SdsModuleConfigurations.MK4_L3)
     .withDriveMotor(MotorType.FALCON, backRightDriveID)
     .withSteerMotor(MotorType.FALCON, backRightSteerID)
     .withSteerEncoderPort(backRightEncoderID)
     .withSteerOffset(backRightEncoderOffset)
-    .build();
-
-    
+    .build();    
 
     m_desiredStates = kDriveKinematics.toSwerveModuleStates(speeds);
 
@@ -203,15 +212,14 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
 
     setState(m_desiredStates);
     
-    Shuffleboard.selectTab("Drivetrain");
-    SmartDashboard.putNumber("X Point", odometry.getPoseMeters().getX());
-    SmartDashboard.putNumber("Y Point", odometry.getPoseMeters().getY());
-    SmartDashboard.putNumber("Rotation Heading", odometry.getPoseMeters().getRotation().getDegrees());
-    SmartDashboard.putNumber("X Speed", chassisSpeeds.vxMetersPerSecond);
-    SmartDashboard.putNumber("Y Speed", chassisSpeeds.vyMetersPerSecond);
-    SmartDashboard.putNumber("Angular Speed", chassisSpeeds.omegaRadiansPerSecond);
-    SmartDashboard.putBoolean("Field Centric", fieldCentric);
-    SmartDashboard.putBoolean("is Coast Mode", coast);
+    xCoord.setDouble(odometry.getPoseMeters().getX());
+    yCoord.setDouble(odometry.getPoseMeters().getY());
+    rotationHeading.setDouble(odometry.getPoseMeters().getRotation().getDegrees());
+
+    xSpeed.setDouble(chassisSpeeds.vxMetersPerSecond);
+    ySpeed.setDouble(chassisSpeeds.vyMetersPerSecond);
+    rotationSpeed.setDouble(chassisSpeeds.omegaRadiansPerSecond);
+
     // This method will be called once per scheduler run
   }
 }
