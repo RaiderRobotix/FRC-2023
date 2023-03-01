@@ -19,7 +19,7 @@ public class Gyro extends SubsystemBase {
   public static AHRS ahrs;
 
   public Gyro() {
-    Gyro.ahrs = new AHRS(Port.kMXP);
+    Gyro.ahrs = new AHRS(Port.kUSB);
 
     new Thread(() -> {
       try {
