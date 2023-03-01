@@ -8,6 +8,8 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
+import org.opencv.core.Mat;
+
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
@@ -23,6 +25,7 @@ import com.ctre.phoenix.sensors.WPI_CANCoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -31,6 +34,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.Conversions;
 import frc.robot.commands.drive;
 
 public class SwerveWheel extends SubsystemBase implements Constants {
@@ -70,15 +74,8 @@ public class SwerveWheel extends SubsystemBase implements Constants {
     this.driveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 10, 15, 0.5));
     this.steerMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 20, 25, 1.0));
     this.steerMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 10, 15, 0.5));
-    // this.encoder.configAbsoluteSensorRange(range);
 
-    TalonFXConfiguration configuration = new TalonFXConfiguration();
-
-    // configuration.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
-    // this.driveMotor.configAllSettings(configuration);
-    // this.steerMotor.configAllSettings(configuration);
-
-    angleController.enableContinuousInput(0, 360);
+    angleController.enableContinuousInput(-Math.PI, Math.PI);
 
     if (encoder.getDeviceID() == 1) {
       encoder.configMagnetOffset(frontRightEncoderOffset);
@@ -117,6 +114,15 @@ public class SwerveWheel extends SubsystemBase implements Constants {
     return this.name;
   }
 
+  public SwerveModulePosition getPosition(){
+    return new SwerveModulePosition(getDrivePosition(), getSteerAngle());
+  }
+
+  public void set(double percentage, double radians){
+    setSteerAngle(radians);
+    setDriveSpeed(percentage);
+  }
+
   public void setDesiredState(SwerveModuleState state) {
     if (Math.abs(state.speedMetersPerSecond) < 0.001) {
       stop();
@@ -149,10 +155,11 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   }
 
   public double getDriveSpeed() {
-    return driveMotor.getSelectedSensorVelocity(0) / kUnitsPerRevoltion; //RPM
+    return Conversions.falconToMPS(driveMotor.getSelectedSensorVelocity(), kWheelDiameter, kGearRatio);
+  }
 
-    // return (kMaxRPM / 600) * (driveMotor.getSelectedSensorVelocity() /
-    // kGearRatio);
+  public double getDrivePosition(){
+    return Conversions.falconToMeters(driveMotor.getSelectedSensorPosition(), kWheelDiameter, kGearRatio);
   }
 
   public Rotation2d getSteerAngle() {
@@ -161,14 +168,13 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   }
 
   public void setDriveSpeed(double speed) {
-    this.driveMotor.set(driveController.calculate(getDriveSpeed(), speed));
-    // this.driveMotor.set(speed);
+    // this.driveMotor.set(driveController.calculate(getDriveSpeed(), speed));
+    this.driveMotor.set(speed);
   }
 
-  public void setSteerAngle(double angle) {
-    desiredAngleTableEntry.setDouble(Double.parseDouble(df.format(angle)));
-    steerMotor.set(angleController.calculate(getSteerAngle().getDegrees(), angle));
-    // steerMotor.set(angle);
+  public void setSteerAngle(double radians) {
+    desiredAngleTableEntry.setDouble(Double.parseDouble(df.format(radians)));
+    steerMotor.set(angleController.calculate(getSteerAngle().getDegrees(), radians));
   }
 
   @Override

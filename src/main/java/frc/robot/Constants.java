@@ -53,7 +53,7 @@ public interface Constants {
 
     // Falcon 500 constants
     public final int kUnitsPerRevoltion = 2048;
-    public final double kGearRatio = 6.12;
+    public final double kGearRatio = 1/6.12;
     public final int kMaxRPM = 6380;
     public final double kWheelDiameter = Units.inchesToMeters(4);
 
