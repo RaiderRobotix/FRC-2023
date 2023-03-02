@@ -174,8 +174,10 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   }
 
   public void setSteerAngle(double radians) {
-    desiredAngleTableEntry.setDouble(Double.parseDouble(df.format(radians)));
-    steerMotor.set(angleController.calculate(getSteerAngle().getDegrees(), radians));
+    // desiredAngleTableEntry.setDouble(Double.parseDouble(df.format(radians)));
+    // steerMotor.set(angleController.calculate(getSteerAngle().getDegrees(), radians));
+    // desiredAngleTableEntry.setDouble(Double.parseDouble(df.format(radians)));
+    steerMotor.set(angleController.calculate(getSteerAngle().getRadians(), radians));
   }
 
   @Override

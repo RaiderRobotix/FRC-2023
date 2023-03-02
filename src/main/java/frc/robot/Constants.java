@@ -177,7 +177,7 @@ public interface Constants {
     
     //PID values for motors
     //PID values for steering angle
-    public final double angleKp = 0.00900; // Speed Default 0.01120
+    public final double angleKp = 0.100; // Speed Default 0.01120
     public final double angleKi = 0.0; // Amount to react Default 0.00001
     public final double angleKd = 0.0; // Dampens system Default 0.00023
 
@@ -224,20 +224,20 @@ public interface Constants {
     public final int frontLeftDriveID = 20;
     public final int frontLeftSteerID = 10;
     public final int frontLeftEncoderID = 0;
-    public final double frontLeftEncoderOffset = -3;
+    public final double frontLeftEncoderOffset = 181.51;
 
     public final int frontRightDriveID = 21;
     public final int frontRightSteerID = 11;
     public final int frontRightEncoderID = 1;
-    public final double frontRightEncoderOffset = 90-12;
+    public final double frontRightEncoderOffset = -77.96;
 
     public final int backLeftDriveID = 22;
     public final int backLeftSteerID = 12;
     public final int backLeftEncoderID = 2;
-    public final double backLeftEncoderOffset = 11;
+    public final double backLeftEncoderOffset = 191.51 - 23.03;
 
     public final int backRightDriveID = 23;
     public final int backRightSteerID = 13;
     public final int backRightEncoderID = 3;
-    public final double backRightEncoderOffset = 17.7;
+    public final double backRightEncoderOffset = 202.59 - 45.18;
 }
