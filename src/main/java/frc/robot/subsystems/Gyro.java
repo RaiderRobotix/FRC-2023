@@ -34,7 +34,8 @@ public class Gyro extends SubsystemBase {
       return ahrs;
     } catch (Exception e) {
       System.out.println("Gyro null");
-      return new AHRS();
+      ahrs = new AHRS(Port.kMXP);
+      return ahrs;
     }
   }  
 
