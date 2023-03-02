@@ -82,7 +82,7 @@ public class RobotContainer implements Constants {
     //   .whileTrue(new drive(m_controller, m_operatorInterface, turboSpeed));
 
     new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kY.value)
-      .onTrue(new InstantCommand(() -> Gyro.gyro()));
+      .onTrue(new InstantCommand(() -> Gyro.resetGyro()));
     // new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kA.value)
     //   .and(new Trigger(m_operatorInterface::isPOV))
     //   .whileTrue(new StartEndCommand(

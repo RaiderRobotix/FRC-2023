@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems.drivebase;
 
-import com.ctre.phoenix.sensors.CANCoder;
-import com.kauailabs.navx.frc.AHRS;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -88,7 +86,7 @@ public class SwerveWheelController extends SubsystemBase implements Constants {
             new SwerveModulePosition[]{ frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition() },
             new Pose2d(odometry.getPoseMeters().getTranslation(), Rotation2d.fromDegrees(0.0))
     );
-    Gyro.gyro().reset();
+    Gyro.resetGyro();
   }
 
   public Rotation2d getRotation2d(){

@@ -52,6 +52,10 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   private DecimalFormat df = new DecimalFormat("###.##", new DecimalFormatSymbols(Locale.US));
   
   private ShuffleboardTab drivebase = Shuffleboard.getTab("driveBase");
+
+  private GenericEntry steerAngleTableEntry;
+  private GenericEntry driveSpeedTableEntry;
+  private GenericEntry desiredAngleTableEntry;
   
   
   public SwerveWheel(
@@ -72,12 +76,15 @@ public class SwerveWheel extends SubsystemBase implements Constants {
       this.steerMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 20, 25, 1.0));
       this.steerMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 10, 15, 0.5));
       
-      // private GenericEntry steerAngleTableEntry = drivebase.add(this.name + "Steer Angle", 0).getEntry();
-      // private GenericEntry driveSpeedTableEntry = drivebase.add(this.name + "Drive Speed", 0).getEntry();
-      // private GenericEntry desiredAngleTableEntry = drivebase.add(this.name + "Desired Angle", 0).getEntry();
+      steerAngleTableEntry = drivebase.add(this.name + "Steer Angle", 0).getEntry();
+      driveSpeedTableEntry = drivebase.add(this.name + "Drive Speed", 0).getEntry();
+      desiredAngleTableEntry = drivebase.add(this.name + "Desired Angle", 0).getEntry();
       
       angleController.enableContinuousInput(-Math.PI, Math.PI);
 
+    if (encoder.getDeviceID() == 0) {
+      encoder.configMagnetOffset(frontLeftEncoderOffset);
+    }
     if (encoder.getDeviceID() == 1) {
       encoder.configMagnetOffset(frontRightEncoderOffset);
     }
@@ -86,9 +93,6 @@ public class SwerveWheel extends SubsystemBase implements Constants {
     }
     if (encoder.getDeviceID() == 3) {
       encoder.configMagnetOffset(backRightEncoderOffset);
-    }
-    if (encoder.getDeviceID() == 0) {
-      encoder.configMagnetOffset(frontLeftEncoderOffset);
     }
   }
 
@@ -100,10 +104,8 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   public void setNeutralMode(boolean coast) {
     if (coast) {
       driveMotor.setNeutralMode(NeutralMode.Coast);
-      steerMotor.setNeutralMode(NeutralMode.Coast);
     } else {
       driveMotor.setNeutralMode(NeutralMode.Brake);
-      steerMotor.setNeutralMode(NeutralMode.Brake);
     }
   }
 
@@ -129,12 +131,10 @@ public class SwerveWheel extends SubsystemBase implements Constants {
       stop();
       return;
     }
+    
     state = SwerveModuleState.optimize(state, getSteerAngle());
     setDriveSpeed(state.speedMetersPerSecond);
     setSteerAngle(state.angle.getDegrees());
-
-    // System.out.println(this.name + " " + getSteerAngle().getDegrees());
-
   }
 
   public void stop() {
@@ -174,13 +174,13 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   }
 
   public void setSteerAngle(double radians) {
-    // desiredAngleTableEntry.setDouble(Double.parseDouble(df.format(radians)));
+    desiredAngleTableEntry.setDouble(Double.parseDouble(df.format(radians)));
     steerMotor.set(angleController.calculate(getSteerAngle().getDegrees(), radians));
   }
 
   @Override
   public void periodic() {
-    // steerAngleTableEntry.setDouble(Double.parseDouble(df.format(getSteerAngle().getDegrees())));
-    // driveSpeedTableEntry.setDouble(Double.parseDouble(df.format(getDriveSpeed())));
+    steerAngleTableEntry.setDouble(Double.parseDouble(df.format(getSteerAngle().getDegrees())));
+    driveSpeedTableEntry.setDouble(Double.parseDouble(df.format(getDriveSpeed())));
   }
 }
