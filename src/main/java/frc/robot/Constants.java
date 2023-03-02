@@ -13,6 +13,54 @@ import frc.lib.util.SwerveModuleConstants;
 public final class Constants {
     public static final double stickDeadband = 0.0;
 
+    public static final class Arm {
+        public static int potentiometerChannel = 1;
+        public static int talonDeviceNumber = 2;
+
+        public static double upperSafety = 0.630;
+        public static double lowerSafety = 0.100; // 0.068
+
+        public static double topRowLength      = 0.63; // actual 0.655, set under to overshoot
+        public static double middleRowLength   = 0.30; // actual 0.33,  
+        public static double floorPickupLength = 0.25;
+        public static double humanPlayerLength = 0.07; 
+
+        public static double autoSpeed = 0.5;
+        public static double manualSpeed = 0.5;
+    }
+
+    public static final class Elevator {
+        public static int potentiometerChannel = 0;
+        public static int talonDeviceNumber = 0;
+
+        public static double upperSafety = 0.36; 
+        public static double lowerSafety = 0.0555;
+
+        public static double topRowHeight      = 0.345; // was 0.35
+        public static double humanPlayerHeight = 0.318;
+        public static double middleRowHeight   = 0.30; 
+        public static double lowRowHeight      = 0.06; // actual = lower limit
+
+        public static double autoSpeed = 0.75;
+        public static double manualSpeed = 0.5;
+    }
+
+    public static final class Grabber {
+        public static int distanceSensorChannel = 9;
+        public static int hpTouchSensorChannel = 0;
+
+        public static int grabberOnChannel = 15;
+        public static int grabberOffChannel = 0;
+    }
+
+    public static final class Pneumatics {
+        public static int compressorModule = 1;
+
+        public static int popperOnChannel = 13;
+        public static int popperOffChannel = 2;
+    }
+
+
     public static final class Swerve {
         public static final int pigeonID = 1;
         public static final boolean invertGyro = true; // Always ensure Gyro is CCW+ CW-

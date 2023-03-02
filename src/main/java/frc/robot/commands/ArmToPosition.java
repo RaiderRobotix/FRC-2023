@@ -2,10 +2,9 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.UniqueConstants;
 import frc.robot.subsystems.Arm;
 
-public class armToLengthNoPID extends CommandBase implements UniqueConstants {
+public class ArmToPosition extends CommandBase {
     
     private final Arm m_arm;
 
@@ -13,7 +12,7 @@ public class armToLengthNoPID extends CommandBase implements UniqueConstants {
     private double initialPosition;
     private boolean isDone = false;
 
-    public armToLengthNoPID(Arm arm, double position)
+    public ArmToPosition(Arm arm, double position)
     {
         this.m_arm = arm;
         this.targetLength = position;
@@ -26,7 +25,7 @@ public class armToLengthNoPID extends CommandBase implements UniqueConstants {
     public void initialize() 
     {
         this.isDone = false;
-        this.initialPosition = Arm.getSensor();
+        this.initialPosition = m_arm.getPotValue();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -40,25 +39,25 @@ public class armToLengthNoPID extends CommandBase implements UniqueConstants {
   
         if (initialPosition < targetLength)
         {
-            if (Arm.getSensor() < targetLength) 
+            if (m_arm.getPotValue() < targetLength) 
             {
-                Arm.setMotor(kArmOutSpeed);
+                m_arm.extend(Constants.Arm.autoSpeed);
             } 
             else 
             {
-                Arm.setMotor(0);
+                m_arm.stop();
                 isDone = true;
             }
         } 
         else if (initialPosition > targetLength) 
         {
-            if (Arm.getSensor() > targetLength) 
+            if (m_arm.getPotValue() > targetLength) 
             {
-                Arm.setMotor(kArmInSpeed);
+                m_arm.retract(Constants.Arm.autoSpeed);
             } 
             else 
             {
-                Arm.setMotor(0);
+                m_arm.stop();
                 isDone = true;
             }
         }
@@ -67,7 +66,7 @@ public class armToLengthNoPID extends CommandBase implements UniqueConstants {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        Arm.setMotor(0);
+        m_arm.stop();
     }
 
     // Returns true when the command should end.

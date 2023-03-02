@@ -8,15 +8,11 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.armToLength;
 // import frc.robot.commands.drive;
-import frc.robot.commands.elevatorToHeight;
-import frc.robot.commands.elevatorToHeightNoPID;
 // import frc.robot.commands.pickdown;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 // import frc.robot.subsystems.Gyro;
-import frc.robot.subsystems.OperatorInterface;
 import frc.robot.subsystems.Pneumatics;
 // import frc.robot.subsystems.drivebase.SwerveWheelController;
 
@@ -34,6 +30,7 @@ import frc.robot.subsystems.*;
 public class RobotContainer implements UniqueConstants{
     /* Controllers */
     private final Joystick driver = new Joystick(0);
+    private final Joystick operator = new Joystick(1);
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -44,18 +41,29 @@ public class RobotContainer implements UniqueConstants{
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
 
-    /* Subsystems */
-    private final Swerve s_Swerve = new Swerve();
+    /* Operator Buttons */
+    private final JoystickButton elevatorUpButton = new JoystickButton(operator, 5);
+    private final JoystickButton elevatorDownButton = new JoystickButton(operator, 3);
 
-    // private final static SwerveWheelController m_controller = new SwerveWheelController();
-    private final OperatorInterface m_operatorInterface = new OperatorInterface();
-    private final Pneumatics mPneumatics = new Pneumatics(m_operatorInterface);
-    // private final Gyro m_gyro = new Gyro();
-    private final Elevator m_elevator = new Elevator();
-    private final Arm m_arm = new Arm();
-    // private final static AutonSelector autonSelector = new AutonSelector();
+    private final JoystickButton autoScoreHighButton = new JoystickButton(operator, 8);
+    private final JoystickButton autoScoreMidButton = new JoystickButton(operator, 10);
+    private final JoystickButton autoLowButton = new JoystickButton(operator, 12);
+    private final JoystickButton autoHPButton = new JoystickButton(operator, 7);
+    
+    private final JoystickButton armOutButton = new JoystickButton(operator, 9);
+    private final JoystickButton armInButton = new JoystickButton(operator, 11);
 
+    private final JoystickButton hpGrabSequenceButton = new JoystickButton(operator, 2);
+    private final JoystickButton toggleGrabberButton = new JoystickButton(operator, 1);
 
+     /* Subsystems */
+     private final Swerve s_Swerve = new Swerve();
+     private final Arm m_arm = new Arm();
+     private final Elevator m_elevator = new Elevator();
+     private final Pneumatics m_pneumatics = new Pneumatics();
+     private final Grabber m_grabber = new Grabber();
+
+  
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         s_Swerve.setDefaultCommand(
@@ -82,95 +90,57 @@ public class RobotContainer implements UniqueConstants{
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
-        // Driver Controls
-    // new Trigger(m_operatorInterface::getLeftTrigger)
-    //   .whileTrue(new drive(m_controller, m_operatorInterface, slowSpeed));
+        //resetCancoders.onTrue(new InstantCommand(() -> m_swerve.resetModulesToAbsolute()));
+        
+        /* Operator Buttons */
+        hpGrabSequenceButton.and(new Trigger(m_grabber::grabberIsOpen)).onTrue(new HPGrabCone(m_arm, m_elevator, m_grabber));
+        toggleGrabberButton.onTrue(new InstantCommand(() -> m_grabber.toggleGrabber()));
 
-    // new Trigger(m_operatorInterface::getRightTrigger)
-    //   .whileTrue(new drive(m_controller, m_operatorInterface, turboSpeed));
+        // popperButton.onTrue(new InstantCommand(() -> m_pneumatics.togglePopper()));
+        
+        armOutButton.and(new Trigger(m_arm::upperLimitHit).negate()).whileTrue(
+            new StartEndCommand(
+                () -> m_arm.extend(Constants.Arm.manualSpeed),
+                () -> m_arm.stop(),
+                m_arm)
+        );
 
-    // new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kY.value)
-    // .onTrue(new InstantCommand(() -> Gyro.resetGyro()));
-  // new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kA.value)
-  //   .and(new Trigger(m_operatorInterface::isPOV))
-  //   .whileTrue(new StartEndCommand(
-  //     () -> m_controller.drive(ChassisSpeeds.fromFieldRelativeSpeeds(Math.asin(m_operatorInterface.getXboxController().getPOV()), Math.acos(m_operatorInterface.getXboxController().getPOV()), 0, m_controller.getRotation2d())),
-  //     () -> m_controller.drive(ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, m_controller.getRotation2d()))));
-    
-  // new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kB.value)
-  //   .and(new Trigger(m_operatorInterface::isPOV)
-  //   .whileTrue(new StartEndCommand(
-  //     () -> m_controller.setSpeed(Math.cos(m_operatorInterface.getXboxController().getPOV()), Math.sin(m_operatorInterface.getXboxController().getPOV()), 0),
-  //     () -> m_controller.stopMotors(),
-  //     m_controller)));
-      
-    // Operator Controls
-  new JoystickButton(m_operatorInterface.getOperatorJoystick(), grabberJoystickButton)
-    // .and(new Trigger(Arm::isUpperRow).negate())
-    .onTrue(new InstantCommand(() -> Pneumatics.toggleGrabberSolenoid()));
+        armInButton.and(new Trigger(m_arm::lowerLimitHit).negate()).whileTrue(
+            new StartEndCommand(
+                () -> m_arm.retract(Constants.Arm.manualSpeed),
+                () -> m_arm.stop(),
+                m_arm)
+        );
 
-  // new JoystickButton(m_operatorInterface.getOperatorJoystick(), grabberJoystickButton)
-  // .onTrue(new pickdown());
+        elevatorUpButton.and(new Trigger(m_elevator::upperLimitHit).negate()).whileTrue(
+            new StartEndCommand(
+                () -> m_elevator.moveUp(Constants.Elevator.manualSpeed),
+                () -> m_elevator.stop(),
+                m_elevator)
+        );
 
-  new JoystickButton(m_operatorInterface.getOperatorJoystick(), popperJoystickButton)
-  .onTrue(new InstantCommand(() -> Pneumatics.togglePopperSolenoid()));
+        elevatorDownButton.and(new Trigger(m_elevator::lowerLimitHit).negate()).whileTrue(
+            new StartEndCommand(
+                () -> m_elevator.moveDown(Constants.Elevator.manualSpeed),
+                () -> m_elevator.stop(),
+                m_elevator)
+        );
 
-  new JoystickButton(m_operatorInterface.getOperatorJoystick(), armInJoystickButton)
-    //.and(new Trigger(Arm::getSensorLow).negate())
-    .whileTrue(new StartEndCommand(
-      () -> Arm.setMotor(-kArmInSpeed),
-      () -> Arm.setMotor(0)));
+        autoHPButton.onTrue(
+                    new ElevatorToHeight(m_elevator, Constants.Elevator.humanPlayerHeight))
+            .onTrue(new ArmToPosition(m_arm, Constants.Arm.humanPlayerLength));
 
-  new JoystickButton(m_operatorInterface.getOperatorJoystick(), armOutJoystickButton)
-    //.and(new Trigger(Arm::getSensorMax).negate())
-    .whileTrue(new StartEndCommand(
-      () -> Arm.setMotor(kArmOutSpeed),
-      () -> Arm.setMotor(0),
-      m_arm));
+        autoLowButton.onTrue(
+                    new ElevatorToHeight(m_elevator, Constants.Elevator.lowRowHeight))
+            .onTrue(new ArmToPosition(m_arm, Constants.Arm.floorPickupLength));
 
-  new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorUpJoystickButton)
-  .and(new Trigger(Elevator::getSensorMax).negate())
-  .whileTrue(new StartEndCommand(
-    () -> Elevator.setMotor(-kElevatorUpSpeed),
-    () -> Elevator.setMotor(0),
-    m_elevator));
-    
-  new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorDownJoystickButton)
-  // .and(new Trigger(Elevator::getSensorLow).negate())
-  .whileTrue(new StartEndCommand(
-    () -> Elevator.setMotor(kElevatorDownSpeed),
-    () -> Elevator.setMotor(0),
-    m_elevator));
+        autoScoreMidButton.onTrue(
+                    new ElevatorToHeight(m_elevator, Constants.Elevator.middleRowHeight))
+            .onTrue(new ArmToPosition(m_arm, Constants.Arm.middleRowLength));
 
-  new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorFloorJoystickButton)
-  .whileTrue(new armToLength(kFloorLength))
-  .whileTrue(new elevatorToHeight(kFloorHeight));
-
-  new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorMidRowJoystickButton)
-  .whileTrue(new armToLength(kMidRowLength))
-  .whileTrue(new elevatorToHeight(kMidRowHeight));
-
-  new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorUpperRowJoystickButton)
-  .whileTrue(new armToLength(kUpperRowLength))
-  .whileTrue(new elevatorToHeight(kUpperRowHeight));
-
-  new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorHumanPlayerJoystickButton)
-    .whileTrue(new armToLength(kHumanPlayerLength))
-    .whileTrue(new elevatorToHeight(kHumanPlayerHeight));
-
-
-
-
-
-  //Button for Sensor trigger
-  // new Trigger(m_operatorInterface::getDistanceSensor)
-  //   .and(new JoystickButton(m_operatorInterface.getOperatorJoystick(), autoGrabberJoystickButton))
-  //   // .debounce(kDistanceSensorDebounceTime)
-  //   .onTrue(new pickdown());
-  
-  // new Trigger(Arm::isUpperRow).negate()
-  // .onTrue(new armToLength(kHumanPlayerLength))
-  // .onTrue(new elevatorToHeight(kHumanPlayerHeight));
+        autoScoreHighButton.onTrue(
+                    new ElevatorToHeight(m_elevator, Constants.Elevator.topRowHeight))
+            .onTrue(new ArmToPosition(m_arm, Constants.Arm.topRowLength));
     }
 
     /**
