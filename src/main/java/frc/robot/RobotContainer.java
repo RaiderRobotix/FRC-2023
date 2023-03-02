@@ -55,13 +55,14 @@ public class RobotContainer implements UniqueConstants{
 
     private final JoystickButton hpGrabSequenceButton = new JoystickButton(operator, 2);
     private final JoystickButton toggleGrabberButton = new JoystickButton(operator, 1);
+    private final JoystickButton togglePopperButton = new JoystickButton(operator, 4);
 
      /* Subsystems */
      private final Swerve s_Swerve = new Swerve();
      private final Arm m_arm = new Arm();
      private final Elevator m_elevator = new Elevator();
      private final Pneumatics m_pneumatics = new Pneumatics();
-     private final Grabber m_grabber = new Grabber();
+    //  private final Grabber m_grabber = new Grabber();
 
   
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -93,10 +94,9 @@ public class RobotContainer implements UniqueConstants{
         //resetCancoders.onTrue(new InstantCommand(() -> m_swerve.resetModulesToAbsolute()));
         
         /* Operator Buttons */
-        hpGrabSequenceButton.and(new Trigger(m_grabber::grabberIsOpen)).onTrue(new HPGrabCone(m_arm, m_elevator, m_grabber));
-        toggleGrabberButton.onTrue(new InstantCommand(() -> m_grabber.toggleGrabber()));
-
-        // popperButton.onTrue(new InstantCommand(() -> m_pneumatics.togglePopper()));
+        hpGrabSequenceButton.and(new Trigger(Pneumatics::getGrabberSolenoid)).onTrue(new HPGrabCone(m_arm, m_elevator));
+        toggleGrabberButton.onTrue(new InstantCommand(() -> m_pneumatics.toggleGrabberSolenoid()));
+        togglePopperButton.onTrue(new InstantCommand(() -> m_pneumatics.togglePopperSolenoid()));
         
         armOutButton.and(new Trigger(m_arm::upperLimitHit).negate()).whileTrue(
             new StartEndCommand(

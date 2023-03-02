@@ -3,25 +3,23 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Grabber;
+import frc.robot.subsystems.Pneumatics;
+
 
 public class HPGrabCone extends CommandBase {
     
 
-    private final Grabber m_grabber;
     private final Elevator m_elevator;
     private final Arm m_arm;
 
     private boolean isDone;
 
 
-    public HPGrabCone(Arm arm, Elevator elevator, Grabber grabber)
+    public HPGrabCone(Arm arm, Elevator elevator)
     {
-        m_grabber = grabber;
         m_arm = arm;
         m_elevator = elevator;
 
-        addRequirements(m_grabber);
         addRequirements(m_arm);
         addRequirements(m_elevator);
     }
@@ -36,9 +34,9 @@ public class HPGrabCone extends CommandBase {
     @Override
     public void execute() 
     {
-        if (m_grabber.getHpTouchSensor())
+        if (Pneumatics.getHpTouchSensor())
         {
-            m_grabber.closeGrabber();
+            Pneumatics.setGrabberSolenoid(false);
             m_elevator.stop();
             isDone = true;
         }
