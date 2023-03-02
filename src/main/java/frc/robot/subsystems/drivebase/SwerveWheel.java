@@ -21,6 +21,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
+import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.controller.PIDController;
@@ -56,6 +57,10 @@ public class SwerveWheel extends SubsystemBase implements Constants {
   private GenericEntry steerAngleTableEntry;
   private GenericEntry driveSpeedTableEntry;
   private GenericEntry desiredAngleTableEntry;
+
+  public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
+      SdsModuleConfigurations.MK4_L3.getDriveReduction() *
+      SdsModuleConfigurations.MK4_L3.getWheelDiameter() * Math.PI;
   
   
   public SwerveWheel(
@@ -131,7 +136,7 @@ public class SwerveWheel extends SubsystemBase implements Constants {
       stop();
       return;
     }
-    
+
     state = SwerveModuleState.optimize(state, getSteerAngle());
     setDriveSpeed(state.speedMetersPerSecond);
     setSteerAngle(state.angle.getDegrees());
@@ -148,7 +153,7 @@ public class SwerveWheel extends SubsystemBase implements Constants {
 
   public void setDesiredAngle(SwerveModuleState state) {
     state = SwerveModuleState.optimize(state, getSteerAngle());
-    setSteerAngle(state.angle.getDegrees());
+    set(state.speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND, state.angle.getRadians());
   }
 
   public SwerveModuleState getState() {
