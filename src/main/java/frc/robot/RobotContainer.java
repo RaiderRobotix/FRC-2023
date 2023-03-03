@@ -62,7 +62,7 @@ public class RobotContainer implements UniqueConstants{
      private final Arm m_arm = new Arm();
      private final Elevator m_elevator = new Elevator();
      private final Pneumatics m_pneumatics = new Pneumatics();
-    //  private final Grabber m_grabber = new Grabber();
+     //  private final Grabber m_grabber = new Grabber();
 
   
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -150,6 +150,6 @@ public class RobotContainer implements UniqueConstants{
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return new exampleAuto(s_Swerve);
+        return new SimpleAuto(s_Swerve);
     }
 }
