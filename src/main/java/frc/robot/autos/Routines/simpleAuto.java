@@ -22,8 +22,9 @@ public class simpleAuto extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new InstantCommand(() -> Pneumatics.popPopper()),
-      new driveDistance(5, null),
-      new driveDistance(-2, null),
+      new WaitCommand(2),
+      new driveDistance(5, mSwerve),
+      new driveDistance(-2, mSwerve),
       new balance(mSwerve),
       new InstantCommand(() -> mSwerve.setAngle(90)));
   }
