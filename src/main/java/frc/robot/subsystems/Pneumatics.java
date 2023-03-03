@@ -94,6 +94,11 @@ public class Pneumatics extends SubsystemBase implements UniqueConstants {
     return popperSolenoidOn.get();
   }
 
+  public static void popPopper(){
+    setPopperSolenoid(true);
+    setPopperSolenoid(false);
+  }
+
   public static void toggleGrabberSolenoid(){
     grabberSolenoidOff.set(getGrabberSolenoid());
     grabberSolenoidOn.set(!getGrabberSolenoid());
