@@ -75,7 +75,13 @@ public class Swerve extends SubsystemBase {
         for(SwerveModule mod : mSwerveMods){
             mod.setDesiredState(desiredStates[mod.moduleNumber], false);
         }
-    }    
+    }
+    
+    public void setAngle(double desiredAngle){
+        for (SwerveModule mod : mSwerveMods){
+            mod.setAngle(new SwerveModuleState(0, new Rotation2d().fromDegrees(desiredAngle)));
+        }
+    }
 
     public Pose2d getPose() {
         return swerveOdometry.getPoseMeters();
@@ -87,6 +93,10 @@ public class Swerve extends SubsystemBase {
 
     public double getYawIEEE(){
         return Math.IEEEremainder(gyro.getYaw(), 360);
+    }
+
+    public double getPitch(){
+        return gyro.getPitch();
     }
 
     public Rotation2d getRotation2dIEEE(){
