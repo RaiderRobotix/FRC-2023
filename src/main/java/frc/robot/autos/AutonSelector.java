@@ -14,12 +14,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.UniqueConstants;
-import frc.robot.autos.Routines.bottom;
-import frc.robot.autos.Routines.middle;
+import frc.robot.Constants.Elevator;
+// import frc.robot.autos.Routines.bottom;
+// import frc.robot.autos.Routines.middle;
 import frc.robot.autos.Routines.straightLine;
 import frc.robot.autos.Routines.straightLineActions;
 import frc.robot.autos.Routines.straightLineLeft;
 import frc.robot.autos.Routines.top;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Swerve;
 
 /** Add your docs here. */
 public class AutonSelector implements UniqueConstants{
@@ -44,26 +47,26 @@ public class AutonSelector implements UniqueConstants{
         autoTab.add("autoMode", autonomousModeChooser);
     }
 
-    public AutonCommands getCommand(SwerveWheelController swerveController){
+    public AutonCommands getCommand(Swerve m_sweve, Elevator m_elevator, Arm m_arm){
         AutonomousMode mode = autonomousModeChooser.getSelected();
 
         switch (mode) {
             case testAuto:
-                return new straightLine("Straight Line", swerveController);
+                return new straightLine("Straight Line", m_sweve);
             case testAutoLeft:
-                return new straightLineLeft("Straight Line Left", swerveController);
+                return new straightLineLeft("Straight Line Left", m_sweve);
             case testAutoW90:
-                return new straightLine("Straight Line w 90", swerveController);
+                return new straightLine("Straight Line w 90", m_sweve);
             case testAutoW180:
-                return new straightLine("Straight Line w 180", swerveController);            
+                return new straightLine("Straight Line w 180", m_sweve);            
             case straightAutoActions:
-                return new straightLineActions("Straight Line with Actions", swerveController);
-            case top:
-                return new top("Top", swerveController);
-            case middle:
-                return new middle("Middle", swerveController);
-            case bottom:
-                return new bottom("Bottom", swerveController);        
+                return new straightLineActions("Straight Line with Actions", m_sweve);
+            // case top:
+            //     return new top("Top", m_sweve, m_elevator, m_arm);
+            // case middle:
+            //     return new middle("Middle", m_sweve);
+            // case bottom:
+            //     return new bottom("Bottom", m_sweve);        
             default:
                 System.out.println("ERROR: unexpected auto mode: " + mode);
                 break; 

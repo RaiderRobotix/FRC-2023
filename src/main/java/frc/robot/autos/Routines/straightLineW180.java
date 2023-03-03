@@ -2,15 +2,15 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.auto.Routines;
+package frc.robot.autos.Routines;
 
-import frc.robot.auto.AutonCommands;
-import frc.robot.subsystems.drivebase.SwerveWheelController;
+import frc.robot.autos.AutonCommands;
+import frc.robot.subsystems.Swerve;
 
 /** Add your docs here. */
 public class straightLineW180 extends AutonCommands {
-    SwerveWheelController swerveController;
-    public straightLineW180(String pathName, SwerveWheelController swerveController) {
+    Swerve swerveController;
+    public straightLineW180(String pathName, Swerve swerveController) {
         super(pathName);
         this.swerveController = swerveController;
     }
