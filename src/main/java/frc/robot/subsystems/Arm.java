@@ -69,6 +69,11 @@ public class Arm extends SubsystemBase {
     {
         return getPotValue() <= Constants.Arm.lowerSafety;
     }
+    
+    public boolean armInScoringPosition()
+    {
+        return getPotValue() >= Constants.Arm.middleRowLength;
+    }
 
     @Override
     public void periodic() {

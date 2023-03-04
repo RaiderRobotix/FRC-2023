@@ -37,7 +37,7 @@ public final class Constants {
         public static double lowerSafety = 0.05;
 
         public static double topRowHeight      = 0.36; // was 0.35
-        public static double humanPlayerHeight = 0.328;
+        public static double humanPlayerHeight = 0.34;
         public static double middleRowHeight   = 0.315; 
         public static double lowRowHeight      = 0.05; // actual = lower limit
 

@@ -36,7 +36,7 @@ public class HPGrabCone extends CommandBase {
     @Override
     public void execute() 
     {
-        if (m_grabber.getHpTouchSensor())
+        if (m_grabber.getHpTouchSensor() || !m_grabber.grabberIsOpen())
         {
             m_grabber.closeGrabber();
             m_elevator.stop();
