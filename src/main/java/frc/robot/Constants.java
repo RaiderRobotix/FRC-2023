@@ -25,7 +25,7 @@ public final class Constants {
         public static double floorPickupLength = 0.25;
         public static double humanPlayerLength = 0.07; 
 
-        public static double autoSpeed = 0.5;
+        public static double autoSpeed = 0.85;
         public static double manualSpeed = 0.5;
     }
 
@@ -38,10 +38,10 @@ public final class Constants {
 
         public static double topRowHeight      = 0.36; // was 0.35
         public static double humanPlayerHeight = 0.328;
-        public static double middleRowHeight   = 0.31; 
+        public static double middleRowHeight   = 0.315; 
         public static double lowRowHeight      = 0.05; // actual = lower limit
 
-        public static double autoSpeed = 0.90;
+        public static double autoSpeed = 1.00;
         public static double manualSpeed = 0.5;
     }
 

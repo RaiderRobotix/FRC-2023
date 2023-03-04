@@ -40,7 +40,7 @@ public class ElevatorToHeight extends CommandBase{
         {
             if(m_elevator.getPotValue() < targetHeight) 
             {
-                m_elevator.moveUp(Constants.Elevator.manualSpeed);
+                m_elevator.moveUp(Constants.Elevator.autoSpeed);
             } 
             else 
             {
