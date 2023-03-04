@@ -154,6 +154,7 @@ public class RobotContainer implements UniqueConstants{
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return new BumpSideSimpleAuto(s_Swerve, m_pneumatics, m_arm);
+        // return new BumpSideSimpleAuto(s_Swerve, m_pneumatics, m_arm);
+        return new SimpleAuto(s_Swerve, m_pneumatics);
     }
 }
