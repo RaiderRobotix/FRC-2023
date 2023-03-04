@@ -19,16 +19,16 @@ import frc.robot.subsystems.Swerve;
 public class driveDistance extends PIDCommand implements UniqueConstants {
   /** Creates a new driveDistance. */
   //Distance is measured in 
-  public driveDistance(double distance, Swerve swerveController) {
+  public driveDistance(double distance, Swerve swerveController, double inital) {
     super(
         // The controller that the command will use
         new PIDController(robotDriveDistanceKp, robotDriveDistanceKi, robotDriveDistanceKd),
         // This should return the measurement
-        () -> swerveController.getPose().getX(),
+        () -> inital,
         // This should return the setpoint (can also be a constant)
-        distance + swerveController.getPose().getX(),
+        distance + inital,
         // This uses the outputs
-        output -> swerveController.drive(new Translation2d(distance, 0), 0, true, true));
+        output -> swerveController.drive(new Translation2d(distance, 0), 0, false, true));
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(swerveController);
     getController().setTolerance(robotDistanceTolerance);

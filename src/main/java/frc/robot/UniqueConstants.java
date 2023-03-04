@@ -98,7 +98,7 @@ public interface UniqueConstants {
     public final double robotAngleTolerance = 1.5;
 
     //PID values for robot drive distance
-    public final double robotDriveDistanceKi = 0.0100;
+    public final double robotDriveDistanceKi = 0.0050;
     public final double robotDriveDistanceKp = 0.0000;
     public final double robotDriveDistanceKd = 0.0000;
     public final double robotDistanceTolerance = .1;

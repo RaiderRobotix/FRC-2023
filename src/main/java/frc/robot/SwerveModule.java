@@ -53,6 +53,10 @@ public class SwerveModule {
         setSpeed(desiredState, isOpenLoop);
     }
 
+    public void setDriveSpeed(double speed){
+        mDriveMotor.set(ControlMode.PercentOutput, speed);
+    }
+
     private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop){
         if(isOpenLoop){
             double percentOutput = desiredState.speedMetersPerSecond / Constants.Swerve.maxSpeed;
@@ -62,6 +66,13 @@ public class SwerveModule {
             double velocity = Conversions.MPSToFalcon(desiredState.speedMetersPerSecond, Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio);
             mDriveMotor.set(ControlMode.Velocity, velocity, DemandType.ArbitraryFeedForward, feedforward.calculate(desiredState.speedMetersPerSecond));
         }
+    }
+
+    public void setAngle(double desiredAngle){
+        Rotation2d angle = Rotation2d.fromDegrees(desiredAngle);
+        
+        mAngleMotor.set(ControlMode.Position, Conversions.degreesToFalcon(angle.getDegrees(), Constants.Swerve.angleGearRatio));
+        lastAngle = angle;
     }
 
     public void setAngle(SwerveModuleState desiredState){
