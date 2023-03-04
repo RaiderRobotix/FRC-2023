@@ -41,6 +41,7 @@ public class DriveAtSpeed extends CommandBase {
       m_swerve.drive(speeds, 0, false, true);
     } else {
       timer.stop();
+      m_swerve.stop();
       isDone = true;
     }
   }
@@ -48,7 +49,7 @@ public class DriveAtSpeed extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_swerve.drive(new Translation2d(0,0), 0, false, true);
+    m_swerve.stop();
   }
 
   // Returns true when the command should end.

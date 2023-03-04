@@ -123,6 +123,12 @@ public class Swerve extends SubsystemBase {
         return positions;
     }
 
+    public void stop(){
+        for(SwerveModule mod : mSwerveMods){
+            mod.setDriveSpeed(0);
+        }
+    }
+
     public void zeroGyro(){
         gyro.zeroYaw();
     }
