@@ -27,8 +27,8 @@ public class SimpleAuto extends SequentialCommandGroup {
       new InstantCommand(() -> m_swerve.zeroGyro()),
       new InstantCommand(() -> m_pneumatics.popPopper()),
       new WaitCommand(2),
-      new DriveAtSpeed(m_swerve, 0.2, 0, 2),
-      new DriveAtSpeed(m_swerve, 0.2, 0.2, 2));
+      new DriveAtSpeed(m_swerve, 0.4, 0, 2.2));
+      // new DriveAtSpeed(m_swerve, 0.2, 0.2, 2));
       // new SetRobotHeading(m_swerve, 45));
       // new driveDistance(-2, mSwerve),
       // new balance(mSwerve),
