@@ -18,7 +18,7 @@ public final class Constants {
         public static int talonDeviceNumber = 2;
 
         public static double upperSafety = 0.640;
-        public static double lowerSafety = 0.100; // 0.068
+        public static double lowerSafety = 0.07; // 0.068
 
         public static double topRowLength      = 0.63; // actual 0.655, set under to overshoot
         public static double middleRowLength   = 0.335; // actual 0.33,  

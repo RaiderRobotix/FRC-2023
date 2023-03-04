@@ -15,6 +15,7 @@ import frc.robot.subsystems.Elevator;
 // import frc.robot.subsystems.Gyro;
 import frc.robot.autos.Routines.SimpleAuto;
 import frc.robot.autos.Routines.SimpleAutoRamp;
+import frc.robot.autos.Routines.BumpSideSimpleAuto;
 import frc.robot.subsystems.Pneumatics;
 // import frc.robot.subsystems.drivebase.SwerveWheelController;
 
@@ -153,6 +154,6 @@ public class RobotContainer implements UniqueConstants{
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return new SimpleAutoRamp(s_Swerve, m_pneumatics);
+        return new BumpSideSimpleAuto(s_Swerve, m_pneumatics, m_arm);
     }
 }
