@@ -41,7 +41,7 @@ public class SwerveModule {
         /* Drive Motor Config */
         mDriveMotor = new TalonFX(moduleConstants.driveMotorID);
         configDriveMotor();
-        mDriveMotor.setNeutralMode(NeutralMode.Coast);
+        mDriveMotor.setNeutralMode(NeutralMode.Brake);
 
         lastAngle = getState().angle;
     }

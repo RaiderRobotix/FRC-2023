@@ -24,33 +24,6 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public interface UniqueConstants {
-
-    // Driver constants
-    public final int xboxControllerPort = 0;
-
-    // Operator Constants
-    public final int operatorStickPort = 1;
-    public final int grabberJoystickButton = 1;
-    public final int autoGrabberJoystickButton = 2;
-    public final int popperJoystickButton = 4;
-
-    public final int armInJoystickButton = 11;
-    public final int armOutJoystickButton = 9;
-
-    public final int elevatorUpJoystickButton = 5;
-    public final int elevatorDownJoystickButton = 3;
-    public final int elevatorFloorJoystickButton = 12;
-    public final int elevatorMidRowJoystickButton = 10;
-    public final int elevatorUpperRowJoystickButton = 8;
-    public final int elevatorHumanPlayerJoystickButton = 7;
-
-    //Distance Sensor Constants
-    public final int kGrabberDistanceSensorDIO = 9;
-
-    //Time between the sensor allowing to trigger the grabber
-    //in seconds
-    public final double kDistanceSensorDebounceTime = 1;
-
     // Falcon 500 constants
     public final int kUnitsPerRevoltion = 2048;
     public final double kGearRatio = 6.12;
@@ -104,75 +77,6 @@ public interface UniqueConstants {
     public final double kPhysicalDriveMaxSpeed = 0.005;
     public final double kMaxAccelerationMetersPerSecondSquared = 0.01;
 
-    //Pneumatics Constansts
-    public final double maxPSI = 80.0;
-    public final double minPSI = 0.0;
-
-    // Solenoid Channel Values
-
-    //Channels for solenoid that grabs the game pieces
-    public final int grabberSolenoidOnChannel = 15;
-    public final int grabberSolenoidOffChannel = 0;
-
-    //Channels for solenoids that pop game piece in auton
-    public final int popperSolenoidOnChannel = 13;
-    public final int popperSolenoidOffChannel = 2;
-
-    //Elevator Variables
-    public final int kElevatorPotentiometer = 0;
-    public final int kElevatorTalonFX = 0;
-    public final double kElevatorDistancePerRotation = 2048;
-    public final double kEleveatorGearRatio = 75;
-
-
-    //Speeds for Operator Controller
-    public final double kElevatorUpSpeed = 0.6;
-    public final double kElevatorDownSpeed = 0.4;
-    
-    //Speeds for auto
-    public final double kAutoElevatorSpeedUp = 0.5;
-    public final double kAutoElevatorSpeedDown = 0.5;
-
-    //Present Height Values for rows
-    public final double kUpperRowHeight = 0.345;
-    public final double kHumanPlayerHeight = 0.318;
-    public final double kMidRowHeight = 0.30;
-    public final double kFloorHeight = 0.06;
-    public final double kElevatorMaxHeight = 0.36;
-    public final double kElevatorMinHeight = 0.05;
-    //PID values for elevator
-    public final double elevatorKp =  5.000;
-    public final double elevatorKi =  0.000;
-    public final double elevatorKd =  0.000;
-
-
-    //Arm Variables
-    public final int kArmPotentiometer = 1;
-    public final int kArmTalonFX = 2;
-    public final double kArmDistancePerRotation = 2048;
-    public final double kArmGearRatio = 15;
-
-    //Arm Length Values
-    public final double kUpperRowLength = 0.60;
-    public final double kMidRowLength = 0.0;
-    public final double kHumanPlayerLength = -0.0;
-    public final double kFloorLength = 0.0;
-    public final double kArmMaxLength = 0.60;
-    public final double kArmMinLength = 0.07;    
-
-    //Speeds for Operator Arm
-    public final double kArmInSpeed = 0.5;
-    public final double kArmOutSpeed = 0.5;
-    public final double kAutoArmSpeedIn = 0.5;
-    public final double kAutoArmSpeedOut = 0.5;
-    
-     //PID values for Arm
-     public final double armKp = 0.775;
-     public final double armKi = 0.0000;
-     public final double armKd = 0.0000;
-
-
-
     //PID values
     
     //PID values for motors
@@ -194,7 +98,7 @@ public interface UniqueConstants {
     public final double robotAngleTolerance = 1.5;
 
     //PID values for robot drive distance
-    public final double robotDriveDistanceKi = 0.2000;
+    public final double robotDriveDistanceKi = 0.0100;
     public final double robotDriveDistanceKp = 0.0000;
     public final double robotDriveDistanceKd = 0.0000;
     public final double robotDistanceTolerance = .1;

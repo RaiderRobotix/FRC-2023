@@ -36,12 +36,12 @@ public final class Constants {
         public static double upperSafety = 0.36; 
         public static double lowerSafety = 0.0555;
 
-        public static double topRowHeight      = 0.345; // was 0.35
-        public static double humanPlayerHeight = 0.318;
-        public static double middleRowHeight   = 0.30; 
-        public static double lowRowHeight      = 0.06; // actual = lower limit
+        public static double topRowHeight      = 0.36; // was 0.35
+        public static double humanPlayerHeight = 0.328;
+        public static double middleRowHeight   = 0.31; 
+        public static double lowRowHeight      = 0.16; // actual = lower limit
 
-        public static double autoSpeed = 0.75;
+        public static double autoSpeed = 0.90;
         public static double manualSpeed = 0.5;
     }
 

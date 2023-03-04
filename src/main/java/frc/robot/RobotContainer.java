@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 // import frc.robot.subsystems.Gyro;
+import frc.robot.autos.Routines.SimpleAuto;
 import frc.robot.subsystems.Pneumatics;
 // import frc.robot.subsystems.drivebase.SwerveWheelController;
 
@@ -62,7 +63,7 @@ public class RobotContainer implements UniqueConstants{
      private final Arm m_arm = new Arm();
      private final Elevator m_elevator = new Elevator();
      private final Pneumatics m_pneumatics = new Pneumatics();
-     //  private final Grabber m_grabber = new Grabber();
+     private final Grabber m_grabber = new Grabber();
 
   
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -94,9 +95,10 @@ public class RobotContainer implements UniqueConstants{
         //resetCancoders.onTrue(new InstantCommand(() -> m_swerve.resetModulesToAbsolute()));
         
         /* Operator Buttons */
-        hpGrabSequenceButton.and(new Trigger(Pneumatics::getGrabberSolenoid)).onTrue(new HPGrabCone(m_arm, m_elevator));
-        toggleGrabberButton.onTrue(new InstantCommand(() -> m_pneumatics.toggleGrabberSolenoid()));
-        togglePopperButton.onTrue(new InstantCommand(() -> m_pneumatics.togglePopperSolenoid()));
+        hpGrabSequenceButton.and(new Trigger(m_grabber::grabberIsOpen)).onTrue(new HPGrabCone(m_arm, m_elevator, m_grabber));
+        // hpGrabSequenceButton.onTrue(new InstantCommand(() -> m_grabber.openGrabber()));
+        toggleGrabberButton.onTrue(new InstantCommand(() -> m_grabber.toggleGrabber()));
+        togglePopperButton.onTrue(new InstantCommand(() -> m_pneumatics.togglePopper()));
         
         armOutButton.and(new Trigger(m_arm::upperLimitHit).negate()).whileTrue(
             new StartEndCommand(
@@ -150,6 +152,6 @@ public class RobotContainer implements UniqueConstants{
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return new SimpleAuto(s_Swerve);
+        return new SimpleAuto(s_Swerve, m_pneumatics);
     }
 }
