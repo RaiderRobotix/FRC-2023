@@ -17,11 +17,11 @@ public final class Constants {
         public static int potentiometerChannel = 1;
         public static int talonDeviceNumber = 2;
 
-        public static double upperSafety = 0.630;
+        public static double upperSafety = 0.640;
         public static double lowerSafety = 0.100; // 0.068
 
         public static double topRowLength      = 0.63; // actual 0.655, set under to overshoot
-        public static double middleRowLength   = 0.30; // actual 0.33,  
+        public static double middleRowLength   = 0.335; // actual 0.33,  
         public static double floorPickupLength = 0.25;
         public static double humanPlayerLength = 0.07; 
 
@@ -34,12 +34,12 @@ public final class Constants {
         public static int talonDeviceNumber = 0;
 
         public static double upperSafety = 0.36; 
-        public static double lowerSafety = 0.0555;
+        public static double lowerSafety = 0.05;
 
         public static double topRowHeight      = 0.36; // was 0.35
         public static double humanPlayerHeight = 0.328;
         public static double middleRowHeight   = 0.31; 
-        public static double lowRowHeight      = 0.16; // actual = lower limit
+        public static double lowRowHeight      = 0.05; // actual = lower limit
 
         public static double autoSpeed = 0.90;
         public static double manualSpeed = 0.5;

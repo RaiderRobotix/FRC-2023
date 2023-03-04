@@ -96,7 +96,6 @@ public class RobotContainer implements UniqueConstants{
         
         /* Operator Buttons */
         hpGrabSequenceButton.and(new Trigger(m_grabber::grabberIsOpen)).onTrue(new HPGrabCone(m_arm, m_elevator, m_grabber));
-        // hpGrabSequenceButton.onTrue(new InstantCommand(() -> m_grabber.openGrabber()));
         toggleGrabberButton.onTrue(new InstantCommand(() -> m_grabber.toggleGrabber()));
         togglePopperButton.onTrue(new InstantCommand(() -> m_pneumatics.togglePopper()));
         

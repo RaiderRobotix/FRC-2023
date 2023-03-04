@@ -14,7 +14,7 @@ public class Pneumatics extends SubsystemBase {
     private Solenoid popperSolenoidOn;
     private Solenoid popperSolenoidOff;
 
-    private boolean popperIsPopped = false;
+    private boolean popperIsPopped;
 
     public Pneumatics() {
         compressor = new Compressor(Constants.Pneumatics.compressorModule, PneumaticsModuleType.REVPH);
@@ -22,6 +22,7 @@ public class Pneumatics extends SubsystemBase {
 
         popperSolenoidOn = new Solenoid(PneumaticsModuleType.REVPH, Constants.Pneumatics.popperOnChannel);
         popperSolenoidOff = new Solenoid(PneumaticsModuleType.REVPH, Constants.Pneumatics.popperOffChannel);
+        retractPopper();
     }
 
     public double getPressure()
@@ -36,28 +37,26 @@ public class Pneumatics extends SubsystemBase {
 
     public void popPopper()
     {
-        // TODO: Check values
-        popperSolenoidOff.set(false);
-        popperSolenoidOn.set(true);
+        popperSolenoidOff.set(true);
+        popperSolenoidOn.set(false);
 
         popperIsPopped = true;
     }
 
     public void retractPopper()
     {
-        // TODO: Check values
-        popperSolenoidOff.set(true);
-        popperSolenoidOn.set(false);
+        popperSolenoidOff.set(false);
+        popperSolenoidOn.set(true);
 
         popperIsPopped = false;
     }
 
     public void togglePopper() 
     {
-        if (popperIsPopped) {
-            retractPopper();
-        } else {
+        if (!popperIsPopped) {
             popPopper();
+        } else {
+            retractPopper();
         }
     }
 
