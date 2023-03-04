@@ -33,7 +33,7 @@ public final class Constants {
         public static int potentiometerChannel = 0;
         public static int talonDeviceNumber = 0;
 
-        public static double upperSafety = 0.36; 
+        public static double upperSafety = 0.38; 
         public static double lowerSafety = 0.05;
 
         public static double topRowHeight      = 0.36; // was 0.35

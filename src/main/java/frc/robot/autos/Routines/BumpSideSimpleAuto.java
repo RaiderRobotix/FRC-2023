@@ -32,7 +32,7 @@ public class BumpSideSimpleAuto extends SequentialCommandGroup {
       new InstantCommand(() -> m_swerve.zeroGyro()),
       new InstantCommand(() -> m_pneumatics.popPopper()),
       new WaitCommand(2),
-      new DriveAtSpeed(m_swerve, 0.4, 0, 2.3),
+      new DriveAtSpeed(m_swerve, 0.4, 0, 2.55),
       new ArmToPosition(m_arm, Constants.Arm.floorPickupLength));
   }
 }

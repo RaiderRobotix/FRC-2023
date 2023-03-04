@@ -17,6 +17,8 @@ import frc.robot.autos.Routines.SimpleAuto;
 import frc.robot.autos.Routines.SimpleAutoRamp;
 import frc.robot.autos.Routines.BumpSideSimpleAuto;
 import frc.robot.subsystems.Pneumatics;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+
 // import frc.robot.subsystems.drivebase.SwerveWheelController;
 
 
@@ -66,8 +68,9 @@ public class RobotContainer implements UniqueConstants{
      private final Elevator m_elevator = new Elevator();
      private final Pneumatics m_pneumatics = new Pneumatics();
      private final Grabber m_grabber = new Grabber();
-
-  
+     private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+     private final BumpSideSimpleAuto leftAuto = new BumpSideSimpleAuto(s_Swerve, m_pneumatics, m_arm);
+     private final SimpleAutoRamp middleAutoRamp = new SimpleAutoRamp(s_Swerve, m_pneumatics);
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         s_Swerve.setDefaultCommand(
@@ -83,6 +86,7 @@ public class RobotContainer implements UniqueConstants{
 
         // Configure the button bindings
         configureButtonBindings();
+        
     }
 
     /**
@@ -154,7 +158,7 @@ public class RobotContainer implements UniqueConstants{
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        // return new BumpSideSimpleAuto(s_Swerve, m_pneumatics, m_arm);
-        return new SimpleAuto(s_Swerve, m_pneumatics);
+        return new BumpSideSimpleAuto(s_Swerve, m_pneumatics, m_arm);
+        // return new SimpleAutoRamp(s_Swerve, m_pneumatics);
     }
 }
