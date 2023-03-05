@@ -68,9 +68,7 @@ public class RobotContainer implements UniqueConstants{
      private final Elevator m_elevator = new Elevator();
      private final Pneumatics m_pneumatics = new Pneumatics();
      private final Grabber m_grabber = new Grabber();
-     private final SendableChooser<Command> m_chooser = new SendableChooser<>();
-     private final BumpSideSimpleAuto leftAuto = new BumpSideSimpleAuto(s_Swerve, m_pneumatics, m_arm);
-     private final SimpleAutoRamp middleAutoRamp = new SimpleAutoRamp(s_Swerve, m_pneumatics);
+     private final AutonSelector m_autoSelector = new AutonSelector();
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         s_Swerve.setDefaultCommand(
@@ -158,7 +156,8 @@ public class RobotContainer implements UniqueConstants{
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return new BumpSideSimpleAuto(s_Swerve, m_pneumatics, m_arm);
+        return m_autoSelector.getCommand(s_Swerve, m_elevator, m_arm, m_pneumatics);
+        // return new BumpSideSimpleAuto(s_Swerve, m_pneumatics, m_arm);
         // return new SimpleAutoRamp(s_Swerve, m_pneumatics);
     }
 }
