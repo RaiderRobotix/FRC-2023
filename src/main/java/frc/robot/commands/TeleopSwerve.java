@@ -47,7 +47,7 @@ public class TeleopSwerve extends CommandBase {
         }
         double translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.stickDeadband) * maxSpeed;
         double strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.stickDeadband) * maxSpeed;
-        double rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband) * 4*maxSpeed;
+        double rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband) * 2.5*maxSpeed;
 
         /* Drive */
         s_Swerve.drive(
