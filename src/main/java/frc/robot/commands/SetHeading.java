@@ -6,34 +6,31 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import frc.robot.Constants;
 import frc.robot.PIDConstants;
 import frc.robot.subsystems.Swerve;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-
-//Command balances robot on charging pad automatically
-
-public class balance extends PIDCommand {
-  /** Creates a new balance. */
-  public balance(Swerve mSwerve) {
+public class SetHeading extends PIDCommand {
+  /** Creates a new SetHeading. */
+  public SetHeading(Swerve m_swerve, double desiredHeading) {
     super(
         // The controller that the command will use
-        new PIDController(PIDConstants.balanceCommand.kp, PIDConstants.balanceCommand.ki, PIDConstants.balanceCommand.kd),
+        new PIDController(PIDConstants.robotAngle.kp, PIDConstants.robotAngle.ki, PIDConstants.robotAngle.kp),
         // This should return the measurement
-        () -> mSwerve.getPitch(),
+        () -> m_swerve.getYaw().getDegrees(),
         // This should return the setpoint (can also be a constant)
-        () -> 0,
+        () -> desiredHeading,
         // This uses the output
-        output -> mSwerve.drive(new Translation2d(output, 0), 0, true, true));
+        output -> {
+          m_swerve.drive(new Translation2d(0,0), output, false, true);
+        });
+    addRequirements(m_swerve);
+    getController().setTolerance(PIDConstants.robotAngle.tolerance);
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
-    getController().setTolerance(PIDConstants.balanceCommand.tolerance);
   }
 
   // Returns true when the command should end.
