@@ -1,43 +1,60 @@
-// // Copyright (c) FIRST and other WPILib contributors.
-// // Open Source Software; you can modify and/or share it under the terms of
-// // the WPILib BSD license file in the root directory of this project.
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
 
-// package frc.robot.commands;
+package frc.robot.commands;
 
-// import edu.wpi.first.math.controller.PIDController;
-// import edu.wpi.first.math.geometry.Translation2d;
-// import edu.wpi.first.math.kinematics.ChassisSpeeds;
-// import edu.wpi.first.wpilibj2.command.PIDCommand;
-// import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-// import frc.robot.Constants;
-// import frc.robot.UniqueConstants;
-// import frc.robot.subsystems.Swerve;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.PIDConstants;
+import frc.robot.subsystems.Swerve;
 
-// // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// // information, see:
-// // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-// public class driveDistance extends PIDCommand implements UniqueConstants {
-//   /** Creates a new driveDistance. */
-//   //Distance is measured in 
-//   public driveDistance(double distance, Swerve swerveController, double inital) {
-//     super(
-//         // The controller that the command will use
-//         new PIDController(robotDriveDistanceKp, robotDriveDistanceKi, robotDriveDistanceKd),
-//         // This should return the measurement
-//         () -> inital,
-//         // This should return the setpoint (can also be a constant)
-//         distance + inital,
-//         // This uses the outputs
-//         output -> swerveController.drive(new Translation2d(distance, 0), 0, false, true));
-//     // Use addRequirements() here to declare subsystem dependencies.
-//     addRequirements(swerveController);
-//     getController().setTolerance(robotDistanceTolerance);
-//     // Configure additional PID options by calling `getController` here.
-//   }
+public class driveDistance extends CommandBase {
+  /** Creates a new driveDistance. */
+  Swerve m_swerve;
+  double distance;
+  Pose2d initalPose;
+  boolean isDone;
 
-//   // Returns true when the command should end.
-//   @Override
-//   public boolean isFinished() {
-//     return getController().atSetpoint();
-//   }
-// } 
+  PIDController driveController;
+
+  public driveDistance(Swerve m_swerve, double distance) {
+    this.m_swerve = m_swerve;
+    this.distance = distance;
+
+    driveController = new PIDController(PIDConstants.robotDriveDistance.kp, PIDConstants.robotDriveDistance.ki, PIDConstants.robotDriveDistance.kd);
+    driveController.setTolerance(PIDConstants.robotDriveDistance.tolerance);
+    addRequirements(m_swerve);
+    // Use addRequirements() here to declare subsystem dependencies.
+  }
+
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+    initalPose = m_swerve.getPose();
+    isDone = false;
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+    if(driveController.atSetpoint()){
+      isDone = true;
+    } else {
+      double output = driveController.calculate(m_swerve.getPose().getX(), initalPose.getX() + distance);
+      m_swerve.drive(new Translation2d(output, 0), 0, false, true);
+    }
+  }
+
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {}
+
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    return isDone;
+  }
+}

@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.balance;
-import frc.robot.commands.driveDistance;
 import frc.robot.commands.DriveAtSpeed;
 import frc.robot.commands.ArmToPosition;
 import frc.robot.commands.ElevatorToHeight;

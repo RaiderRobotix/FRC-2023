@@ -11,6 +11,8 @@ public class ElevatorToHeight extends CommandBase{
     private double initialHeight;
     private boolean isDone = false;
 
+    //TODO
+
     public ElevatorToHeight(Elevator elevator, double height)
     {
         this.m_elevator = elevator;
