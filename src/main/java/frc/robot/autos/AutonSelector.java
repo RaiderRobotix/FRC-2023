@@ -23,20 +23,21 @@ import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.Swerve;
 
 /** Add your docs here. */
-public class AutonSelector {
-    private SendableChooser<AutonomousMode> autonomousModeChooser;
-    private Pose2d startingPose;
+public class AutonSelector{
     public AutonSelector(){
+    }
+
+    private static SendableChooser<AutonomousMode> autonomousModeChooser;
+    private static Pose2d startingPose;
+    static {
         ShuffleboardTab autoTab = Shuffleboard.getTab("Auto settings");
 
         autonomousModeChooser = new SendableChooser<>();
-        autonomousModeChooser.setDefaultOption("Simple Middle Ramp", AutonomousMode.middle);
-        autonomousModeChooser.addOption("Bump Side Straight", AutonomousMode.simpleStraight);
-        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
+        autonomousModeChooser.setDefaultOption("Test Straight Line", AutonomousMode.middle);
+        autonomousModeChooser.addOption("Test Straight Line Left", AutonomousMode.simpleStraight);
 
         autoTab.add("autoMode", autonomousModeChooser);
     }
-
 
     public Command getCommand(Swerve m_sweve, frc.robot.subsystems.Elevator m_elevator, Arm m_arm, Pneumatics m_pneumatics){
         AutonomousMode mode = autonomousModeChooser.getSelected();
@@ -73,7 +74,7 @@ public class AutonSelector {
         simpleStraight
     }
 
-    // public static Pose2d getStartingPose(){
-    //     return startingPose;
-    // }
+    public static Pose2d getStartingPose(){
+        return startingPose;
+    }
 }
