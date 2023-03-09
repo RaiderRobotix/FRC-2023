@@ -35,24 +35,24 @@ import edu.wpi.first.math.util.Units;
 
     public static class robotDriveDistance {
         //PID values for robot drive distance
-        public static double robotDriveDistanceKi = 0.0050;
-        public static double robotDriveDistanceKp = 0.0000;
-        public static double robotDriveDistanceKd = 0.0000;
-        public static double robotDistanceTolerance = .1;
+        public static double ki = 0.0050;
+        public static double kp = 0.0000;
+        public static double kd = 0.0000;
+        public static double tolerance = .1;
     }
 
     public static class robotXPosition {
         //X value
-        public static double xControllerKp = 0.5000;
-        public static double xControllerKi = 0.1100; //Dont use
-        public static double xControllerKd = 0.0000; //Dont
+        public static double kp = 0.5000;
+        public static double ki = 0.1100; //Dont use
+        public static double kd = 0.0000; //Dont
     }
 
     public static class robotYPosition {
         //Y Value
-        public static double yControllerKp = 0.5000;
-        public static double yControllerKi = 0.0000; //Dont use
-        public static double yControllerKd = 0.0000; //Dont use
+        public static double kp = 0.5000;
+        public static double ki = 0.0000; //Dont use
+        public static double kd = 0.0000; //Dont use
     }
 
     public static class balanceCommand {
