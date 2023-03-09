@@ -2,7 +2,10 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -12,6 +15,9 @@ public class Elevator extends SubsystemBase {
 
     private WPI_TalonFX motor;
     private AnalogPotentiometer pot;
+    private ShuffleboardTab tab = Shuffleboard.getTab("default");
+    private GenericEntry potEntry = tab.add("Elevator Pot", 0).withSize(2, 1).getEntry();
+    private GenericEntry safetyEntry = tab.add("Elevator Safety Hit", false).withSize(2, 1).getEntry();
 
     public Elevator()
     {
@@ -73,7 +79,7 @@ public class Elevator extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        SmartDashboard.putNumber("Elevator Pot", getPotValue());
-        SmartDashboard.putBoolean("Elevator Safety Hit", upperLimitHit() || lowerLimitHit());
+        potEntry.setDouble(getPotValue());
+        safetyEntry.setBoolean(upperLimitHit() || lowerLimitHit());
     }
 }
