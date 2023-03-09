@@ -82,12 +82,12 @@ public class RobotContainer implements Constants {
     //   .whileTrue(new drive(m_controller, m_operatorInterface, turboSpeed));
 
     new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kY.value)
-      .onTrue(new InstantCommand(() -> SwerveWheelController.zeroGyroscope()));
-    new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kA.value)
-      .and(new Trigger(m_operatorInterface::isPOV))
-      .whileTrue(new StartEndCommand(
-        () -> m_controller.drive(ChassisSpeeds.fromFieldRelativeSpeeds(Math.asin(m_operatorInterface.getXboxController().getPOV()), Math.acos(m_operatorInterface.getXboxController().getPOV()), 0, m_controller.getRotation2d())),
-        () -> m_controller.drive(ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, m_controller.getRotation2d()))));
+      .onTrue(new InstantCommand(() -> Gyro.resetGyro()));
+    // new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kA.value)
+    //   .and(new Trigger(m_operatorInterface::isPOV))
+    //   .whileTrue(new StartEndCommand(
+    //     () -> m_controller.drive(ChassisSpeeds.fromFieldRelativeSpeeds(Math.asin(m_operatorInterface.getXboxController().getPOV()), Math.acos(m_operatorInterface.getXboxController().getPOV()), 0, m_controller.getRotation2d())),
+    //     () -> m_controller.drive(ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, m_controller.getRotation2d()))));
       
     // new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kB.value)
     //   .and(new Trigger(m_operatorInterface::isPOV)
