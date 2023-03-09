@@ -28,11 +28,11 @@ public class LimeLight extends SubsystemBase {
   }
 
   public void updateValues(){
-    this.tv = NetworkTableInstance.getDefault().getTable(name).getEntry("tv").getDouble(0); // If Target is                                                                                        // Found
-    this.tx = NetworkTableInstance.getDefault().getTable(name).getEntry("tx").getDouble(0); // Horazontal       // Offset
-    this.ty = NetworkTableInstance.getDefault().getTable(name).getEntry("ty").getDouble(0); // Vertical// Offset
+    this.tv = NetworkTableInstance.getDefault().getTable(name).getEntry("tv").getDouble(0); // If Target is found
+    this.tx = NetworkTableInstance.getDefault().getTable(name).getEntry("tx").getDouble(0); // Horazontal Offset
+    this.ty = NetworkTableInstance.getDefault().getTable(name).getEntry("ty").getDouble(0); // Vertical Offset
     this.ta = NetworkTableInstance.getDefault().getTable(name).getEntry("ta").getDouble(0); // Target Area
-    this.tid = NetworkTableInstance.getDefault().getTable(name).getEntry("tid").getDouble(0);
+    this.tid = NetworkTableInstance.getDefault().getTable(name).getEntry("tid").getDouble(0); //Target ID
     this.camtrain = NetworkTableInstance.getDefault().getTable(name).getEntry("camtrain").getNumberArray(null);
   }
 
