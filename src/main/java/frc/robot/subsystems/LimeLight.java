@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -19,11 +21,16 @@ public class LimeLight extends SubsystemBase {
   public double ta;
   public double tid;
   public Number[] camtrain;
-  private String name =  "limelight";
-  private ShuffleboardTab limeLight;
+  private String name =  "Limelight";  
+  
+  private ShuffleboardTab limeLight = Shuffleboard.getTab(name);
+  private GenericEntry tvEntry = limeLight.add("isTarget", 0).withSize(2, 1).getEntry();
+  private GenericEntry txEntry = limeLight.add("X Offset", 0).withSize(2, 1).getEntry();
+  private GenericEntry tyEntry = limeLight.add("Y Offset", 0).withSize(2, 1).getEntry();
+  private GenericEntry taEntry = limeLight.add("Target Area", 0).withSize(2, 1).getEntry();
+  private GenericEntry tidEntry = limeLight.add("Target ID", 0).withSize(2, 1).getEntry();
 
   public LimeLight() {
-    ShuffleboardTab limeLight = Shuffleboard.getTab("limeLight");
     updateValues();
   }
 
@@ -33,7 +40,7 @@ public class LimeLight extends SubsystemBase {
     this.ty = NetworkTableInstance.getDefault().getTable(name).getEntry("ty").getDouble(0); // Vertical Offset
     this.ta = NetworkTableInstance.getDefault().getTable(name).getEntry("ta").getDouble(0); // Target Area
     this.tid = NetworkTableInstance.getDefault().getTable(name).getEntry("tid").getDouble(0); //Target ID
-    this.camtrain = NetworkTableInstance.getDefault().getTable(name).getEntry("camtrain").getNumberArray(null);
+    // this.camtrain = NetworkTableInstance.getDefault().getTable(name).getEntry("camtrain").getNumberArray(null);
   }
 
   public double getTv(){
@@ -56,13 +63,11 @@ public class LimeLight extends SubsystemBase {
 
   @Override
   public void periodic() {
-    Shuffleboard.selectTab("limeLight");
-    SmartDashboard.putNumber("tv", tv);
-    SmartDashboard.putNumber("tx", tx);
-    SmartDashboard.putNumber("ty", ty);
-    SmartDashboard.putNumber("ta", ta);
-    SmartDashboard.putNumber("tid", tid);
-    System.out.println(camtrain);
+    tvEntry.setDouble(tv);
+    txEntry.setDouble(tx);
+    tyEntry.setDouble(ty);
+    taEntry.setDouble(ta);
+    tidEntry.setDouble(tid);
     updateValues();
     // This method will be called once per scheduler run
   }
