@@ -1,199 +1,158 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
-import java.util.Map;
-import java.util.function.BooleanSupplier;
-
-import com.pathplanner.lib.auto.PIDConstants;
-import com.pathplanner.lib.auto.SwerveAutoBuilder;
-import com.pathplanner.lib.commands.FollowPathWithEvents;
-
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.auto.AutonCommands;
-import frc.robot.auto.AutonSelector;
-import frc.robot.commands.armToLength;
-import frc.robot.commands.drive;
-import frc.robot.commands.elevatorToHeight;
-import frc.robot.commands.elevatorToHeightNoPID;
-import frc.robot.commands.pickdown;
+// import frc.robot.commands.drive;
+// import frc.robot.commands.pickdown;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Gyro;
-import frc.robot.subsystems.OperatorInterface;
 import frc.robot.subsystems.Pneumatics;
-import frc.robot.subsystems.drivebase.SwerveWheelController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.robot.auton.*;
+import frc.robot.auton.Routines.BumpSideSimpleAuto;
+import frc.robot.auton.Routines.SimpleAuto;
+import frc.robot.auton.Routines.SimpleAutoRamp;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 
 /**
- * This class is where the bulk of the robot should be declared. Since
- * Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in
- * the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of
- * the robot (including
+ * This class is where the bulk of the robot should be declared. Since Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
-public class RobotContainer implements Constants {
-  // The robot's subsystems and commands are defined here...
-  private final static SwerveWheelController m_controller = new SwerveWheelController();
-  private final OperatorInterface m_operatorInterface = new OperatorInterface();
-  private final Pneumatics mPneumatics = new Pneumatics(m_operatorInterface);
-  private final Gyro m_gyro = new Gyro();
-  private final Elevator m_elevator = new Elevator();
-  private final Arm m_arm = new Arm();
-  private final static AutonSelector autonSelector = new AutonSelector();
+public class RobotContainer{
+    /* Controllers */
+    private final Joystick driver = new Joystick(0);
+    private final Joystick operator = new Joystick(1);
 
-  private final drive m_Drive = new drive( m_controller, m_operatorInterface, 0.6);
-  // private DigitalInput sensor;
+    /* Drive Controls */
+    private final int translationAxis = XboxController.Axis.kLeftY.value;
+    private final int strafeAxis = XboxController.Axis.kLeftX.value;
+    private final int rotationAxis = XboxController.Axis.kRightX.value;
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
-  public RobotContainer() {
-    // Configure the button bindings
-    configureButtonBindings();
-    this.m_controller.setDefaultCommand(m_Drive);
-    // sensor = new DigitalInput(0);
-  }
+    /* Driver Buttons */
+    private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
+    private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
-   * it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-  private void configureButtonBindings() {
-    // Driver Controls
-    // new Trigger(m_operatorInterface::getLeftTrigger)
-    //   .whileTrue(new drive(m_controller, m_operatorInterface, slowSpeed));
+    /* Operator Buttons */
+    private final JoystickButton elevatorUpButton = new JoystickButton(operator, 5);
+    private final JoystickButton elevatorDownButton = new JoystickButton(operator, 3);
 
-    // new Trigger(m_operatorInterface::getRightTrigger)
-    //   .whileTrue(new drive(m_controller, m_operatorInterface, turboSpeed));
-
-    new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kY.value)
-      .onTrue(new InstantCommand(() -> Gyro.resetGyro()));
-    // new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kA.value)
-    //   .and(new Trigger(m_operatorInterface::isPOV))
-    //   .whileTrue(new StartEndCommand(
-    //     () -> m_controller.drive(ChassisSpeeds.fromFieldRelativeSpeeds(Math.asin(m_operatorInterface.getXboxController().getPOV()), Math.acos(m_operatorInterface.getXboxController().getPOV()), 0, m_controller.getRotation2d())),
-    //     () -> m_controller.drive(ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, m_controller.getRotation2d()))));
-      
-    // new JoystickButton(m_operatorInterface.getXboxController(), XboxController.Button.kB.value)
-    //   .and(new Trigger(m_operatorInterface::isPOV)
-    //   .whileTrue(new StartEndCommand(
-    //     () -> m_controller.setSpeed(Math.cos(m_operatorInterface.getXboxController().getPOV()), Math.sin(m_operatorInterface.getXboxController().getPOV()), 0),
-    //     () -> m_controller.stopMotors(),
-    //     m_controller)));
-        
-      // Operator Controls
-    new JoystickButton(m_operatorInterface.getOperatorJoystick(), grabberJoystickButton)
-      // .and(new Trigger(Arm::isUpperRow).negate())
-      .onTrue(new InstantCommand(() -> Pneumatics.toggleGrabberSolenoid()));
-
-    // new JoystickButton(m_operatorInterface.getOperatorJoystick(), grabberJoystickButton)
-    // .onTrue(new pickdown());
-
-    new JoystickButton(m_operatorInterface.getOperatorJoystick(), popperJoystickButton)
-    .onTrue(new InstantCommand(() -> Pneumatics.togglePopperSolenoid()));
-
-    new JoystickButton(m_operatorInterface.getOperatorJoystick(), armInJoystickButton)
-      //.and(new Trigger(Arm::getSensorLow).negate())
-      .whileTrue(new StartEndCommand(
-        () -> Arm.setMotor(-kArmInSpeed),
-        () -> Arm.setMotor(0)));
-
-    new JoystickButton(m_operatorInterface.getOperatorJoystick(), armOutJoystickButton)
-      //.and(new Trigger(Arm::getSensorMax).negate())
-      .whileTrue(new StartEndCommand(
-        () -> Arm.setMotor(kArmOutSpeed),
-        () -> Arm.setMotor(0),
-        m_arm));
-
-    new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorUpJoystickButton)
-    .and(new Trigger(Elevator::getSensorMax).negate())
-    .whileTrue(new StartEndCommand(
-      () -> Elevator.setMotor(-kElevatorUpSpeed),
-      () -> Elevator.setMotor(0),
-      m_elevator));
-      
-    new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorDownJoystickButton)
-    // .and(new Trigger(Elevator::getSensorLow).negate())
-    .whileTrue(new StartEndCommand(
-      () -> Elevator.setMotor(kElevatorDownSpeed),
-      () -> Elevator.setMotor(0),
-      m_elevator));
-
-    new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorFloorJoystickButton)
-    .whileTrue(new armToLength(kFloorLength))
-    .whileTrue(new elevatorToHeight(kFloorHeight));
-
-    new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorMidRowJoystickButton)
-    .whileTrue(new armToLength(kMidRowLength))
-    .whileTrue(new elevatorToHeight(kMidRowHeight));
-
-    new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorUpperRowJoystickButton)
-    .whileTrue(new armToLength(kUpperRowLength))
-    .whileTrue(new elevatorToHeight(kUpperRowHeight));
-
-    new JoystickButton(m_operatorInterface.getOperatorJoystick(), elevatorHumanPlayerJoystickButton)
-      .whileTrue(new armToLength(kHumanPlayerLength))
-      .whileTrue(new elevatorToHeight(kHumanPlayerHeight));
-
-
-
-
-
-    //Button for Sensor trigger
-    // new Trigger(m_operatorInterface::getDistanceSensor)
-    //   .and(new JoystickButton(m_operatorInterface.getOperatorJoystick(), autoGrabberJoystickButton))
-    //   // .debounce(kDistanceSensorDebounceTime)
-    //   .onTrue(new pickdown());
+    private final JoystickButton autoScoreHighButton = new JoystickButton(operator, 8);
+    private final JoystickButton autoScoreMidButton = new JoystickButton(operator, 10);
+    private final JoystickButton autoLowButton = new JoystickButton(operator, 12);
+    private final JoystickButton autoHPButton = new JoystickButton(operator, 7);
     
-    // new Trigger(Arm::isUpperRow).negate()
-    // .onTrue(new armToLength(kHumanPlayerLength))
-    // .onTrue(new elevatorToHeight(kHumanPlayerHeight));
-  }
+    private final JoystickButton armOutButton = new JoystickButton(operator, 9);
+    private final JoystickButton armInButton = new JoystickButton(operator, 11);
 
-  public static AutonCommands getAutonCommands(){
-    return autonSelector.getCommand(m_controller);
-  }
+    private final JoystickButton hpGrabSequenceButton = new JoystickButton(operator, 2);
+    private final JoystickButton toggleGrabberButton = new JoystickButton(operator, 1);
+    private final JoystickButton togglePopperButton = new JoystickButton(operator, 4);
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    if(true){
-      AutonCommands command = getAutonCommands();
-      Map<String, Command> eventMap = command.getEventMap();
-  
-      SwerveAutoBuilder autoBuilder =  new SwerveAutoBuilder(
-        () -> m_controller.getOdometry().getPoseMeters(), // Pose2d supplier
-        m_controller::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of autokDriveKinematics, // SwerveDriveKinematics
-        kDriveKinematics,
-        new PIDConstants(0.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
-        new PIDConstants(0.0, 0.0, 0.0), // PID constants to correct for rotation error (used to create the rotation controller)
-        m_controller::setState, // Module states consumer used to output to the drive subsystemeventMap,
-        eventMap,
-        true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-        m_controller // The drive subsystem. Used to properly set the requirements of path following commands
-      );
-  
-      return autoBuilder.fullAuto(command.getPath());
-    } else {
-      return new FollowPathWithEvents(m_Drive, null, null);
+     /* Subsystems */
+     private final Swerve s_Swerve = new Swerve();
+     private final Arm m_arm = new Arm();
+     private final Elevator m_elevator = new Elevator();
+     private final Pneumatics m_pneumatics = new Pneumatics();
+     private final Grabber m_grabber = new Grabber();
+     private final AutonSelector m_autoSelector = new AutonSelector();
+    /** The container for the robot. Contains subsystems, OI devices, and commands. */
+    public RobotContainer() {
+        s_Swerve.setDefaultCommand(
+            new TeleopSwerve(
+                s_Swerve,
+                driver, 
+                () -> -driver.getRawAxis(translationAxis), 
+                () -> -driver.getRawAxis(strafeAxis), 
+                () -> -driver.getRawAxis(rotationAxis) * .1, 
+                () -> robotCentric.getAsBoolean()
+            )
+        );
+
+        // Configure the button bindings
+        configureButtonBindings();
+        
     }
-  }
+
+    /**
+     * Use this method to define your button->command mappings. Buttons can be created by
+     * instantiating a {@link GenericHID} or one of its subclasses ({@link
+     * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
+     * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+     */
+    private void configureButtonBindings() {
+        /* Driver Buttons */
+        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+
+        //resetCancoders.onTrue(new InstantCommand(() -> m_swerve.resetModulesToAbsolute()));
+        
+        /* Operator Buttons */
+        hpGrabSequenceButton.and(new Trigger(m_grabber::grabberIsOpen)).onTrue(new HPGrabCone(m_arm, m_elevator, m_grabber));
+        toggleGrabberButton.onTrue(new InstantCommand(() -> m_grabber.toggleGrabber()));
+        togglePopperButton.onTrue(new InstantCommand(() -> m_pneumatics.togglePopper()));
+        
+        armOutButton.and(new Trigger(m_arm::upperLimitHit).negate()).whileTrue(
+            new StartEndCommand(
+                () -> m_arm.extend(Constants.Arm.manualSpeed),
+                () -> m_arm.stop(),
+                m_arm)
+        );
+
+        armInButton.and(new Trigger(m_arm::lowerLimitHit).negate()).whileTrue(
+            new StartEndCommand(
+                () -> m_arm.retract(Constants.Arm.manualSpeed),
+                () -> m_arm.stop(),
+                m_arm)
+        );
+
+        elevatorUpButton.and(new Trigger(m_elevator::upperLimitHit).negate()).whileTrue(
+            new StartEndCommand(
+                () -> m_elevator.moveUp(Constants.Elevator.manualSpeed),
+                () -> m_elevator.stop(),
+                m_elevator)
+        );
+
+        elevatorDownButton.and(new Trigger(m_elevator::lowerLimitHit).negate()).whileTrue(
+            new StartEndCommand(
+                () -> m_elevator.moveDown(Constants.Elevator.manualSpeed),
+                () -> m_elevator.stop(),
+                m_elevator)
+        );
+
+        autoHPButton.onTrue(
+                    new ElevatorToHeight(m_elevator, Constants.Elevator.humanPlayerHeight))
+            .onTrue(new ArmToPosition(m_arm, Constants.Arm.humanPlayerLength));
+
+        autoLowButton.onTrue(
+                    new ElevatorToHeight(m_elevator, Constants.Elevator.lowRowHeight))
+            .onTrue(new ArmToPosition(m_arm, Constants.Arm.floorPickupLength));
+
+        autoScoreMidButton.onTrue(
+                    new ElevatorToHeight(m_elevator, Constants.Elevator.middleRowHeight))
+            .onTrue(new ArmToPosition(m_arm, Constants.Arm.middleRowLength));
+
+        autoScoreHighButton.onTrue(
+                    new ElevatorToHeight(m_elevator, Constants.Elevator.topRowHeight))
+            .onTrue(new ArmToPosition(m_arm, Constants.Arm.topRowLength));
+    }
+
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        // An ExampleCommand will run in autonomous
+        // return m_a\][utoSelector.getCommand(s_Swerve, m_elevator, m_arm, m_pneumatics);
+        return new BumpSideSimpleAuto(s_Swerve, m_pneumatics, m_arm);
+        // return new SimpleAutoRamp(s_Swerve, m_pneumatics);
+    }
 }

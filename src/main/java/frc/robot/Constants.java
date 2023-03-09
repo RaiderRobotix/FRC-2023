@@ -1,243 +1,197 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
-import java.util.ArrayList;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import frc.lib.util.COTSFalconSwerveConstants;
+import frc.lib.util.SwerveModuleConstants;
 
-/**
- * The Constants class provides a convenient place for teams to hold robot-wide
- * numerical or boolean
- * constants. This class should not be used for any other purpose. All constants
- * should be declared
- * globally (i.e. public static). Do not put anything functional in this class.
- *
- * <p>
- * It is advised to statically import this class (or one of its inner classes)
- * wherever the
- * constants are needed, to reduce verbosity.
- */
-public interface Constants {
+public final class Constants {
+    public static final double stickDeadband = 0.0;
 
-    // Driver constants
-    public final int xboxControllerPort = 0;
+    public static final class Arm {
+        public static int potentiometerChannel = 1;
+        public static int talonDeviceNumber = 2;
 
-    // Operator Constants
-    public final int operatorStickPort = 1;
-    public final int grabberJoystickButton = 1;
-    public final int autoGrabberJoystickButton = 2;
-    public final int popperJoystickButton = 4;
+        public static double upperSafety = 0.640;
+        public static double lowerSafety = 0.07; // 0.068
 
-    public final int armInJoystickButton = 11;
-    public final int armOutJoystickButton = 9;
+        public static double topRowLength      = 0.63; // actual 0.655, set under to overshoot
+        public static double middleRowLength   = 0.335; // actual 0.33,  
+        public static double floorPickupLength = 0.25;
+        public static double humanPlayerLength = 0.07; 
 
-    public final int elevatorUpJoystickButton = 5;
-    public final int elevatorDownJoystickButton = 3;
-    public final int elevatorFloorJoystickButton = 12;
-    public final int elevatorMidRowJoystickButton = 10;
-    public final int elevatorUpperRowJoystickButton = 8;
-    public final int elevatorHumanPlayerJoystickButton = 7;
+        public static double autoSpeed = 0.85;
+        public static double manualSpeed = 0.5;
+    }
 
-    //Distance Sensor Constants
-    public final int kGrabberDistanceSensorDIO = 9;
+    public static final class Elevator {
+        public static int potentiometerChannel = 0;
+        public static int talonDeviceNumber = 0;
 
-    //Time between the sensor allowing to trigger the grabber
-    //in seconds
-    public final double kDistanceSensorDebounceTime = 1;
+        public static double upperSafety = 0.38; 
+        public static double lowerSafety = 0.05;
 
-    // Falcon 500 constants
-    public final int kUnitsPerRevoltion = 2048;
-    public final double kGearRatio = 6.12;
-    public final int kMaxRPM = 6380;
-    public final double kWheelDiameter = Units.inchesToMeters(4);
+        public static double topRowHeight      = 0.36; // was 0.35
+        public static double humanPlayerHeight = 0.34;
+        public static double middleRowHeight   = 0.315; 
+        public static double lowRowHeight      = 0.05; // actual = lower limit
 
-    public final double rightDeadband = 0.15;
-    public final double leftDeadband = 0.15;
-    public final double rightTriggerThreshold = 0.70;
-    public final double leftTriggerThreshold = 0.70;
+        public static double autoSpeed = 1.00;
+        public static double manualSpeed = 0.5;
+    }
 
+    public static final class Grabber {
+        public static int distanceSensorChannel = 9;
+        public static int hpTouchSensorChannel = 0;
 
-    // Robots measurements in metres
-    public final double width = Units.inchesToMeters(18);
-    public final double length = Units.inchesToMeters(26);
+        public static int grabberOnChannel = 15;
+        public static int grabberOffChannel = 0;
+    }
+
+    public static final class Pneumatics {
+        public static int compressorModule = 1;
+
+        public static int popperOnChannel = 13;
+        public static int popperOffChannel = 2;
+    }
 
 
-    //Robot's kinematics
-    public final double frontLeftLocationX = 1.0;
-    public final double frontLeftLocationY = 1.0;
+    public static final class Swerve {
+        public static final int pigeonID = 1;
+        public static final boolean invertGyro = true; // Always ensure Gyro is CCW+ CW-
 
-    public final double frontRightLocationX = 1.0;
-    public final double frontRightLocationY = 1.0;
+        public static final COTSFalconSwerveConstants chosenModule =  //TODO: This must be tuned to specific robot
+            COTSFalconSwerveConstants.SDSMK4(COTSFalconSwerveConstants.driveGearRatios.SDSMK4_L3);
 
-    public final double backLeftLocationX = 1.0;
-    public final double backLeftLocationY = 1.0;
+        /* Drivetrain Constants */
+        public static final double trackWidth = Units.inchesToMeters(17.5); //TODO: This must be tuned to specific robot
+        public static final double wheelBase = Units.inchesToMeters(24); //TODO: This must be tuned to specific robot
+        public static final double wheelCircumference = chosenModule.wheelCircumference;
 
-    public final double backRightLocationX = 1.0;
-    public final double backRightLocationY = 1.0;
+        /* Swerve Kinematics 
+         * No need to ever change this unless you are not doing a traditional rectangular/square 4 module swerve */
+         public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
+            new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
+            new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
+            new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
+            new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
 
-    public final SwerveDriveKinematics kDriveKinematics = 
-        new SwerveDriveKinematics(
-            new Translation2d(width / 2, length / 2),
-            new Translation2d(width / 2, -length / 2),
-            new Translation2d(-width / 2, length / 2),
-            new Translation2d(-width / 2, -length / 2)
-        );
+        /* Module Gear Ratios */
+        public static final double driveGearRatio = chosenModule.driveGearRatio;
+        public static final double angleGearRatio = chosenModule.angleGearRatio;
 
+        /* Motor Inverts */
+        public static final boolean angleMotorInvert = chosenModule.angleMotorInvert;
+        // public static final boolean driveMotorInvert = chosenModule.driveMotorInvert;
+        public static final boolean driveMotorInvert = true;
 
-    //Drivebase movement constraints units are in metres
-    public final double maxAttainableSpeed = Units.feetToMeters(18);
-    //Units in percentage of maxAttainableSpeed
-    public final double turboSpeed = 1;
-    public final double slowSpeed = 0.2;
+        /* Angle Encoder Invert */
+        public static final boolean canCoderInvert = chosenModule.canCoderInvert;
 
-    //Auton Path trajectory thing ---- STILL IN TESTING
-    //ArrayList<PathPlannerTrajectory> pathGroup = new ArrayList<PathPlannerTrajectory>();
+        /* Swerve Current Limiting */
+        public static final int angleContinuousCurrentLimit = 25;
+        public static final int anglePeakCurrentLimit = 40;
+        public static final double anglePeakCurrentDuration = 0.1;
+        public static final boolean angleEnableCurrentLimit = true;
 
+        public static final int driveContinuousCurrentLimit = 35;
+        public static final int drivePeakCurrentLimit = 60;
+        public static final double drivePeakCurrentDuration = 0.1;
+        public static final boolean driveEnableCurrentLimit = true;
 
-    //Drivebase movement constraints for auton
-    public final double kPhysicalDriveMaxSpeed = 0.005;
-    public final double kMaxAccelerationMetersPerSecondSquared = 0.01;
+        /* These values are used by the drive falcon to ramp in open loop and closed loop driving.
+         * We found a small open loop ramp (0.25) helps with tread wear, tipping, etc */
+        public static final double openLoopRamp = 0.25;
+        public static final double closedLoopRamp = 0.0;
 
-    //Pneumatics Constansts
-    public final double maxPSI = 80.0;
-    public final double minPSI = 0.0;
+        /* Angle Motor PID Values */
+        public static final double angleKP = chosenModule.angleKP;
+        public static final double angleKI = chosenModule.angleKI;
+        public static final double angleKD = chosenModule.angleKD;
+        public static final double angleKF = chosenModule.angleKF;
 
-    // Solenoid Channel Values
+        /* Drive Motor PID Values */
+        public static final double driveKP = 0.05; //TODO: This must be tuned to specific robot
+        public static final double driveKI = 0.0;
+        public static final double driveKD = 0.0;
+        public static final double driveKF = 0.0;
 
-    //Channels for solenoid that grabs the game pieces
-    public final int grabberSolenoidOnChannel = 15;
-    public final int grabberSolenoidOffChannel = 0;
+        /* Drive Motor Characterization Values 
+         * Divide SYSID values by 12 to convert from volts to percent output for CTRE */
+        public static final double driveKS = (0.32 / 12); //TODO: This must be tuned to specific robot
+        public static final double driveKV = (1.51 / 12);
+        public static final double driveKA = (0.27 / 12);
 
-    //Channels for solenoids that pop game piece in auton
-    public final int popperSolenoidOnChannel = 13;
-    public final int popperSolenoidOffChannel = 2;
+        /* Swerve Profiling Values */
+        /** Meters per Second */
+        public static final double maxSpeed = 5; //TODO: This must be tuned to specific robot
+        /** Radians per Second */
+        public static final double maxAngularVelocity = 30.0; //TODO: This must be tuned to specific robot
 
-    //Elevator Variables
-    public final int kElevatorPotentiometer = 0;
-    public final int kElevatorTalonFX = 0;
-    public final double kElevatorDistancePerRotation = 2048;
-    public final double kEleveatorGearRatio = 75;
+        /* Neutral Modes */
+        public static final NeutralMode angleNeutralMode = NeutralMode.Coast;
+        public static final NeutralMode driveNeutralMode = NeutralMode.Brake;
 
+        /* Module Specific Constants */
+        /* Front Left Module - Module 0 */
+        public static final class Mod0 { //TODO: This must be tuned to specific robot
+            public static final int driveMotorID = 20;
+            public static final int angleMotorID = 10;
+            public static final int canCoderID = 0;
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(357.89);
+            public static final SwerveModuleConstants constants = 
+                new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
+        }
 
-    //Speeds for Operator Controller
-    public final double kElevatorUpSpeed = 0.6;
-    public final double kElevatorDownSpeed = 0.4;
+        /* Front Right Module - Module 1 */
+        public static final class Mod1 { //TODO: This must be tuned to specific robot
+            public static final int driveMotorID = 21;
+            public static final int angleMotorID = 11;
+            public static final int canCoderID = 1;
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(79.36);
+            public static final SwerveModuleConstants constants = 
+                new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
+        }
+        
+        /* Back Left Module - Module 2 */
+        public static final class Mod2 { //TODO: This must be tuned to specific robot
+            public static final int driveMotorID = 22;
+            public static final int angleMotorID = 12;
+            public static final int canCoderID = 2;
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(11.86);
+            public static final SwerveModuleConstants constants = 
+                new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
+        }
+
+        /* Back Right Module - Module 3 */
+        public static final class Mod3 { //TODO: This must be tuned to specific robot
+            public static final int driveMotorID = 23;
+            public static final int angleMotorID = 13;
+            public static final int canCoderID = 3;
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(20.21);
+            public static final SwerveModuleConstants constants = 
+                new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
+        }
+    }
+
+    public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot
+        public static final double kMaxSpeedMetersPerSecond = 3;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+        public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
+        public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
     
-    //Speeds for auto
-    public final double kAutoElevatorSpeedUp = 0.5;
-    public final double kAutoElevatorSpeedDown = 0.5;
-
-    //Present Height Values for rows
-    public final double kUpperRowHeight = 0.345;
-    public final double kHumanPlayerHeight = 0.318;
-    public final double kMidRowHeight = 0.30;
-    public final double kFloorHeight = 0.06;
-    public final double kElevatorMaxHeight = 0.36;
-    public final double kElevatorMinHeight = 0.05;
-    //PID values for elevator
-    public final double elevatorKp =  5.000;
-    public final double elevatorKi =  0.000;
-    public final double elevatorKd =  0.000;
-
-
-    //Arm Variables
-    public final int kArmPotentiometer = 1;
-    public final int kArmTalonFX = 2;
-    public final double kArmDistancePerRotation = 2048;
-    public final double kArmGearRatio = 15;
-
-    //Arm Length Values
-    public final double kUpperRowLength = 0.60;
-    public final double kMidRowLength = 0.0;
-    public final double kHumanPlayerLength = -0.0;
-    public final double kFloorLength = 0.0;
-    public final double kArmMaxLength = 0.60;
-    public final double kArmMinLength = 0.07;    
-
-    //Speeds for Operator Arm
-    public final double kArmInSpeed = 0.5;
-    public final double kArmOutSpeed = 0.5;
-    public final double kAutoArmSpeedIn = 0.5;
-    public final double kAutoArmSpeedOut = 0.5;
+        public static final double kPXController = 1;
+        public static final double kPYController = 1;
+        public static final double kPThetaController = 1;
     
-     //PID values for Arm
-     public final double armKp = 0.775;
-     public final double armKi = 0.0000;
-     public final double armKd = 0.0000;
-
-
-
-    //PID values
-    
-    //PID values for motors
-    //PID values for steering angle
-    public final double angleKp = 0.100; // Speed Default 0.01120
-    public final double angleKi = 0.0; // Amount to react Default 0.00001
-    public final double angleKd = 0.0; // Dampens system Default 0.00023
-
-    //PID values for driving speed
-    public final double driveKp = 500;
-    public final double driveKi = 0.055;
-    public final double driveKd = 0.00;
-    
-    //PID values for commands
-    //PID values for robot angle/heading
-    public final double robotangleKi = 0.00100; // Amount to react Default 0.00001
-    public final double robotangleKp = 0.00000; // Speed Default 0.01100
-    public final double robotangleKd = 0.00000; // Dampens system Default 0.00037
-    public final double robotAngleTolerance = 1.5;
-
-    //PID values for robot drive distance
-    public final double robotDriveDistanceKi = 0.2000;
-    public final double robotDriveDistanceKp = 0.0000;
-    public final double robotDriveDistanceKd = 0.0000;
-    public final double robotDistanceTolerance = .1;
-
-    //PID values for thete controller
-    public final double thetaControllerKp = 0.5000;
-    public final double thetaControllerKi = 0.0000;
-    public final double thetaControllerKd = 0.0000;
-
-    //PID values for position controller
-    //X value
-    public final double xControllerKp = 0.5000;
-    public final double xControllerKi = 0.1100; //Dont use
-    public final double xControllerKd = 0.0000; //Dont
-    //Y Value
-    public final double yControllerKp = 0.5000;
-    public final double yControllerKi = 0.0000; //Dont use
-    public final double yControllerKd = 0.0000; //Dont use
-
-    //PID values for robot balance command
-    public final double balanceKp = 0.0000;
-    public final double balanceKi = 0.0000;
-    public final double balanceKd = 0.0000;
-    public final double robotBalanceTolerance = 1;   
-
-    //CAN IDs and Encoder Offsets
-    public final int frontLeftDriveID = 20;
-    public final int frontLeftSteerID = 10;
-    public final int frontLeftEncoderID = 0;
-    public final double frontLeftEncoderOffset = 181.51;
-
-    public final int frontRightDriveID = 21;
-    public final int frontRightSteerID = 11;
-    public final int frontRightEncoderID = 1;
-    public final double frontRightEncoderOffset = -77.96;
-
-    public final int backLeftDriveID = 22;
-    public final int backLeftSteerID = 12;
-    public final int backLeftEncoderID = 2;
-    public final double backLeftEncoderOffset = 191.51 - 23.03;
-
-    public final int backRightDriveID = 23;
-    public final int backRightSteerID = 13;
-    public final int backRightEncoderID = 3;
-    public final double backRightEncoderOffset = 202.59 - 45.18;
+        /* Constraint for the motion profilied robot angle controller */
+        public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
+            new TrapezoidProfile.Constraints(
+                kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+    }
 }

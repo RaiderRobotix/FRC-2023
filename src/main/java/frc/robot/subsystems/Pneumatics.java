@@ -1,133 +1,69 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PWM;
-import edu.wpi.first.wpilibj.PneumaticsBase;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-
-
-
-
-public class Pneumatics extends SubsystemBase implements Constants {
-  /** Creates a new ExampleSubsystem. */
-
-  private static Compressor pneumatics;
-  private Solenoid solenoid;
-
-  private static Solenoid grabberSolenoidOn;
-  private static Solenoid grabberSolenoidOff;
-
-  private static Solenoid popperSolenoidOn;
-  private static Solenoid popperSolenoidOff;
-
-  private static Value value;
-
-  // private AnalogInput sonic;
-
-  // private DigitalInput sensor;
-
-  private OperatorInterface oi;
-
-
-  public Pneumatics(int enterChannel, int closeChannel) {
-    pneumatics = new Compressor(1, PneumaticsModuleType.REVPH);
-    // pneumatics.enableDigital();
-    pneumatics.enableHybrid(110, 120);
-
-
+public class Pneumatics extends SubsystemBase {
     
-  }
+    private Compressor compressor;
 
-  public Pneumatics(OperatorInterface oi) {
-    pneumatics = new Compressor(1, PneumaticsModuleType.REVPH);
-    // pneumatics.enableHybrid(minPSI, maxPSI);
-    // pneumatics.enableAnalog(minPSI, maxPSI);
-    this.pneumatics.enableDigital();
-    // pneumatics.disable();
+    private Solenoid popperSolenoidOn;
+    private Solenoid popperSolenoidOff;
 
-    grabberSolenoidOn = new Solenoid(PneumaticsModuleType.REVPH, grabberSolenoidOnChannel); 
-    grabberSolenoidOff = new Solenoid(PneumaticsModuleType.REVPH, grabberSolenoidOffChannel);
+    private boolean popperIsPopped;
 
-    popperSolenoidOn = new Solenoid(PneumaticsModuleType.REVPH, popperSolenoidOnChannel);
-    popperSolenoidOff = new Solenoid(PneumaticsModuleType.REVPH, popperSolenoidOffChannel);
+    public Pneumatics() {
+        compressor = new Compressor(Constants.Pneumatics.compressorModule, PneumaticsModuleType.REVPH);
+        compressor.enableDigital();
 
-    // sonic = new AnalogInput(0);
-    // sensor = new DigitalInput(0);
-    this.oi = oi;
-  }
+        popperSolenoidOn = new Solenoid(PneumaticsModuleType.REVPH, Constants.Pneumatics.popperOnChannel);
+        popperSolenoidOff = new Solenoid(PneumaticsModuleType.REVPH, Constants.Pneumatics.popperOffChannel);
+        retractPopper();
+    }
 
-  public double getPneumaticsPressure(){
-    return pneumatics.getPressure();
-  }
+    public double getPressure()
+    {
+        return compressor.getPressure();
+    }
 
-  public boolean isPneumaticsEnabled(){
-    return pneumatics.isEnabled();
-  }
+    public boolean isCompressorEnabled()
+    {
+        return compressor.isEnabled();
+    }
 
-  public static boolean getGrabberSolenoid(){
-    return grabberSolenoidOn.get();
-  }
-  
-  public static boolean getPopperSolenoid(){
-    return popperSolenoidOn.get();
-  }
+    public void popPopper()
+    {
+        popperSolenoidOff.set(true);
+        popperSolenoidOn.set(false);
 
-  public static void toggleGrabberSolenoid(){
-    grabberSolenoidOff.set(getGrabberSolenoid());
-    grabberSolenoidOn.set(!getGrabberSolenoid());
-  }
-  
-  public static void togglePopperSolenoid(){
-    // System.out.println("passed");
-    popperSolenoidOff.set(getPopperSolenoid());
-    popperSolenoidOn.set(!getPopperSolenoid());
-  }
+        popperIsPopped = true;
+    }
 
-  public static void setGrabberSolenoid(boolean state){
-    grabberSolenoidOn.set(state);
-    grabberSolenoidOff.set(!state);
-  }
-  
-  public static void setPopperSolenoid(boolean state){
-    popperSolenoidOn.set(state);
-    popperSolenoidOff.set(!state);
-  }
+    public void retractPopper()
+    {
+        popperSolenoidOff.set(false);
+        popperSolenoidOn.set(true);
 
+        popperIsPopped = false;
+    }
 
+    public void togglePopper() 
+    {
+        if (!popperIsPopped) {
+            popPopper();
+        } else {
+            retractPopper();
+        }
+    }
 
-  @Override
-  public void periodic() {
-    // setSolenoidValue(true);
-
-    SmartDashboard.putNumber(this.getName() + "Pneumatics Pressure", getPneumaticsPressure());
-    SmartDashboard.putBoolean("Grabber Solenoid", getGrabberSolenoid());
-    SmartDashboard.putBoolean("Popper Solenoid", getPopperSolenoid());
-
-    // SmartDashboard.putNumber("sonic", sonic.getValue());
-    // if (!sensor.get() && !oi.getOperatorJoystick().getRawButton(5)) {
-    //   Pneumatics.setGrabberSolenoid(true);
-    // } else if (oi.getOperatorJoystick().getRawButton(3)) {
-    //   Pneumatics.setGrabberSolenoid(false);
-    // }
-
-  }
-
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
-  }
+    @Override
+    public void periodic()
+    {
+        SmartDashboard.putNumber("Pressure:", getPressure());
+        SmartDashboard.putString("Popper", popperIsPopped ? "Popped" : "Ready");
+    }
 }
