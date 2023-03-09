@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Pneumatics;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.auton.*;
 import frc.robot.auton.Routines.BumpSideSimpleAuto;
 import frc.robot.auton.Routines.SimpleAuto;
