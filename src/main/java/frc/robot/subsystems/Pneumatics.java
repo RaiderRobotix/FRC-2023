@@ -1,8 +1,11 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -15,6 +18,11 @@ public class Pneumatics extends SubsystemBase {
     private Solenoid popperSolenoidOff;
 
     private boolean popperIsPopped;
+
+    private ShuffleboardTab tab = Shuffleboard.getTab("default");
+    private GenericEntry pressureEntry = tab.add("Pressure", 0).withSize(2, 1).getEntry();
+    private GenericEntry popperEntry = tab.add("Popper", "").withSize(2, 1).getEntry();
+
 
     public Pneumatics() {
         compressor = new Compressor(Constants.Pneumatics.compressorModule, PneumaticsModuleType.REVPH);
@@ -63,7 +71,7 @@ public class Pneumatics extends SubsystemBase {
     @Override
     public void periodic()
     {
-        SmartDashboard.putNumber("Pressure:", getPressure());
-        SmartDashboard.putString("Popper", popperIsPopped ? "Popped" : "Ready");
+        pressureEntry.setDouble(getPressure());
+        popperEntry.setString(popperIsPopped ? "Popped" : "Ready");
     }
 }
