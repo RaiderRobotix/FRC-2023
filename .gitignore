@@ -1,6 +1,11 @@
 # This gitignore has been specially created by the WPILib team.
 # If you remove items from this file, intellisense might break.
 
+#Simulation files
+simgui-ds.json
+simgui.json
+simgui-window.json
+
 ### C++ ###
 # Prerequisites
 *.d
