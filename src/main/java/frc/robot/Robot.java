@@ -26,8 +26,6 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  // private final AutonSelector m_autoSelector = new AutonSelector();
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -36,16 +34,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     ctreConfigs = new CTREConfigs();
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    // ShuffleboardTab autoTab = Shuffleboard.getTab("Auto settings");
-
-    // autonomousModeChooser = new SendableChooser<>();
-    // autonomousModeChooser.setDefaultOption("Simple Middle Ramp", middle);
-    // autonomousModeChooser.addOption("Bump Side Straight", simpleStraight);
-    // autonomousModeChooser.addOption(" Side Straight", simpleStraight);
-
-    // autoTab.add("autoMode", autonomousModeChooser);
   }
 
   /**
