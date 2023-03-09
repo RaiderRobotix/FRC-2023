@@ -64,6 +64,7 @@ public class RobotContainer{
      private final Pneumatics m_pneumatics = new Pneumatics();
      private final Grabber m_grabber = new Grabber();
      private final AutonSelector m_autoSelector = new AutonSelector();
+     private final LimeLight m_limeLight = new LimeLight();
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         s_Swerve.setDefaultCommand(
@@ -151,8 +152,8 @@ public class RobotContainer{
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        // return m_a\][utoSelector.getCommand(s_Swerve, m_elevator, m_arm, m_pneumatics);
-        return new BumpSideSimpleAuto(s_Swerve, m_pneumatics, m_arm);
+        return m_autoSelector.getCommand(s_Swerve, m_elevator, m_arm, m_pneumatics);
+        // return new BumpSideSimpleAuto(s_Swerve, m_pneumatics, m_arm);
         // return new SimpleAutoRamp(s_Swerve, m_pneumatics);
     }
 }
