@@ -4,7 +4,9 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.lib.math.Conversions;
 import frc.lib.util.CTREModuleState;
 import frc.lib.util.SwerveModuleConstants;
@@ -26,6 +28,13 @@ public class SwerveModule {
 
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.Swerve.driveKS, Constants.Swerve.driveKV, Constants.Swerve.driveKA);
 
+    private ShuffleboardTab tab = Shuffleboard.getTab("default");
+    private GenericEntry cancoderEntry;
+    private GenericEntry integratedEntry;
+    private GenericEntry velocityEntry;
+
+
+
     public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants){
         this.moduleNumber = moduleNumber;
         this.angleOffset = moduleConstants.angleOffset;
@@ -44,6 +53,16 @@ public class SwerveModule {
         mDriveMotor.setNeutralMode(NeutralMode.Brake);
 
         lastAngle = getState().angle;
+
+         cancoderEntry = tab.add("Module " + moduleNumber + " Cancoder", 0).withSize(2, 1).getEntry();
+         integratedEntry = tab.add("Module " + moduleNumber + " Integrated", 0).withSize(2, 1).getEntry();
+         velocityEntry = tab.add("Module " + moduleNumber + " Velocity", 0).withSize(2, 1).getEntry();
+    }
+
+    public void updateDashboard(){
+        cancoderEntry.setDouble(getCanCoder().getDegrees());
+        integratedEntry.setDouble(getPosition().angle.getDegrees());
+        velocityEntry.setDouble(getState().speedMetersPerSecond);
     }
 
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){
