@@ -27,14 +27,13 @@ public class AutonSelector {
     private SendableChooser<AutonomousMode> autonomousModeChooser;
     private Pose2d startingPose;
     public AutonSelector(){
-        ShuffleboardTab autoTab = Shuffleboard.getTab("Auto settings");
+        ShuffleboardTab autoTab = Shuffleboard.getTab("default");
 
         autonomousModeChooser = new SendableChooser<>();
         autonomousModeChooser.setDefaultOption("Simple Middle Ramp", AutonomousMode.middle);
-        autonomousModeChooser.addOption("Bump Side Straight", AutonomousMode.simpleStraight);
-        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
+        autonomousModeChooser.addOption("Bump Side Straight", AutonomousMode.simpleStraight);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
 
-        autoTab.add("autoMode", autonomousModeChooser);
+        autoTab.add("autoMode", autonomousModeChooser).withSize(5, 2);
     }
 
 
