@@ -57,6 +57,10 @@ public class Grabber extends SubsystemBase {
         return grabberIsOpen;
     }
 
+    public boolean grabberIsClosed() {
+        return !grabberIsOpen;
+    }
+
     public boolean getDistanceSensor() 
     {
         return !distanceSensor.get();
@@ -65,6 +69,14 @@ public class Grabber extends SubsystemBase {
     public boolean getHpTouchSensor() 
     {
         return hpTouchSensor.get();
+    }
+
+    public void closeIfObjectDetected()
+    {
+        if (getDistanceSensor())
+        {
+            closeGrabber();
+        }
     }
 
     @Override

@@ -20,11 +20,15 @@ import frc.robot.auton.Routines.Test90;
 import frc.robot.auton.Routines.PopBalance;
 import frc.robot.auton.Routines.PopCrossBalance;
 import frc.robot.auton.Routines.PopCrossBridgeGrab;
+import frc.robot.auton.Routines.BumpSideGrabAuto;
+import frc.robot.auton.Routines.NoBumpSideGrabAuto;
 // import frc.robot.autos.Routines.bottom;
 // import frc.robot.autos.Routines.middle;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Grabber;
 
 /** Add your docs here. */
 public class AutonSelector {
@@ -41,11 +45,13 @@ public class AutonSelector {
         autonomousModeChooser.addOption("Test Path Planner 90 Line", AutonomousMode.testAutoW90);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
         autonomousModeChooser.addOption("Test Path Planner 180 Line", AutonomousMode.testAutoW180);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
         //autonomousModeChooser.addOption("Pop Cross Bridge Grab", AutonomousMode.PopCrossBridgeGrab);
+        autonomousModeChooser.addOption("Bump Side Grab", AutonomousMode.BumpSideGrabAuto);
+        autonomousModeChooser.addOption("No Bump Side Grab", AutonomousMode.NoBumpSideGrabAuto);
         autoTab.add("autoMode", autonomousModeChooser).withSize(5, 2);
     }
     
     
-    public Command getCommand(Swerve m_swerve, frc.robot.subsystems.Elevator m_elevator, Arm m_arm, Pneumatics m_pneumatics){
+    public Command getCommand(Swerve m_swerve, Elevator m_elevator, Arm m_arm, Pneumatics m_pneumatics, Grabber m_grabber){
         AutonomousMode mode = autonomousModeChooser.getSelected();
         // System.out.println("passed");
 
@@ -63,8 +69,12 @@ public class AutonSelector {
                 return new PopBalance(m_swerve, m_pneumatics);   
             case CrossBridgeBalance:
                 return new PopCrossBalance(m_swerve, m_pneumatics);   
-            case PopCrossBridgeGrab:
-                return new PopCrossBridgeGrab(m_swerve ,m_pneumatics);     
+            // case PopCrossBridgeGrab:
+            //     return new PopCrossBridgeGrab(m_swerve ,m_pneumatics);     
+            case BumpSideGrabAuto:
+                return new BumpSideGrabAuto(m_swerve, m_pneumatics, m_arm);
+            case NoBumpSideGrabAuto:
+                return new NoBumpSideGrabAuto(m_swerve, m_pneumatics, m_arm, m_elevator, m_grabber);
             // case straightAutoActions:
             //     return new straightLineActions("Straight Line with Actions", m_sweve);
             // case top:
@@ -89,7 +99,9 @@ public class AutonSelector {
         testAutoW180,
         Balance,
         CrossBridgeBalance,
-        PopCrossBridgeGrab
+        BumpSideGrabAuto,
+        PopCrossBridgeGrab,
+        NoBumpSideGrabAuto
     }
 
     // public static Pose2d getStartingPose(){
