@@ -28,7 +28,7 @@ public class SetHeading extends PIDCommand {
           m_swerve.drive(new Translation2d(0,0), output, false, true);
         });
     addRequirements(m_swerve);
-    getController().setTolerance(PIDConstants.robotAngle.tolerance);
+    // getController().setTolerance(PIDConstants.robotAngle.tolerance);
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
   }

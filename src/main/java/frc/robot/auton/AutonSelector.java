@@ -17,8 +17,9 @@ import frc.robot.auton.Routines.SimpleAutoRamp;
 import frc.robot.auton.Routines.StraightLineActions;
 import frc.robot.auton.Routines.Test180;
 import frc.robot.auton.Routines.Test90;
-import frc.robot.auton.Routines.SimpleBalance;
-import frc.robot.auton.Routines.CrossBridgeBalance;
+import frc.robot.auton.Routines.PopBalance;
+import frc.robot.auton.Routines.PopCrossBalance;
+import frc.robot.auton.Routines.PopCrossBridgeGrab;
 // import frc.robot.autos.Routines.bottom;
 // import frc.robot.autos.Routines.middle;
 import frc.robot.subsystems.Arm;
@@ -33,13 +34,13 @@ public class AutonSelector {
         ShuffleboardTab autoTab = Shuffleboard.getTab("default");
 
         autonomousModeChooser = new SendableChooser<>();
-        autonomousModeChooser.setDefaultOption("Simple Middle Ramp", AutonomousMode.middle);
+        autonomousModeChooser.setDefaultOption("Pop Cross Bridge Balance", AutonomousMode.CrossBridgeBalance);  
+        autonomousModeChooser.addOption("Pop Balance", AutonomousMode.Balance);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
         autonomousModeChooser.addOption("Bump Side Straight", AutonomousMode.simpleStraight);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
         autonomousModeChooser.addOption("Test Path Planner Straight Line", AutonomousMode.testPathPlanner);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
         autonomousModeChooser.addOption("Test Path Planner 90 Line", AutonomousMode.testAutoW90);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
         autonomousModeChooser.addOption("Test Path Planner 180 Line", AutonomousMode.testAutoW180);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
-        autonomousModeChooser.addOption("Balance", AutonomousMode.Balance);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
-        autonomousModeChooser.addOption("Cross Bridge Balance", AutonomousMode.CrossBridgeBalance);  
+        //autonomousModeChooser.addOption("Pop Cross Bridge Grab", AutonomousMode.PopCrossBridgeGrab);
         autoTab.add("autoMode", autonomousModeChooser).withSize(5, 2);
     }
     
@@ -50,8 +51,6 @@ public class AutonSelector {
 
 
         switch (mode) {
-            case middle:
-                return new SimpleAutoRamp(m_swerve, m_pneumatics);
             case simpleStraight:   
                 return new BumpSideSimpleAuto(m_swerve, m_pneumatics, m_arm);
             case testPathPlanner:
@@ -61,9 +60,11 @@ public class AutonSelector {
             case testAutoW180:
                 return new Test180(m_swerve, m_pneumatics); 
             case Balance:
-                return new SimpleBalance(m_swerve);   
+                return new PopBalance(m_swerve, m_pneumatics);   
             case CrossBridgeBalance:
-                return new CrossBridgeBalance(m_swerve);        
+                return new PopCrossBalance(m_swerve, m_pneumatics);   
+            case PopCrossBridgeGrab:
+                return new PopCrossBridgeGrab(m_swerve ,m_pneumatics);     
             // case straightAutoActions:
             //     return new straightLineActions("Straight Line with Actions", m_sweve);
             // case top:
@@ -87,7 +88,8 @@ public class AutonSelector {
         testAutoW90,
         testAutoW180,
         Balance,
-        CrossBridgeBalance
+        CrossBridgeBalance,
+        PopCrossBridgeGrab
     }
 
     // public static Pose2d getStartingPose(){
