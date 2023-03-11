@@ -59,11 +59,8 @@ public class SimpleBalance extends CommandBase {
             step++;
           }
         } else if(step == 2){
-          //this.speeds = new Translation2d(-0.15 * Constants.SwerveConstants.maxSpeed, 0 * Constants.SwerveConstants.maxSpeed);
-         // m_swerve.drive(speeds, 0, false, true);
           if(timer.get() >= 0.5){
             m_swerve.stop();
-            //m_swerve.setAngle(90);
             timer.stop();
             timer.reset();
             timer.start();
@@ -110,42 +107,6 @@ public class SimpleBalance extends CommandBase {
             step++;
           }
         }
-        // else if(step == 5){
-        //   if(m_swerve.getPitch() >= 2.5 && timer.get() < 0.25){
-        //     this.speeds = new Translation2d(-0.2 * Constants.SwerveConstants.maxSpeed, 0 * Constants.SwerveConstants.maxSpeed);
-        //     m_swerve.drive(speeds, 0, false, true);
-        //   }
-        //   else{
-        //     m_swerve.stop();
-        //     m_swerve.setAngle(90);
-        //     timer.stop();
-        //     timer.reset();
-        //     timer.start();
-        //     step++;
-        //   }
-        // }
-        // else if (step == 6) {
-        //   if (timer.get() > 0.5) {
-        //     timer.stop();
-        //     timer.reset();
-        //     timer.start();
-        //     step++;
-        //   }
-        // }
-        // else if(step == 7){
-        //   if(m_swerve.getPitch() >= 2.5 && timer.get() < 0.25){
-        //     this.speeds = new Translation2d(-0.2 * Constants.SwerveConstants.maxSpeed, 0 * Constants.SwerveConstants.maxSpeed);
-        //     m_swerve.drive(speeds, 0, false, true);
-        //   }
-        //   else{
-        //     m_swerve.stop();
-        //     m_swerve.setAngle(90);
-        //     timer.stop();
-        //     timer.reset();
-        //     timer.start();
-        //     step++;
-        //   }
-        //}
         else {
             timer.stop();
             m_swerve.stop();
