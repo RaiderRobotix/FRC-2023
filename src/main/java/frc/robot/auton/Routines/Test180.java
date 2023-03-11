@@ -13,20 +13,21 @@ import frc.robot.subsystems.Swerve;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class StraightLineActions extends SequentialCommandGroup {
-  /** Creates a new StraightLineActions. */
-
+public class Test180 extends SequentialCommandGroup {
+  /** Creates a new Test180. */
   private String[] paths = {
-    "Straight Line 0"
+    "180 Degree 0",
+    "180 Degree 1"
   };
-  
-  public StraightLineActions(Swerve m_swerve, Pneumatics m_pneumatics) {
+
+  public Test180(Swerve m_swerve, Pneumatics m_pneumatics) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
+
     addCommands(
-      new InstantCommand(() -> m_swerve.zeroGyro()),
+      new AutoFromPathPlanner(m_swerve, paths[0], 5, true),
       new InstantCommand(() -> m_pneumatics.popPopper()),
-      new AutoFromPathPlanner(m_swerve, paths[0], 5, true)
+      new AutoFromPathPlanner(m_swerve, paths[1], 5, true)
     );
   }
 }

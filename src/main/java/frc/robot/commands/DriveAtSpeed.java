@@ -19,7 +19,7 @@ public class DriveAtSpeed extends CommandBase {
   private Swerve m_swerve;
   public DriveAtSpeed(Swerve m_swerve, double xSpeed, double ySpeed, double seconds) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.speeds = new Translation2d(xSpeed * Constants.Swerve.maxSpeed, ySpeed * Constants.Swerve.maxSpeed);
+    this.speeds = new Translation2d(xSpeed * Constants.SwerveConstants.maxSpeed, ySpeed * Constants.SwerveConstants.maxSpeed);
     this.seconds = seconds;
     this.m_swerve = m_swerve;
     this.timer = new Timer();

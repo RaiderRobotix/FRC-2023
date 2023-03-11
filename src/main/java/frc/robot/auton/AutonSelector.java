@@ -12,10 +12,11 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
-import frc.robot.Constants.Elevator;
 import frc.robot.auton.Routines.BumpSideSimpleAuto;
 import frc.robot.auton.Routines.SimpleAutoRamp;
+import frc.robot.auton.Routines.StraightLineActions;
+import frc.robot.auton.Routines.Test180;
+import frc.robot.auton.Routines.Test90;
 // import frc.robot.autos.Routines.bottom;
 // import frc.robot.autos.Routines.middle;
 import frc.robot.subsystems.Arm;
@@ -32,25 +33,30 @@ public class AutonSelector {
         autonomousModeChooser = new SendableChooser<>();
         autonomousModeChooser.setDefaultOption("Simple Middle Ramp", AutonomousMode.middle);
         autonomousModeChooser.addOption("Bump Side Straight", AutonomousMode.simpleStraight);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
+        autonomousModeChooser.addOption("Test Path Planner Straight Line", AutonomousMode.testPathPlanner);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
+        autonomousModeChooser.addOption("Test Path Planner 90 Line", AutonomousMode.testAutoW90);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
+        autonomousModeChooser.addOption("Test Path Planner 180 Line", AutonomousMode.testAutoW180);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
 
         autoTab.add("autoMode", autonomousModeChooser).withSize(5, 2);
     }
-
-
+    
+    
     public Command getCommand(Swerve m_sweve, frc.robot.subsystems.Elevator m_elevator, Arm m_arm, Pneumatics m_pneumatics){
         AutonomousMode mode = autonomousModeChooser.getSelected();
+        // System.out.println("passed");
+
 
         switch (mode) {
             case middle:
                 return new SimpleAutoRamp(m_sweve, m_pneumatics);
             case simpleStraight:   
                 return new BumpSideSimpleAuto(m_sweve, m_pneumatics, m_arm);
-            // case testAutoLeft:
-            //     return new straightLineLeft("Straight Line Left", m_sweve);
-            // case testAutoW90:
-            //     return new straightLine("Straight Line w 90", m_sweve);
-            // case testAutoW180:
-            //     return new straightLine("Straight Line w 180", m_sweve);            
+            case testPathPlanner:
+                return new StraightLineActions(m_sweve, m_pneumatics);
+            case testAutoW90:
+                return new Test90(m_sweve, m_pneumatics);
+            case testAutoW180:
+                return new Test180(m_sweve, m_pneumatics);            
             // case straightAutoActions:
             //     return new straightLineActions("Straight Line with Actions", m_sweve);
             // case top:
@@ -69,7 +75,10 @@ public class AutonSelector {
 
     private enum AutonomousMode {
         middle,
-        simpleStraight
+        simpleStraight,
+        testPathPlanner,
+        testAutoW90,
+        testAutoW180
     }
 
     // public static Pose2d getStartingPose(){
