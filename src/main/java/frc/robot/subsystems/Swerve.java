@@ -112,7 +112,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public double getPitch(){
-        return gyro.getPitch();
+        return gyro.getRoll();
     }
 
     public Rotation2d getRotation2dIEEE(){
@@ -157,6 +157,8 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic(){
+        SmartDashboard.putNumber("Pitch", getPitch());
+
         swerveOdometry.update(getRotation2dIEEE(), getModulePositions());  
             
         gyroEntry.setDouble(getYaw().getDegrees());

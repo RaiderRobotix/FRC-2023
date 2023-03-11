@@ -4,53 +4,53 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.PIDConstants;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.Swerve;
+import frc.robot.Constants;
+import edu.wpi.first.math.geometry.Translation2d;
 
-public class driveDistance extends CommandBase {
-  /** Creates a new driveDistance. */
-  Swerve m_swerve;
-  double distance;
-  Pose2d initalPose;
-  boolean isDone;
-
-  PIDController driveController;
-
-  public driveDistance(Swerve m_swerve, double distance) {
-    this.m_swerve = m_swerve;
-    this.distance = distance;
-
-    driveController = new PIDController(PIDConstants.robotDriveDistance.kp, PIDConstants.robotDriveDistance.ki, PIDConstants.robotDriveDistance.kd);
-    driveController.setTolerance(PIDConstants.robotDriveDistance.tolerance);
-    addRequirements(m_swerve);
+public class DriveDistance extends CommandBase {
+  /** Creates a new DriveDistance. */
+  private Translation2d speeds;
+  private double targetDistance;
+  private Timer timer;
+  private boolean isDone;
+  private Swerve m_swerve;
+  public DriveDistance(Swerve m_swerve, double xSpeed, double ySpeed, double meters) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.speeds = new Translation2d(xSpeed * Constants.SwerveConstants.maxSpeed, ySpeed * Constants.SwerveConstants.maxSpeed);
+    this.targetDistance = meters;
+    this.m_swerve = m_swerve;
+    this.timer = new Timer();
+    addRequirements(m_swerve);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    initalPose = m_swerve.getPose();
     isDone = false;
+    timer.reset();
+    timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(driveController.atSetpoint()){
-      isDone = true;
+    if(m_swerve.getModulePositions()[2].distanceMeters <= targetDistance){
+      m_swerve.drive(speeds, 0, false, true);
     } else {
-      double output = driveController.calculate(m_swerve.getPose().getX(), initalPose.getX() + distance);
-      m_swerve.drive(new Translation2d(output, 0), 0, false, true);
+      timer.stop();
+      m_swerve.stop();
+      isDone = true;
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_swerve.stop();
+  }
 
   // Returns true when the command should end.
   @Override

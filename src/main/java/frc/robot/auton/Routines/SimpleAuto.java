@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.balance;
 import frc.robot.commands.DriveAtSpeed;
+import frc.robot.commands.DriveDistance;
 import frc.robot.commands.SetRobotHeading;
 import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.Swerve;
@@ -26,7 +27,8 @@ public class SimpleAuto extends SequentialCommandGroup {
       new InstantCommand(() -> m_swerve.zeroGyro()),
       new InstantCommand(() -> m_pneumatics.popPopper()),
       new WaitCommand(2),
-      new DriveAtSpeed(m_swerve, 0.4, 0, 2.2));
+      new DriveDistance(m_swerve, 0.3, 0, 4.9));
+      // new DriveAtSpeed(m_swerve, 0.4, 0, 2.3));
       // new DriveAtSpeed(m_swerve, 0.2, 0.2, 2));
       // new SetRobotHeading(m_swerve, 45));
       // new driveDistance(-2, mSwerve),

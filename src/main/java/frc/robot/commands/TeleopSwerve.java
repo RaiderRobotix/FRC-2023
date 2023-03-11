@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 
@@ -56,5 +57,7 @@ public class TeleopSwerve extends CommandBase {
             !robotCentricSup.getAsBoolean(), 
             true
         );
+
+        SmartDashboard.putNumber("Left Joystick Y: ", translationSup.getAsDouble());
     }
 }

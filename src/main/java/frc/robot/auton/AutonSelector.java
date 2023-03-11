@@ -17,6 +17,8 @@ import frc.robot.auton.Routines.SimpleAutoRamp;
 import frc.robot.auton.Routines.StraightLineActions;
 import frc.robot.auton.Routines.Test180;
 import frc.robot.auton.Routines.Test90;
+import frc.robot.auton.Routines.SimpleBalance;
+
 // import frc.robot.autos.Routines.bottom;
 // import frc.robot.autos.Routines.middle;
 import frc.robot.subsystems.Arm;
@@ -36,27 +38,30 @@ public class AutonSelector {
         autonomousModeChooser.addOption("Test Path Planner Straight Line", AutonomousMode.testPathPlanner);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
         autonomousModeChooser.addOption("Test Path Planner 90 Line", AutonomousMode.testAutoW90);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
         autonomousModeChooser.addOption("Test Path Planner 180 Line", AutonomousMode.testAutoW180);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
+        autonomousModeChooser.addOption("Balance", AutonomousMode.Balance);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
 
         autoTab.add("autoMode", autonomousModeChooser).withSize(5, 2);
     }
     
     
-    public Command getCommand(Swerve m_sweve, frc.robot.subsystems.Elevator m_elevator, Arm m_arm, Pneumatics m_pneumatics){
+    public Command getCommand(Swerve m_swerve, frc.robot.subsystems.Elevator m_elevator, Arm m_arm, Pneumatics m_pneumatics){
         AutonomousMode mode = autonomousModeChooser.getSelected();
         // System.out.println("passed");
 
 
         switch (mode) {
             case middle:
-                return new SimpleAutoRamp(m_sweve, m_pneumatics);
+                return new SimpleAutoRamp(m_swerve, m_pneumatics);
             case simpleStraight:   
-                return new BumpSideSimpleAuto(m_sweve, m_pneumatics, m_arm);
+                return new BumpSideSimpleAuto(m_swerve, m_pneumatics, m_arm);
             case testPathPlanner:
-                return new StraightLineActions(m_sweve, m_pneumatics);
+                return new StraightLineActions(m_swerve, m_pneumatics);
             case testAutoW90:
-                return new Test90(m_sweve, m_pneumatics);
+                return new Test90(m_swerve, m_pneumatics);
             case testAutoW180:
-                return new Test180(m_sweve, m_pneumatics);            
+                return new Test180(m_swerve, m_pneumatics); 
+            case Balance:
+                return new SimpleBalance(m_swerve);           
             // case straightAutoActions:
             //     return new straightLineActions("Straight Line with Actions", m_sweve);
             // case top:
@@ -78,7 +83,8 @@ public class AutonSelector {
         simpleStraight,
         testPathPlanner,
         testAutoW90,
-        testAutoW180
+        testAutoW180,
+        Balance
     }
 
     // public static Pose2d getStartingPose(){

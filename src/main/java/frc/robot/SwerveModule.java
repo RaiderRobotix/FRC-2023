@@ -61,7 +61,7 @@ public class SwerveModule {
 
     public void updateDashboard(){
         cancoderEntry.setDouble(getCanCoder().getDegrees());
-        integratedEntry.setDouble(getPosition().angle.getDegrees());
+        integratedEntry.setDouble(getPosition().distanceMeters);
         velocityEntry.setDouble(getState().speedMetersPerSecond);
     }
 
@@ -144,7 +144,7 @@ public class SwerveModule {
 
     public SwerveModulePosition getPosition(){
         return new SwerveModulePosition(
-            Conversions.falconToMeters(mDriveMotor.getSelectedSensorPosition(), Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio), 
+            Conversions.falconToMeters(-mDriveMotor.getSelectedSensorPosition(), Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio), 
             getAngle()
         );
     }
