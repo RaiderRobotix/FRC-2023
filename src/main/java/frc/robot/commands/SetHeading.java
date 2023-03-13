@@ -20,7 +20,7 @@ public class SetHeading extends PIDCommand {
         // The controller that the command will use
         new PIDController(PIDConstants.robotAngle.kp, PIDConstants.robotAngle.ki, PIDConstants.robotAngle.kp),
         // This should return the measurement
-        () -> m_swerve.getYaw().getDegrees(),
+        () -> m_swerve.getRotation2dIEEE().getDegrees(),
         // This should return the setpoint (can also be a constant)
         () -> desiredHeading,
         // This uses the output
@@ -28,7 +28,7 @@ public class SetHeading extends PIDCommand {
           m_swerve.drive(new Translation2d(0,0), output, false, true);
         });
     addRequirements(m_swerve);
-    // getController().setTolerance(PIDConstants.robotAngle.tolerance);
+    getController().setTolerance(PIDConstants.robotAngle.tolerance);
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
   }

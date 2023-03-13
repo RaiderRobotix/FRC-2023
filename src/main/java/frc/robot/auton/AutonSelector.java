@@ -22,6 +22,7 @@ import frc.robot.auton.Routines.PopCrossBalance;
 import frc.robot.auton.Routines.PopCrossBridgeGrab;
 import frc.robot.auton.Routines.BumpSideGrabAuto;
 import frc.robot.auton.Routines.NoBumpSideGrabAuto;
+import frc.robot.commands.SetHeading;
 // import frc.robot.autos.Routines.bottom;
 // import frc.robot.autos.Routines.middle;
 import frc.robot.subsystems.Arm;
@@ -61,8 +62,10 @@ public class AutonSelector {
                 return new BumpSideSimpleAuto(m_swerve, m_pneumatics, m_arm);
             case testPathPlanner:
                 return new StraightLineActions(m_swerve, m_pneumatics);
+            // case testAutoW90:
+            //     return new Test90(m_swerve, m_pneumatics);
             case testAutoW90:
-                return new Test90(m_swerve, m_pneumatics);
+                return new SetHeading(m_swerve, 180);
             case testAutoW180:
                 return new Test180(m_swerve, m_pneumatics); 
             case Balance:
