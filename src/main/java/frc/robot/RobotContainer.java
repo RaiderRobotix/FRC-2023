@@ -52,6 +52,8 @@ public class RobotContainer{
     private final JoystickButton armOutButton = new JoystickButton(operator, 9);
     private final JoystickButton armInButton = new JoystickButton(operator, 11);
 
+    private final JoystickButton groundConePickup = new JoystickButton(operator, 6);
+
     private final JoystickButton hpGrabSequenceButton = new JoystickButton(operator, 2);
     private final JoystickButton toggleGrabberButton = new JoystickButton(operator, 1);
     private final JoystickButton togglePopperButton = new JoystickButton(operator, 4);
@@ -142,6 +144,10 @@ public class RobotContainer{
         autoScoreHighButton.onTrue(
                     new ElevatorToHeight(m_elevator, Constants.Elevator.topRowHeight))
             .onTrue(new ArmToPosition(m_arm, Constants.Arm.topRowLength));
+
+        groundConePickup.onTrue(
+            new GroundConePickup(s_Swerve, m_arm, m_grabber, m_elevator));
+            
     }
 
     /**

@@ -22,8 +22,9 @@ public final class Constants {
 
         public static double topRowLength      = 0.63; // actual 0.655, set under to overshoot
         public static double middleRowLength   = 0.335; // actual 0.33,  
-        public static double floorPickupLength = 0.25;
+        public static double floorPickupLength = 0.307; //Old one 0.25
         public static double humanPlayerLength = 0.07; 
+        public static double groundPickupLength = 0.542;
 
         public static double autoSpeed = 0.85;
         public static double manualSpeed = 0.5;
