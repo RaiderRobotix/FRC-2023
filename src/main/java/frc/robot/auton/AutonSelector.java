@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.auton.Routines.BumpSideSimpleAuto;
 import frc.robot.auton.Routines.SimpleAutoRamp;
 import frc.robot.auton.Routines.StraightLineActions;
@@ -20,6 +21,8 @@ import frc.robot.auton.Routines.Test90;
 import frc.robot.auton.Routines.PopBalance;
 import frc.robot.auton.Routines.PopCrossBalance;
 import frc.robot.auton.Routines.PopCrossBridgeGrab;
+import frc.robot.auton.Routines.SimpleAuto;
+import frc.robot.Constants;
 import frc.robot.auton.Routines.BumpSideGrabAuto;
 import frc.robot.auton.Routines.NoBumpSideGrabAuto;
 import frc.robot.commands.*;
@@ -34,7 +37,6 @@ import frc.robot.subsystems.Grabber;
 /** Add your docs here. */
 public class AutonSelector {
     private SendableChooser<AutonomousMode> autonomousModeChooser;
-    private Pose2d startingPose;
     public AutonSelector(){
         ShuffleboardTab autoTab = Shuffleboard.getTab("default");
 
@@ -45,9 +47,10 @@ public class AutonSelector {
         autonomousModeChooser.addOption("Test Path Planner Straight Line", AutonomousMode.testPathPlanner);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
         autonomousModeChooser.addOption("Test Path Planner 90 Line", AutonomousMode.testAutoW90);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
         autonomousModeChooser.addOption("Test Path Planner 180 Line", AutonomousMode.testAutoW180);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
-        //autonomousModeChooser.addOption("Pop Cross Bridge Grab", AutonomousMode.PopCrossBridgeGrab);
+        autonomousModeChooser.addOption("Pop Cross Bridge Grab", AutonomousMode.PopCrossBridgeGrab);
         autonomousModeChooser.addOption("Bump Side Grab", AutonomousMode.BumpSideGrabAuto);
         autonomousModeChooser.addOption("No Bump Side Grab", AutonomousMode.NoBumpSideGrabAuto);
+        autonomousModeChooser.addOption("Simple High Cone", AutonomousMode.highConeAuto);
         autoTab.add("autoMode", autonomousModeChooser).withSize(5, 2);
     }
     
@@ -58,31 +61,28 @@ public class AutonSelector {
 
 
         switch (mode) {
+            case highConeAuto:
+                return new ElevatorToHeight(m_elevator, Constants.Elevator.topRowHeight)
+                .alongWith(new ArmToPosition(m_arm, Constants.Arm.topRowLength)
+                .unless(new Trigger(() -> Math.abs(m_elevator.getPotValue() - Constants.Elevator.middleRowHeight) <= 0.05).negate()));
             case simpleStraight:   
-            //     return new Test90(m_swerve, m_pneumatics);
+                return new SimpleAuto(m_swerve, m_pneumatics);
+            case testPathPlanner:
+                return new StraightLineActions(m_swerve, m_pneumatics);
             case testAutoW90:
-                // return new SetHeading(m_swerve, 180);
-                return new ToHighRowPreset(m_elevator, m_arm, m_grabber);
+                return new Test90(m_swerve, m_pneumatics);
             case testAutoW180:
                 return new Test180(m_swerve, m_pneumatics); 
             case Balance:
                 return new PopBalance(m_swerve, m_pneumatics);   
             case CrossBridgeBalance:
                 return new PopCrossBalance(m_swerve, m_pneumatics);   
-            // case PopCrossBridgeGrab:
-            //     return new PopCrossBridgeGrab(m_swerve ,m_pneumatics);     
+            case PopCrossBridgeGrab:
+                return new PopCrossBridgeGrab(m_swerve ,m_pneumatics);     
             case BumpSideGrabAuto:
                 return new BumpSideGrabAuto(m_swerve, m_pneumatics, m_arm);
             case NoBumpSideGrabAuto:
                 return new NoBumpSideGrabAuto(m_swerve, m_pneumatics, m_arm, m_elevator, m_grabber);
-            // case straightAutoActions:
-            //     return new straightLineActions("Straight Line with Actions", m_sweve);
-            // case top:
-            //     return new top("Top", m_sweve, m_elevator, m_arm);
-            // case middle:
-            //     return new middle("Middle", m_sweve);
-            // case bottom:
-            //     return new bottom("Bottom", m_sweve);        
             default:
                 System.out.println("ERROR: unexpected auto mode: " + mode);
                 break; 
@@ -101,10 +101,7 @@ public class AutonSelector {
         CrossBridgeBalance,
         BumpSideGrabAuto,
         PopCrossBridgeGrab,
-        NoBumpSideGrabAuto
+        NoBumpSideGrabAuto,
+        highConeAuto
     }
-
-    // public static Pose2d getStartingPose(){
-    //     return startingPose;
-    // }
 }
