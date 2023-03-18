@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.auton.Routines.BumpSideSimpleAuto;
 import frc.robot.auton.Routines.SimpleAutoRamp;
-import frc.robot.auton.Routines.StraightLineActions;
+import frc.robot.auton.Routines.straightLineActions;
 import frc.robot.auton.Routines.Test180;
 import frc.robot.auton.Routines.Test90;
 import frc.robot.auton.Routines.PopBalance;
@@ -68,7 +68,7 @@ public class AutonSelector {
             case simpleStraight:   
                 return new SimpleAuto(m_swerve, m_pneumatics);
             case testPathPlanner:
-                return new StraightLineActions(m_swerve, m_pneumatics);
+                return new straightLineActions(m_swerve, m_pneumatics);
             case testAutoW90:
                 return new Test90(m_swerve, m_pneumatics);
             case testAutoW180:
