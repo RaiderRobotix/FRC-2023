@@ -145,8 +145,13 @@ public class RobotContainer{
                     new ElevatorToHeight(m_elevator, Constants.Elevator.topRowHeight))
             .onTrue(new ArmToPosition(m_arm, Constants.Arm.topRowLength));
 
+        // groundConePickup.onTrue(
+        //     new GroundConePickup(s_Swerve, m_arm, m_grabber, m_elevator));
+
         groundConePickup.onTrue(
-            new GroundConePickup(s_Swerve, m_arm, m_grabber, m_elevator));
+                    new GroundPickup(s_Swerve, m_arm))
+            .onTrue(new InstantCommand(() -> m_grabber.closeGrabber()))
+            .onTrue(new ToHumanPlayerHeight(m_elevator, m_arm));
             
     }
 
