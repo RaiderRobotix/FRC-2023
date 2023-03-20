@@ -13,19 +13,9 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.auton.Routines.BumpSideSimpleAuto;
-import frc.robot.auton.Routines.SimpleAutoRamp;
-import frc.robot.auton.Routines.straightLineActions;
-import frc.robot.auton.Routines.Test180;
-import frc.robot.auton.Routines.Test90;
-import frc.robot.auton.Routines.PopBalance;
-import frc.robot.auton.Routines.PopCrossBalance;
-import frc.robot.auton.Routines.PopCrossBridgeGrab;
-import frc.robot.auton.Routines.SimpleAuto;
 import frc.robot.Constants;
-import frc.robot.auton.Routines.BumpSideGrabAuto;
-import frc.robot.auton.Routines.NoBumpSideGrabAuto;
 import frc.robot.commands.*;
+import frc.robot.auton.Routines.*;
 // import frc.robot.autos.Routines.bottom;
 // import frc.robot.autos.Routines.middle;
 import frc.robot.subsystems.Arm;
@@ -51,6 +41,7 @@ public class AutonSelector {
         autonomousModeChooser.addOption("Bump Side Grab", AutonomousMode.BumpSideGrabAuto);
         autonomousModeChooser.addOption("No Bump Side Grab", AutonomousMode.NoBumpSideGrabAuto);
         autonomousModeChooser.addOption("Simple High Cone", AutonomousMode.highConeAuto);
+        autonomousModeChooser.addOption("Cone Score Bump Turn 180", AutonomousMode.ConeBumpCross);
         autoTab.add("autoMode", autonomousModeChooser).withSize(5, 2);
     }
     
@@ -83,6 +74,9 @@ public class AutonSelector {
                 return new BumpSideGrabAuto(m_swerve, m_pneumatics, m_arm);
             case NoBumpSideGrabAuto:
                 return new NoBumpSideGrabAuto(m_swerve, m_pneumatics, m_arm, m_elevator, m_grabber);
+            case ConeBumpCross:
+                return new ConeBumpTurn(m_swerve, m_elevator, m_arm, m_grabber);
+            
             default:
                 System.out.println("ERROR: unexpected auto mode: " + mode);
                 break; 
@@ -102,6 +96,7 @@ public class AutonSelector {
         BumpSideGrabAuto,
         PopCrossBridgeGrab,
         NoBumpSideGrabAuto,
-        highConeAuto
+        highConeAuto,
+        ConeBumpCross
     }
 }
