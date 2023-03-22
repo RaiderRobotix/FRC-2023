@@ -1,14 +1,19 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-// import frc.robot.commands.drive;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+// import frc.robot.com
+
+
 // import frc.robot.commands.pickdown;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
@@ -52,7 +57,7 @@ public class RobotContainer{
     private final JoystickButton armOutButton = new JoystickButton(operator, 9);
     private final JoystickButton armInButton = new JoystickButton(operator, 11);
 
-    private final JoystickButton groundConePickup = new JoystickButton(operator, 6);
+    private final JoystickButton groundConePickup = new JoystickButton(driver, 6);
 
     private final JoystickButton hpGrabSequenceButton = new JoystickButton(operator, 2);
     private final JoystickButton toggleGrabberButton = new JoystickButton(operator, 1);
@@ -145,15 +150,20 @@ public class RobotContainer{
                     new ElevatorToHeight(m_elevator, Constants.Elevator.topRowHeight))
             .onTrue(new ArmToPosition(m_arm, Constants.Arm.topRowLength));
 
-        // groundConePickup.onTrue(
-        //     new GroundConePickup(s_Swerve, m_arm, m_grabber, m_elevator));
-
+        //WORKING
         groundConePickup.onTrue(
-                    new GroundPickup(s_Swerve, m_arm))
-            .onTrue(new InstantCommand(() -> m_grabber.closeGrabber()))
-            .onTrue(new ToHumanPlayerHeight(m_elevator, m_arm));
+            new GroundConePickup(s_Swerve, m_arm, m_grabber, m_elevator));
+
+        //TODO Still Need to Fix
+        // groundConePickup.onTrue(Commands.sequence(new GroundPickup(s_Swerve, m_arm),
+        //     new InstantCommand(() -> m_grabber.closeGrabber()), new WaitCommand(0.25)))
+        //     .andThen(new ToHumanPlayerHeight(m_elevator, m_arm));
+                    // new GroundPickup(s_Swerve, m_arm));
+            // .onTrue(new InstantCommand(() -> m_grabber.closeGrabber()))
+            // .onTrue(new ToHumanPlayerHeight(m_elevator, m_arm));
             
     }
+
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
