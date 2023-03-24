@@ -27,7 +27,7 @@ public class PopCrossBalance extends SequentialCommandGroup {
     addCommands(
       new InstantCommand(() -> m_swerve.zeroGyro()),
       new InstantCommand(() -> m_pneumatics.popPopper()),
-      new WaitCommand(1),
+      new WaitCommand(0.5),
       new CrossBridgeBalance(m_swerve));
   }
 }
