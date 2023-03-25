@@ -10,35 +10,40 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.balance;
 import frc.robot.commands.DriveAtSpeed;
+
 import frc.robot.commands.ArmToPosition;
 import frc.robot.commands.ElevatorToHeight;
 import frc.robot.commands.SetRobotHeading;
+import frc.robot.auton.Routines.DriveBackRaiseArm;
 import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.Swerve;
 
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Grabber;
+import frc.robot.subsystems.Elevator;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class BumpSideGrabAuto extends SequentialCommandGroup {
+public class BlueNoBumpSideGrabAuto extends SequentialCommandGroup {
   /** Creates a new simpleAuto. */
-  public BumpSideGrabAuto(Swerve m_swerve, Pneumatics m_pneumatics, Arm m_arm) {
+  public BlueNoBumpSideGrabAuto(Swerve m_swerve, Pneumatics m_pneumatics, Arm m_arm, Elevator m_elevator, Grabber m_grabber) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new InstantCommand(() -> m_swerve.zeroGyro()),
       new InstantCommand(() -> m_pneumatics.popPopper()),
       new WaitCommand(1),
-      new DriveAtSpeed(m_swerve, 0.1, 0.1, 0.3), // move up and left to clear bridge
+      new DriveAtSpeed(m_swerve, 0.1, 0.1, 0.5), // move left to clear bridge
       new WaitCommand(0.5),
       new InstantCommand(() -> m_swerve.setAngle(0)),
+      new DriveAtSpeed(m_swerve, 0.2, 0, 6),
       new WaitCommand(0.5),
-      new DriveAtSpeed(m_swerve, 0.2, 0, 6.0),
+      new ArmToPosition(m_arm, Constants.Arm.floorPickupLength),
+      new DriveAtSpeed(m_swerve, 0, 0.1, 0.1),
+      new InstantCommand(() -> m_grabber.closeIfObjectDetected()),
       new WaitCommand(0.5),
-      //new DriveAtSpeed(m_swerve, 0.0, 0.4, 0.6), // Slams into left wall
-      new WaitCommand(1));
-     // new ArmToPosition(m_arm, Constants.Arm.floorPickupLength));
+      new DriveBackRaiseArm(m_swerve, m_arm, m_elevator, m_grabber, 0.4, 2));
   }
 }

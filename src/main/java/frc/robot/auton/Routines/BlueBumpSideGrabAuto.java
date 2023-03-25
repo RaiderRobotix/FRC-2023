@@ -22,16 +22,16 @@ import frc.robot.subsystems.Arm;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class BumpSideGrabAuto extends SequentialCommandGroup {
+public class BlueBumpSideGrabAuto extends SequentialCommandGroup {
   /** Creates a new simpleAuto. */
-  public BumpSideGrabAuto(Swerve m_swerve, Pneumatics m_pneumatics, Arm m_arm) {
+  public BlueBumpSideGrabAuto(Swerve m_swerve, Pneumatics m_pneumatics, Arm m_arm) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new InstantCommand(() -> m_swerve.zeroGyro()),
       new InstantCommand(() -> m_pneumatics.popPopper()),
       new WaitCommand(1),
-      new DriveAtSpeed(m_swerve, 0.1, 0.1, 0.3), // move up and left to clear bridge
+      new DriveAtSpeed(m_swerve, 0.1, -0.1, 0.3), // move up and right to clear bridge
       new WaitCommand(0.5),
       new InstantCommand(() -> m_swerve.setAngle(0)),
       new WaitCommand(0.5),

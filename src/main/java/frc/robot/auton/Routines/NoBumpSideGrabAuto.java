@@ -35,7 +35,7 @@ public class NoBumpSideGrabAuto extends SequentialCommandGroup {
       new InstantCommand(() -> m_swerve.zeroGyro()),
       new InstantCommand(() -> m_pneumatics.popPopper()),
       new WaitCommand(1),
-      new DriveAtSpeed(m_swerve, 0.1, -0.1, 0.5),
+      new DriveAtSpeed(m_swerve, 0.1, -0.1, 0.5), // move right to clear bridge
       new WaitCommand(0.5),
       new InstantCommand(() -> m_swerve.setAngle(0)),
       new DriveAtSpeed(m_swerve, 0.2, 0, 6),

@@ -38,8 +38,10 @@ public class AutonSelector {
         // autonomousModeChooser.addOption("Test Path Planner 90 Line", AutonomousMode.testAutoW90);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
         // autonomousModeChooser.addOption("Test Path Planner 180 Line", AutonomousMode.testAutoW180);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
         // autonomousModeChooser.addOption("Pop Cross Bridge Grab", AutonomousMode.PopCrossBridgeGrab);
-        autonomousModeChooser.addOption("Bump Side", AutonomousMode.BumpSideGrabAuto);
-        autonomousModeChooser.addOption("No Bump Side Grab", AutonomousMode.NoBumpSideGrabAuto);
+        autonomousModeChooser.addOption("RED - Bump Side", AutonomousMode.BumpSideGrabAuto);
+        autonomousModeChooser.addOption("BLUE - Bump Side", AutonomousMode.BlueBumpSideGrabAuto);
+        autonomousModeChooser.addOption("RED - No Bump Side Grab", AutonomousMode.NoBumpSideGrabAuto);
+        autonomousModeChooser.addOption("BLUE - No Bump Side Grab", AutonomousMode.BlueNoBumpSideGrabAuto);
         // autonomousModeChooser.addOption("Simple High Cone", AutonomousMode.highConeAuto);
         // autonomousModeChooser.addOption("Cone Score Bump Turn 180", AutonomousMode.ConeBumpCross);
         autoTab.add("autoMode", autonomousModeChooser).withSize(5, 2);
@@ -72,8 +74,12 @@ public class AutonSelector {
                 return new PopCrossBridgeGrab(m_swerve ,m_pneumatics);     
             case BumpSideGrabAuto:
                 return new BumpSideGrabAuto(m_swerve, m_pneumatics, m_arm);
+            case BlueBumpSideGrabAuto:
+                return new BlueBumpSideGrabAuto(m_swerve, m_pneumatics, m_arm);
             case NoBumpSideGrabAuto:
                 return new NoBumpSideGrabAuto(m_swerve, m_pneumatics, m_arm, m_elevator, m_grabber);
+            case BlueNoBumpSideGrabAuto:
+                return new BlueNoBumpSideGrabAuto(m_swerve, m_pneumatics, m_arm, m_elevator, m_grabber);
             case ConeBumpCross:
                 return new ConeBumpTurn(m_swerve, m_elevator, m_arm, m_grabber);
             
@@ -94,8 +100,10 @@ public class AutonSelector {
         Balance,
         CrossBridgeBalance,
         BumpSideGrabAuto,
+        BlueBumpSideGrabAuto,
         PopCrossBridgeGrab,
         NoBumpSideGrabAuto,
+        BlueNoBumpSideGrabAuto,
         highConeAuto,
         ConeBumpCross
     }
