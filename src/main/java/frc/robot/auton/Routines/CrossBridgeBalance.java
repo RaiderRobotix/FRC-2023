@@ -86,7 +86,7 @@ public class CrossBridgeBalance extends CommandBase {
         // drive forward past mobility line
         this.speeds = new Translation2d(0.2 * Constants.SwerveConstants.maxSpeed, 0 * Constants.SwerveConstants.maxSpeed);
         m_swerve.drive(speeds, 0, false, true);
-        if(timer.get() >= 0.5){
+        if(timer.get() >= 0.7){
           m_swerve.stop();
           timer.stop();
           timer.reset();
