@@ -22,9 +22,9 @@ public class GroundConePickup extends SequentialCommandGroup {
     addCommands(
       //new ElevatorToHeight(m_elevator, Constants.Elevator.lowRowHeight)
       new GroundPickup(m_swerve, m_arm),
-      new InstantCommand(() -> m_grabber.closeGrabber()),
-      new WaitCommand(0.1),
-      new ToHumanPlayerHeight(m_elevator, m_arm)
+      new InstantCommand(() -> m_grabber.closeGrabber())
+      // new WaitCommand(0.1),
+      // new ToHumanPlayerHeight(m_elevator, m_arm)
 
     );
   }
