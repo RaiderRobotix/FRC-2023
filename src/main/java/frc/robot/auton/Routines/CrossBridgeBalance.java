@@ -93,9 +93,20 @@ public class CrossBridgeBalance extends CommandBase {
           timer.start();
           step++;
         }
-      } 
+      }
+      else if (step == 5)
+      {
+          // wait for the bridge to settle from moving
+          if (timer.get() > 0.5)
+          {
+            timer.stop();
+            timer.reset();
+            timer.start();
+            step++;
+          }
+      }
       // same as SimpleBalance routine from here, reverse direction
-      else if(step == 5) {
+      else if(step == 6) {
         this.speeds = new Translation2d(-0.4 * Constants.SwerveConstants.maxSpeed, 0 * Constants.SwerveConstants.maxSpeed);
         m_swerve.drive(speeds, 0, false, true);
         if(m_swerve.getPitch() >= 12){
@@ -103,7 +114,7 @@ public class CrossBridgeBalance extends CommandBase {
           step++;
         }
       }
-      else if(step == 6){
+      else if(step == 7){
         this.speeds = new Translation2d(-0.2 * Constants.SwerveConstants.maxSpeed, 0 * Constants.SwerveConstants.maxSpeed);
         m_swerve.drive(speeds, 0, false, true);
         if(m_swerve.getPitch() <= 5){
@@ -114,7 +125,7 @@ public class CrossBridgeBalance extends CommandBase {
           step++;
         }
       } 
-      else if(step == 7){
+      else if(step == 8){
         if(timer.get() >= 0.5){
           m_swerve.stop();
           timer.stop();
@@ -124,7 +135,7 @@ public class CrossBridgeBalance extends CommandBase {
         
         }
       }
-      else if(step == 8){
+      else if(step == 9){
         this.speeds = new Translation2d(0.20 * Constants.SwerveConstants.maxSpeed, 0 * Constants.SwerveConstants.maxSpeed);
         m_swerve.drive(speeds, 0, false, true);
         if(timer.get() >= 0.75){
@@ -136,7 +147,7 @@ public class CrossBridgeBalance extends CommandBase {
           step++;
         }
       }
-      else if (step == 9) {
+      else if (step == 10) {
         if (timer.get() > 0.5) {
           timer.stop();
           timer.reset();
@@ -144,13 +155,13 @@ public class CrossBridgeBalance extends CommandBase {
           step++;
         }
       }
-      else if (step == 10) {
+      else if (step == 11) {
         // continually adjust
         if (m_swerve.getPitch() <= -2.5) 
         {
           this.speeds = new Translation2d(0.2 * Constants.SwerveConstants.maxSpeed, 0 * Constants.SwerveConstants.maxSpeed);
           m_swerve.drive(speeds, 0, false, true);
-          Timer.delay(0.3);
+          Timer.delay(0.25);
           m_swerve.stop();
           m_swerve.setAngle(90);
           Timer.delay(1.0);
