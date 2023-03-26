@@ -56,6 +56,7 @@ public class RobotContainer{
     
     private final JoystickButton armOutButton = new JoystickButton(operator, 9);
     private final JoystickButton armInButton = new JoystickButton(operator, 11);
+    private final JoystickButton armOverrideButton = new JoystickButton(operator, 6);
 
     private final JoystickButton groundConePickup = new JoystickButton(driver, 6);
 
@@ -105,7 +106,20 @@ public class RobotContainer{
         hpGrabSequenceButton.and(new Trigger(m_grabber::grabberIsOpen)).onTrue(new HPGrabCone(m_arm, m_elevator, m_grabber));
         toggleGrabberButton.onTrue(new InstantCommand(() -> m_grabber.toggleGrabber()));
         togglePopperButton.onTrue(new InstantCommand(() -> m_pneumatics.togglePopper()));
-        
+        armOutButton.and(armOverrideButton).whileTrue(
+            new StartEndCommand(
+                () -> m_arm.extend(Constants.Arm.manualSpeed),
+                () -> m_arm.stop(),
+                m_arm)
+        );
+
+        armInButton.and(armOverrideButton).whileTrue(
+            new StartEndCommand(
+                () -> m_arm.retract(Constants.Arm.manualSpeed),
+                () -> m_arm.stop(),
+                m_arm)
+        );
+
         armOutButton.and(new Trigger(m_arm::upperLimitHit).negate()).whileTrue(
             new StartEndCommand(
                 () -> m_arm.extend(Constants.Arm.manualSpeed),
