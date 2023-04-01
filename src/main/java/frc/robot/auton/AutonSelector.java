@@ -73,7 +73,7 @@ public class AutonSelector {
             case PopCrossBridgeGrab:
                 return new PopCrossBridgeGrab(m_swerve ,m_pneumatics);     
             case BumpSideGrabAuto:
-                return new BumpSideGrabAuto(m_swerve, m_pneumatics, m_arm);
+                return new BumpSideGrabAuto(m_swerve, m_pneumatics, m_arm, m_elevator);
             case BlueBumpSideGrabAuto:
                 return new BlueBumpSideGrabAuto(m_swerve, m_pneumatics, m_arm);
             case NoBumpSideGrabAuto:
