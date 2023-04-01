@@ -22,16 +22,16 @@ public class ConeBumpTurn extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ElevatorToHeight(m_elevator, Constants.Elevator.topRowHeight),
+      new ElevatorToHeight(m_elevator, Constants.Elevator.topRowHeight + 0.01),
       new ArmToPosition(m_arm, Constants.Arm.topRowLength),
+      new ElevatorToHeight(m_elevator, Constants.Elevator.topRowHeight - 0.01),
       new InstantCommand(() -> m_grabber.openGrabber()),
-      new InstantCommand(() -> m_swerve.setAngle(0)),
+      new WaitCommand(0.5),
       new ArmToPosition(m_arm, Constants.Arm.humanPlayerLength),
-      new DriveAtSpeed(m_swerve, 0.1, 0, 0.3),
-      new WaitCommand(0.5),
+      new InstantCommand(() -> m_swerve.setAngle(0)),
       new DriveAtSpeed(m_swerve, -0.2, 0, 6.0),
-      new WaitCommand(0.5),
-      new SetHeading(m_swerve, 180)
+      new WaitCommand(0.5)
+      // new SetHeading(m_swerve, 180)
     );
   }
 }

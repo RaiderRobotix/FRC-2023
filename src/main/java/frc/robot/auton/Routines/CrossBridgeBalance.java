@@ -74,7 +74,7 @@ public class CrossBridgeBalance extends CommandBase {
         // drive forward until robot is flat, past bridge
         this.speeds = new Translation2d(0.2 * Constants.SwerveConstants.maxSpeed, 0 * Constants.SwerveConstants.maxSpeed);
         m_swerve.drive(speeds, 0, false, true);
-        if(m_swerve.getPitch() < 2){
+        if(m_swerve.getPitch() < 3.5){
           m_swerve.stop();
           timer.stop();
           timer.reset();
@@ -138,7 +138,7 @@ public class CrossBridgeBalance extends CommandBase {
       else if(step == 9){
         this.speeds = new Translation2d(0.20 * Constants.SwerveConstants.maxSpeed, 0 * Constants.SwerveConstants.maxSpeed);
         m_swerve.drive(speeds, 0, false, true);
-        if(timer.get() >= 0.75){
+        if(timer.get() >= 1.1){
           m_swerve.stop();
           m_swerve.setAngle(90);
           timer.stop();

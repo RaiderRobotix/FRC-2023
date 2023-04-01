@@ -32,7 +32,7 @@ public class AutonSelector {
 
         autonomousModeChooser = new SendableChooser<>();
         autonomousModeChooser.setDefaultOption("Pop Cross Bridge Balance", AutonomousMode.CrossBridgeBalance);  
-        // autonomousModeChooser.addOption("Pop Balance", AutonomousMode.Balance);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
+        autonomousModeChooser.addOption("Pop Balance", AutonomousMode.Balance);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
         //autonomousModeChooser.addOption("Bump Side Straight", AutonomousMode.simpleStraight);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
         // autonomousModeChooser.addOption("Test Path Planner Straight Line", AutonomousMode.testPathPlanner);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
         // autonomousModeChooser.addOption("Test Path Planner 90 Line", AutonomousMode.testAutoW90);        // autonomousModeChooser.addOption(" Side Straight", AutonomousMode.simpleStraight);
@@ -43,7 +43,7 @@ public class AutonSelector {
         autonomousModeChooser.addOption("RED - No Bump Side Grab", AutonomousMode.NoBumpSideGrabAuto);
         autonomousModeChooser.addOption("BLUE - No Bump Side Grab", AutonomousMode.BlueNoBumpSideGrabAuto);
         // autonomousModeChooser.addOption("Simple High Cone", AutonomousMode.highConeAuto);
-        // autonomousModeChooser.addOption("Cone Score Bump Turn 180", AutonomousMode.ConeBumpCross);
+        autonomousModeChooser.addOption("Cone Score Bump Turn 180", AutonomousMode.ConeBumpCross);
         autoTab.add("autoMode", autonomousModeChooser).withSize(5, 2);
     }
     
@@ -66,7 +66,7 @@ public class AutonSelector {
                 return new Test90(m_swerve, m_pneumatics);
             case testAutoW180:
                 return new Test180(m_swerve, m_pneumatics); 
-            case Balance:
+            case Balance:   
                 return new PopBalance(m_swerve, m_pneumatics);   
             case CrossBridgeBalance:
                 return new PopCrossBalance(m_swerve, m_pneumatics);   

@@ -28,7 +28,7 @@ import edu.wpi.first.math.util.Units;
     public static class robotAngle {
         //PID values for robot angle/heading
         public static double kp = 0.06500; // Speed Default 0.01100
-        public static double ki = 0.0010; // Amount to react Default 0.00001
+        public static double ki = 0.0000; // Amount to react Default 0.00001
         public static double kd = 0.0000; // Dampens system Default 0.00037
         public static double tolerance = 1.5;
     }

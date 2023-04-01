@@ -40,7 +40,7 @@ public class TeleopSwerve extends CommandBase {
     public void execute() {
         /* Get Values, Deadband*/
         if(driver.getRawAxis(2) >= .70){
-            maxSpeed = 0.2;
+            maxSpeed = 0.22;
         } else if (driver.getRawAxis(3) >= .70){
             maxSpeed = 1;
         } else {
