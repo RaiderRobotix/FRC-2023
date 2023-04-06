@@ -38,7 +38,7 @@ public class BlueNoBumpSideGrabAuto extends SequentialCommandGroup {
       new DriveAtSpeed(m_swerve, 0.1, 0.1, 0.5), // move left to clear bridge
       new WaitCommand(0.5),
       new InstantCommand(() -> m_swerve.setAngle(0)),
-      new DriveAtSpeed(m_swerve, 0.2, 0, 6),
+      new DriveAtSpeed(m_swerve, 0.2, 0, 5),
       new WaitCommand(0.5),
       new ElevatorToHeight(m_elevator, Constants.Elevator.humanPlayerHeight),
       new ArmToPosition(m_arm, Constants.Arm.humanPlayerLength));

@@ -138,7 +138,7 @@ public class CrossBridgeBalance extends CommandBase {
       else if(step == 9){
         this.speeds = new Translation2d(0.20 * Constants.SwerveConstants.maxSpeed, 0 * Constants.SwerveConstants.maxSpeed);
         m_swerve.drive(speeds, 0, false, true);
-        if(timer.get() >= 1.25){
+        if(timer.get() >= 0.9){
           m_swerve.stop();
           m_swerve.setAngle(90);
           timer.stop();
@@ -159,9 +159,9 @@ public class CrossBridgeBalance extends CommandBase {
         // continually adjust
         if (m_swerve.getPitch() <= -2.5) 
         {
-          this.speeds = new Translation2d(0.2 * Constants.SwerveConstants.maxSpeed, 0 * Constants.SwerveConstants.maxSpeed);
+          this.speeds = new Translation2d(0.25 * Constants.SwerveConstants.maxSpeed, 0 * Constants.SwerveConstants.maxSpeed);
           m_swerve.drive(speeds, 0, false, true);
-          Timer.delay(0.25);
+          Timer.delay(0.3);
           m_swerve.stop();
           m_swerve.setAngle(90);
           Timer.delay(1.0);
