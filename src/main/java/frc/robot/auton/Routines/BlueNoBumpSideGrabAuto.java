@@ -8,12 +8,15 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+
 import frc.robot.commands.balance;
 import frc.robot.commands.DriveAtSpeed;
-
+import frc.robot.commands.DriveAtSpeedWithObject;
 import frc.robot.commands.ArmToPosition;
 import frc.robot.commands.ElevatorToHeight;
 import frc.robot.commands.SetRobotHeading;
+import frc.robot.commands.CloseOnObject;
 import frc.robot.auton.Routines.DriveBackRaiseArm;
 import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.Swerve;
@@ -35,13 +38,19 @@ public class BlueNoBumpSideGrabAuto extends SequentialCommandGroup {
       new InstantCommand(() -> m_swerve.zeroGyro()),
       new InstantCommand(() -> m_pneumatics.popPopper()),
       new WaitCommand(1),
-      new DriveAtSpeed(m_swerve, 0.1, 0.1, 0.5), // move left to clear bridge
+      new DriveAtSpeed(m_swerve, 0.1, 0.1, 1), // move left to clear bridge
       new WaitCommand(0.5),
       new InstantCommand(() -> m_swerve.setAngle(0)),
+      new ArmToPosition(m_arm, 0.229),
       new DriveAtSpeed(m_swerve, 0.2, 0, 5),
-      new WaitCommand(0.5),
-      new ElevatorToHeight(m_elevator, Constants.Elevator.humanPlayerHeight),
-      new ArmToPosition(m_arm, Constants.Arm.humanPlayerLength));
+      new ParallelCommandGroup(
+        new DriveAtSpeed(m_swerve, 0.2, 0, 1),
+        new CloseOnObject(m_grabber, 5)),
+      new WaitCommand(1.0));
+      // new DriveAtSpeed(m_swerve, -0.2, -0.2, 1),
+      // new DriveAtSpeedWithObject(m_swerve, m_grabber, -0.2, 0, 4));
+      // new ElevatorToHeight(m_elevator, Constants.Elevator.humanPlayerHeight),
+      // new ArmToPosition(m_arm, Constants.Arm.humanPlayerLength));
       // new ArmToPosition(m_arm, Constants.Arm.floorPickupLength),
       // new DriveAtSpeed(m_swerve, 0, 0.1, 0.1),
       // new InstantCommand(() -> m_grabber.closeIfObjectDetected()),

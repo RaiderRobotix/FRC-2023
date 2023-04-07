@@ -6,25 +6,27 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.Constants;
+import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Grabber;
+import frc.robot.Constants;
+import edu.wpi.first.math.geometry.Translation2d;
 
-public class CloseOnObject extends CommandBase {
-  /** Creates a new CloseOnObject. */
-
-  private Timer timer;
+public class DriveAtSpeedWithObject extends CommandBase {
+  /** Creates a new DriveAtSpeed. */
+  private Translation2d speeds;
   private double seconds;
+  private Timer timer;
   private boolean isDone;
+  private Swerve m_swerve;
   private Grabber m_grabber;
-  private boolean grabbed;
-  private double grabTime;
-
-  public CloseOnObject(Grabber m_grabber, double seconds) {
-    
+  public DriveAtSpeedWithObject(Swerve m_swerve, Grabber m_grabber, double xSpeed, double ySpeed, double seconds) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.speeds = new Translation2d(xSpeed * Constants.SwerveConstants.maxSpeed, ySpeed * Constants.SwerveConstants.maxSpeed);
     this.seconds = seconds;
+    this.m_swerve = m_swerve;
     this.m_grabber = m_grabber;
     this.timer = new Timer();
+    addRequirements(m_swerve);
     addRequirements(m_grabber);
   }
 
@@ -32,8 +34,6 @@ public class CloseOnObject extends CommandBase {
   @Override
   public void initialize() {
     isDone = false;
-    grabbed = false;
-    grabTime = 0;
     timer.reset();
     timer.start();
   }
@@ -41,31 +41,19 @@ public class CloseOnObject extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    if (timer.get() >= seconds) {
-        timer.stop();
-        isDone = true;
+    if(timer.get() <= seconds && m_grabber.grabberIsClosed()){
+      m_swerve.drive(speeds, 0, false, true);
+    } else {
+      timer.stop();
+      m_swerve.stop();
+      isDone = true;
     }
-    
-    if(!grabbed){
-      m_grabber.closeIfObjectDetected();
-      grabbed = true;
-      grabTime = timer.get();
-    }
-    else if (grabbed && timer.get() > grabTime + 0.5)
-    {
-        timer.stop();
-        isDone = true;
-    }
-    
-    
-
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    timer.stop();
+    m_swerve.stop();
   }
 
   // Returns true when the command should end.
